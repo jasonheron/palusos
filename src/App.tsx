@@ -1,12 +1,12 @@
 import type React from 'react';
-import { ArrowRight, Bot, BrainCircuit, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, Bot, BrainCircuit, ChevronDown, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
 import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
 import { marketAdapters, strategyRunners } from './modules/adapters';
 import './styles/app.css';
 import './styles/palusos-hero.css';
 
 const copy = {
-  tagline: 'The learning layer for agentic trading agents.',
+  tagline: 'The learning layer for agentic trading agents',
 };
 
 function App() {
@@ -108,8 +108,8 @@ function SystemDiagram() {
     <section className="system-section" id="architecture">
       <div className="section-heading compact">
         <span className="eyebrow">How PalusOS works</span>
-        <h2>One input stack. One evaluation loop.</h2>
-        <p>Choose an agent, connect a data feed, attach the model bundle you want to test, then let PalusOS run the loop until there is a clear output.</p>
+        <h2>LLMs are the brain. PalusOS is the body.</h2>
+        <p>Soon anyone will be able to deploy an autonomous AI agent to trade for them, but it is not as simple as asking Claude to trade memecoins on Solana. PalusOS gives agents the learning layer they need: a full ML lab, replay testing, paper trading, live calibration, and realistic EV reporting before capital is put at risk.</p>
       </div>
 
       <div className="system-diagram" aria-label="PalusOS system diagram">
@@ -139,7 +139,7 @@ function DiagramInput({ title, options }: { title: string; options: string[] }) 
     <article className="diagram-input">
       <span>{title}</span>
       <div className="diagram-choice" aria-label={`${title} selected option`}>
-        {options.map((option, index) => <b key={option} style={{ '--option-index': index } as React.CSSProperties}>{option}</b>)}
+        {options.map((option, index) => <b key={option} style={{ '--option-index': index } as React.CSSProperties}>{option}<ChevronDown size={16} /></b>)}
       </div>
     </article>
   );

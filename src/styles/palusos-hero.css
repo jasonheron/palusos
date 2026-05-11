@@ -1064,3 +1064,26 @@
     width: 100%;
   }
 }
+
+/* Dropdown treatment for animated section-two selectors */
+.diagram-choice b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 210px;
+  border-radius: 0;
+  border-color: rgba(255,255,255,.82);
+  background: rgba(0,0,0,.12);
+  color: #fff;
+  box-shadow: none;
+}
+
+.diagram-choice b svg {
+  flex: 0 0 auto;
+  opacity: .82;
+}
+
+.diagram-choice {
+  width: min(100%, 320px);
+}
