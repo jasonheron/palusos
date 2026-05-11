@@ -1,6 +1,7 @@
 import type React from 'react';
 import { ArrowRight, Bot, BrainCircuit, ChevronDown, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
 import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
+import { AgentLab } from './components/AgentLab';
 import { marketAdapters, strategyRunners } from './modules/adapters';
 import './styles/app.css';
 import './styles/palusos-hero.css';
@@ -14,6 +15,7 @@ function App() {
     <main>
       <Hero />
       <SystemDiagram />
+      <AgentLab />
       <AgentDashboard />
       <PipelineTimeline />
       <ModularSection />
@@ -30,7 +32,7 @@ function Hero() {
         <a href="#top" className="brand"><span aria-hidden="true" />PalusOS</a>
         <div className="nav__spacer" />
         <div className="nav__actions">
-          <a className="nav__cta" href="#demo">Demo</a>
+          <a className="nav__cta" href="#agent-lab">Agent Lab</a>
           <button className="nav__menu" aria-label="Open menu"><Menu size={18} /></button>
         </div>
       </nav>
@@ -40,7 +42,7 @@ function Hero() {
         <h1>PalusOS</h1>
         <p className="hero__tagline">{copy.tagline}</p>
         <div className="hero__actions">
-          <a className="button primary" href="#demo">Explore <ArrowRight size={18} /></a>
+          <a className="button primary" href="#agent-lab">Run Agent Lab <ArrowRight size={18} /></a>
           <a className="button secondary" href="https://github.com/jasonheron/palusos" aria-label="PalusOS GitHub repository"><GitHubMark /> GitHub <ExternalLink size={16} /></a>
         </div>
       </div>
@@ -198,7 +200,7 @@ function FinalCTA() {
       <p>
         In the words of your favourite LLM: "no more hand-waving, just real results". PalusOS gives teams a repeatable way to evaluate agents against real data, realistic execution assumptions, and clear safety gates.
       </p>
-      <a className="button primary" href="#demo">Review the demo verdict <ArrowRight size={18} /></a>
+      <a className="button primary" href="#agent-lab">Run the Agent Lab <ArrowRight size={18} /></a>
     </section>
   );
 }
