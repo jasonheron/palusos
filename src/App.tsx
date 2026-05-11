@@ -194,9 +194,9 @@ function FinalCTA() {
   return (
     <section className="final-cta">
       <span className="eyebrow">Why now?</span>
-      <h2>Trading agents need proof before they need bigger budgets.</h2>
+      <h2>Actionable ML EV reports, not a blackbox.</h2>
       <p>
-        Markets move too quickly for hand-waved backtests. PalusOS gives teams a repeatable way to evaluate agents against real data, realistic execution assumptions, and clear safety gates.
+        In the words of your favourite LLM: "no more hand-waving, just real results". PalusOS gives teams a repeatable way to evaluate agents against real data, realistic execution assumptions, and clear safety gates.
       </p>
       <a className="button primary" href="#demo">Review the demo verdict <ArrowRight size={18} /></a>
     </section>
