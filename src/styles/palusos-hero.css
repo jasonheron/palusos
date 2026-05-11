@@ -967,3 +967,100 @@
     padding-left: 7px;
   }
 }
+
+/* Second-section polish: compact PalusOS bar + animated selected inputs */
+.diagram-core-label {
+  width: 100%;
+  justify-self: stretch;
+  box-sizing: border-box;
+  padding: 9px 18px;
+  font-size: clamp(18px, 1.7vw, 25px);
+  line-height: 1;
+  text-align: left;
+}
+
+.diagram-input {
+  gap: 14px;
+}
+
+.diagram-input span {
+  color: #fff;
+  font-size: clamp(20px, 2.1vw, 30px);
+  font-weight: 620;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.diagram-choice {
+  position: relative;
+  display: inline-grid;
+  align-items: center;
+  width: min(100%, 280px);
+  min-height: 48px;
+}
+
+.diagram-choice b {
+  grid-area: 1 / 1;
+  width: max-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  background: rgba(255,255,255,.92);
+  color: #050505;
+  box-shadow: 0 14px 34px rgba(0,0,0,.22);
+  font-size: clamp(14px, 1.25vw, 18px);
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(8px) scale(.98);
+  animation: selected-option-cycle 12s infinite;
+  animation-delay: calc(var(--option-index) * 3s);
+}
+
+.diagram-input:nth-child(2) .diagram-choice b {
+  animation-delay: calc((var(--option-index) * 3s) + .7s);
+}
+
+.diagram-input:nth-child(3) .diagram-choice b {
+  animation-delay: calc((var(--option-index) * 3s) + 1.4s);
+}
+
+@keyframes selected-option-cycle {
+  0%, 19% {
+    opacity: 0;
+    transform: translateY(8px) scale(.98);
+  }
+  24%, 44% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  49%, 100% {
+    opacity: 0;
+    transform: translateY(-8px) scale(.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diagram-choice b {
+    animation: none;
+  }
+  .diagram-choice b:not(:first-child) {
+    display: none;
+  }
+  .diagram-choice b:first-child {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .diagram-core-label {
+    text-align: left;
+  }
+  .diagram-choice {
+    width: 100%;
+  }
+}

@@ -93,9 +93,9 @@ function ProofStrip() {
 
 function SystemDiagram() {
   const inputs = [
-    { title: 'Agent', value: 'Claude 4.7', hint: 'Swap for GPT-5.5, Gemini Quant, Kimi Trader, Qwen Analyst' },
-    { title: 'Data Feed', value: 'PumpFun historic + live collector', hint: 'Swap for BTC/USD, SOL perps, DEX flow, order-book snapshots' },
-    { title: 'ML Models', value: 'PalusOS Custom', hint: 'Swap for Traditional, Memes, XGBoost, LSTM regime bundles' },
+    { title: 'Agent', options: ['Claude 4.7', 'GPT-5.5', 'Gemini Quant', 'Kimi Trader'] },
+    { title: 'Data Feed', options: ['PumpFun live collector', 'BTC/USD spot', 'SOL perps', 'DEX pool flow'] },
+    { title: 'ML Model', options: ['PalusOS Custom', 'XGBoost Bundle', 'LSTM Regime Model', 'PalusOS Memes'] },
   ];
   const loop = [
     { title: 'Replay', text: 'Run the agent against historical market conditions.' },
@@ -134,12 +134,13 @@ function SystemDiagram() {
   );
 }
 
-function DiagramInput({ title, value, hint }: { title: string; value: string; hint: string }) {
+function DiagramInput({ title, options }: { title: string; options: string[] }) {
   return (
     <article className="diagram-input">
       <span>{title}</span>
-      <b>{value}</b>
-      <small>{hint}</small>
+      <div className="diagram-choice" aria-label={`${title} selected option`}>
+        {options.map((option, index) => <b key={option} style={{ '--option-index': index } as React.CSSProperties}>{option}</b>)}
+      </div>
     </article>
   );
 }
