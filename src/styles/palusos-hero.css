@@ -268,3 +268,86 @@
     border-bottom: 1px solid rgba(255,255,255,.16);
   }
 }
+
+/* Jason-directed hero refinement */
+.nav .brand {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.nav .brand span {
+  display: none;
+}
+
+.hero__copy {
+  transform: translateY(-10vh);
+}
+
+.hero__copy h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(42px, 6.2vw, 86px);
+  font-weight: 400;
+  line-height: 1.02;
+}
+
+.hero__copy p.hero__tagline {
+  font-family: "Plus Jakarta Sans", "Google Sans", "Product Sans", Arial, sans-serif;
+  font-size: clamp(18px, 2.1vw, 27px);
+  font-weight: 800;
+  line-height: 1.16;
+}
+
+.hero > .proof-strip {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.hero > .proof-strip article {
+  min-height: 86px;
+  padding: 15px clamp(10px, 1.7vw, 22px);
+}
+
+.hero > .proof-strip article:nth-child(-n+2) {
+  background: rgba(0,0,0,.52);
+}
+
+.hero > .proof-strip b {
+  font-size: clamp(10px, 1vw, 12px);
+  line-height: 1.15;
+  margin-bottom: 5px;
+}
+
+.hero > .proof-strip span {
+  font-size: clamp(9px, .85vw, 11px);
+  line-height: 1.25;
+}
+
+.hero > .proof-strip .proof-stack {
+  display: grid;
+  gap: 3px;
+  align-content: center;
+}
+
+.hero > .proof-strip .proof-stack span {
+  display: block;
+  color: #fff;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.hero > .proof-strip .proof-input b {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(14px, 1.25vw, 18px);
+  font-weight: 400;
+  text-transform: none;
+}
+
+@media (max-width: 720px) {
+  .hero__copy {
+    transform: translateY(-10vh);
+  }
+  .hero > .proof-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+}
