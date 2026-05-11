@@ -542,3 +542,80 @@
     grid-template-columns: 1fr max-content;
   }
 }
+
+/* Bottom-strip correction: one module cell, equal inner halves, aligned text */
+.hero__copy h1 {
+  font-weight: 400;
+}
+
+.hero__copy p.hero__tagline {
+  white-space: nowrap;
+}
+
+.hero__actions .button.secondary {
+  background: #050505;
+  color: #fff;
+  border-color: rgba(255,255,255,.22);
+}
+
+.hero > .proof-strip {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  background: rgba(0,0,0,.18);
+}
+
+.hero > .proof-strip article {
+  background: transparent !important;
+}
+
+.hero > .proof-strip article:first-child {
+  padding-left: clamp(18px, 4vw, 72px);
+}
+
+.hero > .proof-strip .proof-module {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(0,0,0,.52) !important;
+  padding: 0;
+}
+
+.hero > .proof-strip .proof-input,
+.hero > .proof-strip .proof-stack {
+  width: auto;
+  min-width: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.hero > .proof-strip .proof-input {
+  padding-left: clamp(18px, 4vw, 72px);
+  border-right: 1px dotted rgba(255,255,255,.42);
+}
+
+.hero > .proof-strip .proof-stack {
+  padding-left: clamp(10px, 1.2vw, 16px);
+  padding-right: clamp(10px, 1.2vw, 16px);
+}
+
+.hero > .proof-strip .proof-module,
+.hero > .proof-strip .proof-module *,
+.hero > .proof-strip .proof-input b {
+  text-transform: none !important;
+}
+
+.hero > .proof-strip .proof-input b {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 400;
+}
+
+.hero > .proof-strip .proof-stack span {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .hero__copy p.hero__tagline {
+    white-space: normal;
+  }
+  .hero > .proof-strip .proof-module {
+    grid-template-columns: 1fr 1fr;
+  }
+}
