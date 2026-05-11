@@ -54,9 +54,15 @@
   text-shadow: 0 3px 24px rgba(0,0,0,.70), 0 0 34px rgba(255,255,255,.20);
 }
 
-.hero__copy .badge,
-.hero__actions {
+.hero__copy .badge {
   display: none;
+}
+
+.hero__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
 }
 
 .hero__copy h1 {
@@ -80,13 +86,6 @@
   margin: 0 auto 14px;
 }
 
-.hero__copy p:not(.hero__tagline) {
-  display: block;
-  color: rgba(255,255,255,.86);
-  font-size: clamp(15px, 1.35vw, 18px);
-  line-height: 1.5;
-  max-width: 680px;
-}
 
 .hero-card {
   display: none;
