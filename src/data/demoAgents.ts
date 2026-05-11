@@ -61,7 +61,7 @@ export const demoAgents: DemoAgent[] = [
       { title: 'Calibrate', description: 'Paper PnL is discounted against executable route economics and drift logs.', status: 'watch' },
       { title: 'Gate', description: 'Agent is not live yet: it needs eight more closed proof trades and runner acceptance.', status: 'watch' },
     ],
-    report: 'Candidate has a plausible structural edge, but TrenchLab refuses to promote it until proof density and canary runner safety are complete.',
+    report: 'Candidate has a plausible structural edge, but PalusOS refuses to promote it until proof density and canary runner safety are complete.',
   },
   {
     id: 'universal-snipe-v1',
@@ -91,7 +91,7 @@ export const demoAgents: DemoAgent[] = [
       { title: 'Calibrate', description: 'Quote-backed costs flip the result negative.', status: 'fail' },
       { title: 'Gate', description: 'Killed before touching a dev wallet.', status: 'fail' },
     ],
-    report: 'This is the kind of agent TrenchLab exists to stop: exciting paper charts, negative executable economics.',
+    report: 'This is the kind of agent PalusOS exists to stop: exciting paper charts, negative executable economics.',
   },
   {
     id: 'agent-risk-sentinel',

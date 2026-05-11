@@ -19,7 +19,7 @@ export function AgentDashboard() {
     <section className="dashboard-section" id="demo">
       <div className="section-heading">
         <span className="eyebrow">Live demo flow</span>
-        <h2>One agent enters. TrenchLab decides if it deserves capital.</h2>
+        <h2>One agent enters. PalusOS decides if it deserves capital.</h2>
         <p>
           A judge-friendly view of the modular pipeline: ingest market data, run a candidate,
           calibrate paper PnL against executable reality, and produce a promotion verdict.
