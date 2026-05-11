@@ -114,9 +114,10 @@ function SystemDiagram() {
 
       <div className="system-diagram" aria-label="PalusOS system diagram">
         <div className="diagram-input-stack">
-          <div className="diagram-core-label">PalusOS</div>
           {inputs.map((item) => <DiagramInput key={item.title} {...item} />)}
         </div>
+
+        <div className="diagram-core-label">PalusOS</div>
 
         <div className="diagram-loop-flow">
           {loop.map((item, index) => (
