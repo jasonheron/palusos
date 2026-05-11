@@ -108,8 +108,8 @@ function SystemDiagram() {
     <section className="system-section" id="architecture">
       <div className="section-heading compact">
         <span className="eyebrow">How PalusOS works</span>
-        <h2>LLMs are the brain. PalusOS is the body.</h2>
-        <p>Soon anyone will be able to deploy an autonomous AI agent to trade for them, but it is not as simple as asking Claude to trade memecoins on Solana. PalusOS gives agents the learning layer they need: a full ML lab, replay testing, paper trading, live calibration, and realistic EV reporting before capital is put at risk.</p>
+        <h2>Autonomous trading agents are coming, but they need more than a wallet and a prompt.</h2>
+        <p>PalusOS is the learning layer for AI trading agents: a full ML lab, backtesting engine, quote-backed paper trader, and live-calibration system that helps agents discover strategies, test realistic EV, and build trading profiles before risking capital.</p>
       </div>
 
       <div className="system-diagram" aria-label="PalusOS system diagram">
