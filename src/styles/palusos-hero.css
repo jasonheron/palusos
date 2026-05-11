@@ -1192,38 +1192,29 @@
   }
 }
 
-/* Top-left origin quote: keep it in the nav so it does not affect hero layout */
-.nav .brand {
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 3px;
-  max-width: min(360px, 34vw);
-  line-height: 1;
+/* Origin quote replaces the old PalusOS / Model Inputs cell */
+.hero > .proof-strip .proof-input--quote {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.nav .brand b {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1;
-}
-
-.nav .brand small {
-  display: block;
-  max-width: 330px;
-  color: rgba(255,255,255,.48);
+.hero > .proof-strip .proof-input--quote span {
+  max-width: 260px;
+  color: rgba(255,255,255,.78);
   font-family: "Plus Jakarta Sans", Arial, sans-serif;
-  font-size: 6.5px;
-  font-weight: 600;
-  line-height: 1.35;
+  font-size: clamp(7px, .58vw, 9px);
+  font-weight: 650;
+  line-height: 1.42;
   letter-spacing: .11em;
   text-transform: uppercase;
   text-wrap: balance;
-  pointer-events: none;
 }
 
 @media (max-width: 720px) {
-  .nav .brand small {
-    display: none;
+  .hero > .proof-strip .proof-input--quote span {
+    font-size: 5.8px;
+    line-height: 1.25;
+    letter-spacing: .06em;
   }
 }

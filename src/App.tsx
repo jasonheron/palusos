@@ -45,7 +45,7 @@ function Hero() {
   return (
     <section className="hero" id="top">
       <nav className="nav" aria-label="Primary navigation">
-        <a href="#top" className="brand"><span aria-hidden="true" /><b>PalusOS</b><small>THE PALUS WAS THE GLADIATOR’S SILENT TRAINING GROUND — A WOODEN POST WHERE DISCIPLINE, MUSCLE MEMORY, AND SURVIVAL WERE FORGED LONG BEFORE THE ARENA EVER SAW THEM.</small></a>
+        <a href="#top" className="brand"><span aria-hidden="true" />PalusOS</a>
         <div className="nav__spacer" />
         <div className="nav__actions">
           <a className="nav__cta" href="/demo">Live Demo</a>
@@ -98,7 +98,7 @@ function ProofStrip() {
   return (
     <section className="proof-strip" aria-label="Product proof points">
       <article className="proof-module">
-        <div className="proof-input"><b>PalusOS</b><span>Model Inputs</span></div>
+        <div className="proof-input proof-input--quote"><span>THE PALUS WAS THE GLADIATOR’S SILENT TRAINING GROUND — A WOODEN POST WHERE DISCIPLINE, MUSCLE MEMORY, AND SURVIVAL WERE FORGED LONG BEFORE THE ARENA EVER SAW THEM.</span></div>
         <div className="proof-stack" aria-label="Module input types"><span>Agent</span><span>Data</span><span>ML Model</span></div>
       </article>
       <article><b>REPLAY</b><span>Test against historical market conditions</span></article>
