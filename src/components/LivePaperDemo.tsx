@@ -1,17 +1,5 @@
-import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  Activity,
-  BarChart3,
-  BrainCircuit,
-  DatabaseZap,
-  ExternalLink,
-  Pause,
-  Play,
-  Radio,
-  ShieldCheck,
-  Waves,
-} from 'lucide-react';
+import { ExternalLink, Pause, Play } from 'lucide-react';
 import { agentDefinitions, modelDefinitions } from '../data/agentLabData';
 import {
   buildClientFetchFallbackSnapshot,
@@ -99,6 +87,12 @@ export function LivePaperDemo() {
   const [snapshot, setSnapshot] = useState<LivePaperSnapshot>(() => buildClientFetchFallbackSnapshot({ agentId, modelId }));
   const [lastError, setLastError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [clockNow, setClockNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const clock = setInterval(() => setClockNow(Date.now()), 1_000);
+    return () => clearInterval(clock);
+  }, []);
 
   useEffect(() => {
     if (!isRunning) {
@@ -146,274 +140,162 @@ export function LivePaperDemo() {
   const terminalMetrics = useMemo(() => calculateTerminalMetrics(positions), [positions]);
   const equityCurve = useMemo(() => buildEquityCurve(snapshot, positions), [snapshot, positions]);
   const modeLabel = useMemo(() => modeToLabel(snapshot.meta.mode), [snapshot.meta.mode]);
-  const statusText = snapshot.meta.mode === 'rpc-live-readonly'
-    ? 'Read-only Solana RPC input'
-    : `Demo replay${snapshot.meta.reason ? ` · ${snapshot.meta.reason.replaceAll('_', ' ')}` : ''}`;
   const latestEvent = snapshot.events[0];
-  const latestCoin = latestEvent ? coinIdentity(latestEvent, 0) : null;
   const activePair = useMemo(() => buildActivePairSummary(latestEvent), [latestEvent]);
   const routeStatus = useMemo(() => buildRouteStatus(snapshot.events), [snapshot.events]);
+  const selectedAgent = useMemo(() => agentDefinitions.find((agent) => agent.id === agentId) ?? agentDefinitions[0], [agentId]);
+  const selectedModel = useMemo(() => modelDefinitions.find((model) => model.id === modelId) ?? modelDefinitions[0], [modelId]);
+  const profileName = selectedAgent.name.replace(/\s+Agent$/i, '');
+  const profileSubtitle = `${selectedAgent.role.toUpperCase()} - MIN SCORE ${selectedAgent.minSignalScore}`;
 
   return (
     <section className="live-paper-section" id="live-paper-demo" aria-label="PalusOS paper terminal">
-      <div className={`trading-terminal trading-terminal--fullscreen${isRunning ? '' : ' is-paused'}`}>
+      <div className={`trading-terminal${isRunning ? '' : ' is-paused'}`}>
         <header className="terminal-topbar">
-          <a href="/" className="terminal-brand-block" aria-label="Back to PalusOS site">
-            <span className={`terminal-status-dot ${isRunning ? 'active' : 'paused'}`} />
-            <div>
+          <div className="terminal-nav-left" aria-label="Demo terminal navigation">
+            <a href="/" className="terminal-brand-block" aria-label="Back to PalusOS site">
               <b>PalusOS</b>
-              <small>/demo · {modeLabel}</small>
-            </div>
-          </a>
-
-          <nav className="terminal-route-tabs" aria-label="Demo terminal navigation">
-            <span className="active">Demo</span>
-            <a href="/">Home <ExternalLink size={12} aria-hidden="true" /></a>
-          </nav>
-
-          <div className="terminal-search-field" aria-label="Current watched market">
-            <Radio size={14} />
-            <span>{latestCoin ? `${latestCoin.symbol} / SOL` : 'PUMP / SOL'}</span>
-            <small>{quoteSummary(snapshot.events)}</small>
+            </a>
+            <span className="terminal-nav-tab active">DEMO</span>
+            <span className="terminal-nav-divider" aria-hidden="true" />
+            <a href="/" className="terminal-nav-tab">HOME <ExternalLink size={12} aria-hidden="true" /></a>
           </div>
 
           <div className="terminal-safety-strip" aria-label="Demo safety status">
-            <span><ShieldCheck size={13} /> read-only</span>
-            <span><Activity size={13} /> paper</span>
-            <span><Waves size={13} /> no wallet</span>
+            <span>READ-ONLY DATA</span>
+            <span>PAPER</span>
+            <span>NO WALLET</span>
+            <time>{new Date(clockNow).toLocaleTimeString()}</time>
           </div>
-
-          <time>{new Date(snapshot.meta.generatedAt).toLocaleTimeString()}</time>
         </header>
 
-        <section className="terminal-control-row" aria-label="Paper terminal controls">
-          <LiveSelect
-            icon={<BrainCircuit size={15} />}
-            label="Active profile"
-            value={agentId}
-            options={agentDefinitions.map((agent) => ({ value: agent.id, label: agent.name, detail: `${agent.role} · signal ≥ ${agent.minSignalScore}` }))}
-            onChange={setAgentId}
-          />
-          <LiveSelect
-            icon={<BarChart3 size={15} />}
-            label="Model"
-            value={modelId}
-            options={modelDefinitions.map((model) => ({ value: model.id, label: model.name, detail: model.family }))}
-            onChange={setModelId}
-          />
-          <div className="terminal-start-stop" aria-label="Start or stop paper trading loop">
-            <button className="paper-control-button start" type="button" aria-pressed={isRunning} onClick={() => setIsRunning(true)} disabled={isRunning}>
-              <Play size={15} /> Start Paper
-            </button>
-            <button className="paper-control-button stop" type="button" aria-pressed={!isRunning} onClick={() => setIsRunning(false)} disabled={!isRunning}>
-              <Pause size={15} /> Stop Paper
-            </button>
-            <small>Simulation polling only. No wallet, signing, swaps, or broadcasts.</small>
-          </div>
-        </section>
+        <section className="terminal-dashboard" aria-label="PalusOS paper dashboard">
+          <aside className="terminal-profile-rail" aria-label="Profile controls and pipeline">
+            <div className="profile-control-stack">
+              <label className="profile-select-card">
+                <span className="rail-label">ACTIVE PROFILE</span>
+                <select value={agentId} onChange={(event) => setAgentId(event.target.value)} aria-label="Active profile">
+                  {agentDefinitions.map((agent) => <option key={agent.id} value={agent.id}>{agent.name}</option>)}
+                </select>
+                <strong>{profileName}</strong>
+                <small>{profileSubtitle}</small>
+              </label>
 
-        <section className="terminal-metrics-grid" aria-label="Paper portfolio metrics">
-          <TerminalMetric label="Equity" value={formatUnsignedSol(terminalMetrics.paperEquitySol)} detail="10 SOL sim" tone="neutral" />
-          <TerminalMetric label="Net PnL" value={formatSol(terminalMetrics.totalPnlSol)} detail="real + unrl" tone={terminalMetrics.totalPnlSol >= 0 ? 'positive' : 'negative'} />
-          <TerminalMetric label="Unrealized" value={formatSol(terminalMetrics.unrealizedPnlSol)} detail={`${terminalMetrics.openPositions} open positions`} tone={terminalMetrics.unrealizedPnlSol >= 0 ? 'positive' : 'negative'} />
-          <TerminalMetric label="Realized" value={formatSol(terminalMetrics.realizedPnlSol)} detail={`${terminalMetrics.closedPositions} closed`} tone={terminalMetrics.realizedPnlSol >= 0 ? 'positive' : 'negative'} />
-          <TerminalMetric label="Open" value={String(terminalMetrics.openPositions)} detail={`${snapshot.paper.metrics.selectedTrades} selected rows`} tone="neutral" />
-          <TerminalMetric label="Confidence" value={`${snapshot.paper.metrics.confidenceScore}%`} detail={terminalMetrics.winRatePct === null ? 'no closed rows' : `${terminalMetrics.winRatePct.toFixed(0)}% win rate`} tone="neutral" />
-        </section>
+              <label className="model-inline-control">
+                <span>MODEL</span>
+                <select value={modelId} onChange={(event) => setModelId(event.target.value)} aria-label="Model">
+                  {modelDefinitions.map((model) => <option key={model.id} value={model.id}>{model.name}</option>)}
+                </select>
+                <small>{selectedModel.family}</small>
+              </label>
 
-        <section className="terminal-workspace-grid" aria-label="Paper trading workspace">
-          <article className="terminal-panel market-feed-panel">
-            <div className="terminal-panel-header compact">
-              <div>
-                <span className="eyebrow">Market feed</span>
-                <h3>{snapshot.meta.mode === 'rpc-live-readonly' ? 'Pump / PumpSwap' : 'Demo rows'}</h3>
+              <div className="paper-loop-controls" aria-label="Start or stop paper polling loop">
+                <button className="paper-control-button start" type="button" aria-pressed={isRunning} onClick={() => setIsRunning(true)} disabled={isRunning}>
+                  <Play size={13} /> START
+                </button>
+                <button className="paper-control-button stop" type="button" aria-pressed={!isRunning} onClick={() => setIsRunning(false)} disabled={!isRunning}>
+                  <Pause size={13} /> STOP
+                </button>
+                <small>{isRunning ? 'POLLING PAPER FEED' : 'PAPER POLLING PAUSED'}</small>
               </div>
-              <span className="terminal-mode-pill">{snapshot.events.length} ROWS</span>
             </div>
-            <div className="market-feed-list">
-              <div className="market-feed-row market-feed-heading" aria-hidden="true">
-                <b>Pair</b>
-                <span>MC</span>
-                <span>Vol</span>
-                <span>Sig</span>
-                <small>Quote</small>
-              </div>
-              {snapshot.events.slice(0, 14).map((event, index) => {
-                const coin = coinIdentity(event, index);
-                const metrics = buildMarketRowMetrics(event, index);
-                return (
-                  <div className="market-feed-row" key={event.id}>
-                    <span className="token-icon" aria-hidden="true">{coin.symbol.slice(0, 2)}</span>
-                    <div className="coin-cell">
-                      <b>{coin.symbol}</b>
-                      <small>{coin.name}</small>
-                    </div>
-                    <small className="market-age">{timeAgo(event.timestamp)}</small>
-                    <div className="market-row-metrics" aria-label={`${coin.symbol} market metrics`}>
-                      <span><small>MC</small><b>{metrics.marketCap}</b></span>
-                      <span><small>Vol</small><b>{metrics.volume}</b></span>
-                      <span><small>Sig</small><b>{event.score}</b></span>
-                      <span className={`quote-badge ${metrics.quoteTone}`}><small>Quote</small><b>{metrics.quoteLabel}</b></span>
-                    </div>
-                  </div>
-                );
-              })}
+
+            <div className="rail-divider" />
+
+            <div className="profile-process-list">
+              <span className="rail-label">HOW A PROFILE IS MADE:</span>
+              <ol>
+                {['DATA FEED', 'DISCOVERY ENGINE', 'PROOF ENGINE', 'PAPER TRADING', 'CANARY TRADING', 'AUTO-SCALE TRADING'].map((step) => <li key={step}>{step}</li>)}
+              </ol>
             </div>
-          </article>
+          </aside>
 
-          <div className="terminal-center-stack">
-            <article className="terminal-panel chart-panel">
-              <ActivePairHeader pair={activePair} modePill={isRunning ? 'LIVE LOOP' : 'PAUSED'} />
-              <div className="chart-toolbar" aria-label="Chart time range">
-                <div className="time-range-chips">
-                  {['1m', '5m', '15m', '1h'].map((range) => <span className={range === '5m' ? 'active' : ''} key={range}>{range}</span>)}
-                </div>
-                <small>{snapshot.meta.mode === 'rpc-live-readonly' ? 'read-only mark stream' : 'bundled demo mark stream'}</small>
-              </div>
-              <EquityChart points={equityCurve} markerLabel={activePair.price} />
-              <div className="chart-stat-strip" aria-label="Paper chart stats">
-                <span><small>Avg EV</small><b>{formatSol(snapshot.paper.metrics.averageEvSol)}</b></span>
-                <span><small>Outlier EV</small><b>{formatSol(snapshot.paper.metrics.outlierRemovedEvSol)}</b></span>
-                <span><small>Max DD</small><b>{formatSol(snapshot.paper.metrics.maxDrawdownSol)}</b></span>
-                <span><small>Stage</small><b>{snapshot.selectedProfile.stage}</b></span>
-              </div>
-            </article>
+          <main className="terminal-chart-column" aria-label="Portfolio metrics and chart">
+            <section className="terminal-metrics-grid" aria-label="Paper portfolio metrics">
+              <TerminalMetric label="NET PNL" value={formatSol(terminalMetrics.totalPnlSol)} detail="REAL + UNRL" tone={terminalMetrics.totalPnlSol >= 0 ? 'positive' : 'negative'} />
+              <TerminalMetric label="UNREALIZED" value={formatSol(terminalMetrics.unrealizedPnlSol)} detail={`${terminalMetrics.openPositions} OPEN`} tone={terminalMetrics.unrealizedPnlSol >= 0 ? 'positive' : 'negative'} />
+              <TerminalMetric label="CLOSED" value={String(terminalMetrics.closedPositions)} detail={terminalMetrics.winRatePct === null ? 'NO CLOSED ROWS' : `${terminalMetrics.winRatePct.toFixed(0)}% WIN`} tone="neutral" />
+              <TerminalMetric label="OPEN" value={String(terminalMetrics.openPositions)} detail={`${snapshot.paper.metrics.selectedTrades} SELECTED`} tone="neutral" />
+            </section>
 
-            <article className="terminal-panel positions-panel">
-              <div className="terminal-panel-header compact">
+            <article className="chart-panel terminal-chart-panel">
+              <div className="chart-header-minimal">
                 <div>
-                  <span className="eyebrow">Active positions</span>
-                  <h3>Paper positions and PnL</h3>
+                  <span>PALUSOS PAPER CHART / PROOF ZONE</span>
+                  <b>{activePair.pair}</b>
                 </div>
-                <span className="terminal-mode-pill">{positions.length} TOTAL</span>
+                <small>{modeLabel} · {quoteSummary(snapshot.events)}</small>
               </div>
 
-              <div className="positions-table-wrap">
-                <table className="positions-table">
-                  <thead>
-                    <tr>
-                      <th>Coin</th>
-                      <th>Side</th>
-                      <th>Entry</th>
-                      <th>Mark</th>
-                      <th>Size</th>
-                      <th>Unrl</th>
-                      <th>Real</th>
-                      <th>Status</th>
-                      <th>Age / source</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {positions.length > 0 ? positions.map((position) => (
-                      <tr key={position.id} className={position.status.toLowerCase()}>
-                        <td>
-                          <b>{position.symbol}</b>
-                          <small>{position.name}</small>
-                        </td>
-                        <td>{position.side}</td>
-                        <td className="numeric">{formatTokenPrice(position.entryPrice)}</td>
-                        <td className="numeric">{formatTokenPrice(position.markPrice)}</td>
-                        <td className="numeric">{position.sizeSol.toFixed(4)} SOL</td>
-                        <td className={`numeric pnl-cell ${position.unrealizedPnlSol >= 0 ? 'positive' : 'negative'}`}>{formatSol(position.unrealizedPnlSol)}</td>
-                        <td className={`numeric pnl-cell ${position.realizedPnlSol >= 0 ? 'positive' : 'negative'}`}>{formatSol(position.realizedPnlSol)}</td>
-                        <td><span className={`position-status ${position.status.toLowerCase()}`}>{position.status}</span></td>
-                        <td>
-                          <span>{position.age}</span>
-                          <small>{position.source} · {position.quoteStatus}</small>
-                        </td>
-                      </tr>
-                    )) : (
-                      <tr>
-                        <td colSpan={9} className="empty-positions-cell">
-                          No active paper positions for this profile yet. The terminal is still watching the feed and scoring rows.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+              <EquityChart points={equityCurve} markerLabel={activePair.price} />
+
+              <div className="chart-stat-strip" aria-label="Paper chart stats">
+                <span><small>AVG EV</small><b>{formatSol(snapshot.paper.metrics.averageEvSol)}</b></span>
+                <span><small>OUTLIER EV</small><b>{formatSol(snapshot.paper.metrics.outlierRemovedEvSol)}</b></span>
+                <span><small>MAX DD</small><b>{formatSol(snapshot.paper.metrics.maxDrawdownSol)}</b></span>
+                <span><small>STAGE</small><b>{snapshot.selectedProfile.stage}</b></span>
               </div>
             </article>
-          </div>
+          </main>
 
-          <aside className="terminal-panel terminal-ticket-panel">
-            <div className="terminal-panel-header compact">
-              <div>
-                <span className="eyebrow">Paper order sim</span>
-                <h3>{activePair.pair}</h3>
+          <aside className="terminal-right-rail" aria-label="Paper positions and proof details">
+            <section className="right-module">
+              <div className="right-module-header">
+                <span>PAPER POSITIONS</span>
+                <b>{positions.length} TOTAL</b>
               </div>
-              <span className="terminal-mode-pill">NO WALLET</span>
-            </div>
+              <div className="compact-position-list">
+                {positions.length > 0 ? positions.slice(0, 5).map((position) => {
+                  const pnl = position.realizedPnlSol + position.unrealizedPnlSol;
+                  return (
+                    <div className="compact-position-row" key={position.id}>
+                      <div>
+                        <b>{position.symbol}</b>
+                        <small>{position.name}</small>
+                      </div>
+                      <span className={position.status.toLowerCase()}>{position.status}</span>
+                      <strong className={pnl >= 0 ? 'positive' : 'negative'}>{formatSol(pnl)}</strong>
+                    </div>
+                  );
+                }) : <p className="terminal-empty-copy">No active paper positions for this profile yet.</p>}
+              </div>
+            </section>
 
-            <div className="paper-order-card" aria-label="Paper-only order simulation ticket">
-              <div className="order-ticket-topline">
-                <span>Paper mark</span>
-                <b>{activePair.price}</b>
-                <small className={activePair.changeTone}>{activePair.changeLabel}</small>
+            <section className="right-module signal-module">
+              <div className="right-module-header">
+                <span>SIGNAL LOG</span>
+                <b>{snapshot.paper.decisions.length} ROWS</b>
               </div>
-              <div className="size-preset-grid" aria-label="Paper size presets">
-                {['0.005', '0.010', '0.025', '0.050'].map((size, index) => <span className={index === 1 ? 'active' : ''} key={size}>{size} SOL</span>)}
+              <div className="decision-tape" aria-label="Paper decision log">
+                {snapshot.paper.decisions.slice(0, 6).map((decision) => <DecisionRow key={decision.eventId} decision={decision} />)}
               </div>
-              <div className="order-route-grid">
-                <span><small>Slippage cap</small><b>{routeStatus.slippageCap}</b></span>
-                <span><small>Route</small><b>{routeStatus.route}</b></span>
-                <span><small>Impact</small><b>{routeStatus.impact}</b></span>
-                <span><small>Quote</small><b>{routeStatus.quote}</b></span>
-              </div>
-              <div className="paper-sim-actions">
-                <button className="paper-sim-button buy" type="button" disabled>Paper Buy Sim</button>
-                <button className="paper-sim-button sell" type="button" disabled>Paper Sell Sim</button>
-              </div>
-              <small className="paper-only-copy">Simulation-only controls. No wallet connect, signing, swaps, transaction creation, or broadcasts.</small>
-            </div>
+            </section>
 
-            <div className="proof-log-card">
-              <span>Proof / gate status</span>
-              <b>{snapshot.paper.verdictLabel}</b>
-              <small>{snapshot.paper.action}</small>
+            <section className="right-module proof-module-right">
+              <div className="right-module-header">
+                <span>ROUTE / PROOF</span>
+                <b>{snapshot.paper.verdictLabel}</b>
+              </div>
+              <div className="route-proof-grid">
+                <span><small>SLIPPAGE</small><b>{routeStatus.slippageCap}</b></span>
+                <span><small>ROUTE</small><b>{routeStatus.route}</b></span>
+                <span><small>IMPACT</small><b>{routeStatus.impact}</b></span>
+                <span><small>QUOTE</small><b>{routeStatus.quote}</b></span>
+              </div>
+              <p>{snapshot.paper.action}</p>
               <ul>
                 {snapshot.paper.rationale.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
               </ul>
-            </div>
+            </section>
 
-            <div className="terminal-safety-grid">
-              <SafetyPill icon={<ShieldCheck size={14} />} label="RPC" value={snapshot.meta.readOnly ? 'read only' : 'disabled'} />
-              <SafetyPill icon={<Activity size={14} />} label="Mode" value={snapshot.meta.paperOnly ? 'paper' : 'unknown'} />
-              <SafetyPill icon={<DatabaseZap size={14} />} label="Wallet" value={snapshot.meta.wallet} />
-            </div>
-
-            <div className="decision-tape" aria-label="Paper decision log">
-              {snapshot.paper.decisions.slice(0, 6).map((decision) => (
-                <DecisionRow key={decision.eventId} decision={decision} />
-              ))}
-            </div>
+            <footer className="right-status-line">
+              <span>{snapshot.meta.readOnly ? 'READ-ONLY RPC' : 'DEMO REPLAY'}</span>
+              <span>{lastError ? `FALLBACK ${lastError}` : isRefreshing ? 'REFRESHING' : isRunning ? 'POLLING 7.5S' : 'PAUSED'}</span>
+            </footer>
           </aside>
         </section>
-
-        <footer className="terminal-bottom-status">
-          <span><ShieldCheck size={13} /> paper-only public demo</span>
-          <span>{statusText}. {snapshot.meta.scoreMethod}</span>
-          <span>{lastError ? `fallback: ${lastError}` : isRefreshing ? 'refreshing…' : isRunning ? 'polling 7.5s' : 'polling paused'}</span>
-        </footer>
       </div>
     </section>
-  );
-}
-
-function LiveSelect({ icon, label, value, options, onChange }: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  options: Array<{ value: string; label: string; detail: string }>;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <label className="lab-select live-select terminal-select">
-      <span>{icon}{label}</span>
-      <select value={value} onChange={(event) => onChange(event.target.value)}>
-        {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </select>
-      <small>{options.find((option) => option.value === value)?.detail}</small>
-    </label>
   );
 }
 
@@ -465,38 +347,6 @@ function EquityChart({ points, markerLabel }: { points: EquityPoint[]; markerLab
       </div>
     </div>
   );
-}
-
-function ActivePairHeader({ pair, modePill }: { pair: ActivePairSummary; modePill: string }) {
-  return (
-    <div className="active-pair-header">
-      <div className="active-pair-title">
-        <span className="token-icon large" aria-hidden="true">{pair.symbol.slice(0, 2)}</span>
-        <div>
-          <span className="eyebrow">Active pair</span>
-          <h3>{pair.pair}</h3>
-          <small>{pair.name}</small>
-        </div>
-      </div>
-      <div className="active-pair-price">
-        <strong>{pair.price}</strong>
-        <span className={pair.changeTone}>{pair.changeLabel}</span>
-      </div>
-      <div className="active-pair-meta" aria-label="Active pair market metadata">
-        <span><small>Liq</small><b>{pair.liquidity}</b></span>
-        <span><small>MC</small><b>{pair.marketCap}</b></span>
-        <span><small>Vol</small><b>{pair.volume}</b></span>
-        <span><small>Signal</small><b>{pair.signal}</b></span>
-        <span><small>Quote</small><b>{pair.quoteLabel}</b></span>
-        <span><small>Status</small><b>{pair.statusLabel}</b></span>
-      </div>
-      <span className="terminal-mode-pill">{modePill}</span>
-    </div>
-  );
-}
-
-function SafetyPill({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return <span>{icon}<small>{label}</small><b>{value}</b></span>;
 }
 
 function DecisionRow({ decision }: { decision: LivePaperDecision }) {
@@ -774,9 +624,6 @@ function timeAgo(timestamp: string): string {
   return `${Math.round(minutes / 60)}h ago`;
 }
 
-function formatUnsignedSol(value: number): string {
-  return `${value.toFixed(4)} SOL`;
-}
 
 function formatTokenPrice(value: number): string {
   if (value < 0.00001) return value.toExponential(2);
