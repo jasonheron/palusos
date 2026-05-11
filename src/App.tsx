@@ -45,7 +45,7 @@ function Hero() {
   return (
     <section className="hero" id="top">
       <nav className="nav" aria-label="Primary navigation">
-        <a href="#top" className="brand"><span aria-hidden="true" />PalusOS</a>
+        <a href="#top" className="brand"><span aria-hidden="true" /><b>PalusOS</b><small>THE PALUS WAS THE GLADIATOR’S SILENT TRAINING GROUND — A WOODEN POST WHERE DISCIPLINE, MUSCLE MEMORY, AND SURVIVAL WERE FORGED LONG BEFORE THE ARENA EVER SAW THEM.</small></a>
         <div className="nav__spacer" />
         <div className="nav__actions">
           <a className="nav__cta" href="/demo">Live Demo</a>
@@ -56,7 +56,6 @@ function Hero() {
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
         <h1>PalusOS</h1>
-        <p className="hero__palus-quote">“The palus was the gladiator’s silent training ground — a wooden post where discipline, muscle memory, and survival were forged long before the arena ever saw them.”</p>
         <p className="hero__tagline">{copy.tagline}</p>
         <div className="hero__actions">
           <a className="button primary" href="/demo">Open Live Demo <ArrowRight size={18} /></a>

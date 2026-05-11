@@ -1192,26 +1192,38 @@
   }
 }
 
-/* Tiny floating origin quote under the PalusOS mark */
-.hero__copy p.hero__palus-quote {
-  display: block;
-  max-width: 520px;
-  margin: -2px auto 14px;
-  color: rgba(255,255,255,.68);
+/* Top-left origin quote: keep it in the nav so it does not affect hero layout */
+.nav .brand {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 3px;
+  max-width: min(360px, 34vw);
+  line-height: 1;
+}
+
+.nav .brand b {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(9px, .78vw, 12px);
+  font-size: 20px;
   font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: .015em;
+  line-height: 1;
+}
+
+.nav .brand small {
+  display: block;
+  max-width: 330px;
+  color: rgba(255,255,255,.48);
+  font-family: "Plus Jakarta Sans", Arial, sans-serif;
+  font-size: 6.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: .11em;
+  text-transform: uppercase;
   text-wrap: balance;
-  text-shadow: 0 2px 16px rgba(0,0,0,.55);
+  pointer-events: none;
 }
 
 @media (max-width: 720px) {
-  .hero__copy p.hero__palus-quote {
-    max-width: 310px;
-    margin-bottom: 12px;
-    font-size: 9px;
-    line-height: 1.35;
+  .nav .brand small {
+    display: none;
   }
 }
