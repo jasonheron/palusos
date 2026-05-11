@@ -92,45 +92,54 @@ function ProofStrip() {
 
 
 function SystemDiagram() {
-  const agents = ['Claude 4.7', 'GPT-5.5', 'Gemini Quant', 'Kimi Trader', 'Qwen Analyst'];
-  const feeds = ['PumpFun historical + live collector', 'BTC/USD spot', 'SOL perps', 'DEX pool flow', 'Order-book snapshots'];
-  const models = ['PalusOS Custom', 'PalusOS Traditional', 'PalusOS Memes', 'XGBoost Bundle', 'LSTM Regime Model'];
-  const outputs = ['Replay', 'Paper', 'Calibrate', 'Report'];
+  const inputs = [
+    { title: 'Agent', value: 'Claude 4.7', hint: 'Swap for GPT-5.5, Gemini Quant, Kimi Trader, Qwen Analyst' },
+    { title: 'Data Feed', value: 'PumpFun historic + live collector', hint: 'Swap for BTC/USD, SOL perps, DEX flow, order-book snapshots' },
+    { title: 'ML Models', value: 'PalusOS Custom', hint: 'Swap for Traditional, Memes, XGBoost, LSTM regime bundles' },
+  ];
+  const loop = [
+    { title: 'Replay', text: 'Run the agent against historical market conditions.' },
+    { title: 'Paper', text: 'Record every decision before capital is at risk.' },
+    { title: 'Calibrate', text: 'Feed outcomes back into the ML loop with execution costs.' },
+    { title: 'Report', text: 'Output clear evidence for what to reject, keep testing, or graduate.' },
+  ];
 
   return (
     <section className="system-section" id="architecture">
       <div className="section-heading compact">
         <span className="eyebrow">How PalusOS works</span>
-        <h2>Connect agents, data feeds, and ML models into one evaluation loop.</h2>
-        <p>Bring the agent you want to test, the market data you trust, and the models you already use. PalusOS turns them into a repeatable loop for testing, calibration, and reporting.</p>
+        <h2>One input stack. One evaluation loop.</h2>
+        <p>Choose an agent, connect a data feed, attach the model bundle you want to test, then let PalusOS run the loop until there is a clear output.</p>
       </div>
 
       <div className="system-diagram" aria-label="PalusOS system diagram">
-        <DiagramColumn title="Agent" items={agents} />
-        <DiagramColumn title="Data Feed" items={feeds} />
-        <DiagramColumn title="ML Models" items={models} />
-        <div className="diagram-arrow" aria-hidden="true">→</div>
-        <div className="diagram-core">
-          <span>Plug into</span>
-          <strong>PalusOS</strong>
+        <div className="diagram-input-stack">
+          {inputs.map((item) => <DiagramInput key={item.title} {...item} />)}
         </div>
-        <div className="diagram-arrow" aria-hidden="true">→</div>
-        <div className="diagram-loop">
-          {outputs.map((item) => <b key={item}>{item}</b>)}
-          <small>ML Loop</small>
+
+        <div className="diagram-core-label">PalusOS</div>
+
+        <div className="diagram-loop-flow">
+          {loop.map((item, index) => (
+            <article key={item.title} className="loop-step">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <b>{item.title}</b>
+              <p>{item.text}</p>
+            </article>
+          ))}
+          <div className="loop-return" aria-hidden="true">ML LOOP ↺</div>
         </div>
       </div>
     </section>
   );
 }
 
-function DiagramColumn({ title, items }: { title: string; items: string[] }) {
+function DiagramInput({ title, value, hint }: { title: string; value: string; hint: string }) {
   return (
-    <article className="diagram-column">
-      <h3>{title}</h3>
-      <div className="swap-list">
-        {items.map((item) => <span key={item}>{item}</span>)}
-      </div>
+    <article className="diagram-input">
+      <span>{title}</span>
+      <b>{value}</b>
+      <small>{hint}</small>
     </article>
   );
 }
