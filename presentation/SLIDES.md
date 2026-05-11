@@ -19,9 +19,15 @@ It turns market flow into agent/feed/model candidates, tests them in replay and 
 
 ## Slide 4 — Public repo caveat
 
-The public repo ships bundled demo data only for safety: no wallets, API keys, private databases, `.env`, private infra, or live-trading configuration.
+The public repo ships bundled demo data only for safety: no wallets, API keys, private databases, real `.env`, private infra, transaction signing/sending, or live-trading configuration.
 
-The architecture is data-adapter based. Replace demo rows with real market feeds in a private deployment and the same discovery/evaluation/proof pipeline operates on real inputs.
+The architecture is data-adapter based. Replace demo rows with real market feeds in a private deployment and the same discovery/evaluation/proof pipeline operates on real inputs. `.env.example` is only a placeholder checklist; canary stays disabled by default.
+
+## Slide 4b — Deployment path
+
+Demo rows → private data adapter → quote-backed paper proof → optional tiny private canary → progressive scale only after gates pass.
+
+Rollback triggers: stale feed, failed exit, quote mismatch, drawdown breach, or EV drift. Never skip paper/canary.
 
 ## Slide 5 — Why now
 

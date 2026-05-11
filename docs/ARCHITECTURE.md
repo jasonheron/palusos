@@ -33,6 +33,8 @@ Example adapter targets:
 
 The public repo uses bundled demo rows only. In a private deployment, replacing those rows with real adapter outputs makes the same pipeline operate on real inputs.
 
+Expected private adapter output stays intentionally simple at the boundary: stable event IDs, asset/market labels, replay order or timestamps, signal/liquidity scores, route-risk and execution-cost fields, realized/paper outcome fields, and provenance metadata. Private feed URLs, archives, API keys, RPC endpoints, and wallet references stay outside the repo.
+
 ## 2. Strategy / agent runner
 
 Runs either:
@@ -77,6 +79,8 @@ Outputs one of three decisions:
 - **Keep Testing** — promising but needs more proof.
 - **Promote / Canary Eligible** — may graduate only to a tiny guarded canary under explicit limits and rollback triggers.
 
+Canary eligibility is not live trading. The public repo does not include transaction signing/sending code. A private operator build must keep canary disabled by default, source RPC/wallet configuration from private infrastructure, require explicit approval, and roll back on failed exits, stale quotes, feed drift, drawdown breaches, or EV degradation.
+
 ## 7. Report UI
 
 The UI turns machine evidence into a builder-readable audit trail:
@@ -89,4 +93,6 @@ The UI turns machine evidence into a builder-readable audit trail:
 
 ## Boundaries
 
-This repo excludes secrets, private databases, `.env` files, private wallets, and any scaled live-trading configuration. It demonstrates discovery/evaluation/reporting infrastructure with demo data only and makes no live-profitability claim.
+This repo excludes secrets, private databases, real `.env` files, private wallets, and any scaled live-trading configuration. It demonstrates discovery/evaluation/reporting infrastructure with demo data only and makes no live-profitability claim.
+
+For the full demo-to-private path, see `docs/DEPLOYMENT_PATH.md`: bundled demo data → private data adapter → quote-backed paper proof → optional tiny canary → progressive caps only after gates pass.

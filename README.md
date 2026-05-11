@@ -38,6 +38,8 @@ npm install
 npm run dev
 ```
 
+Open the local Vite URL printed in the terminal. The first-run experience is the polished PalusOS website and Agent Lab UI, not a CLI-only workflow.
+
 ## Build
 
 ```bash
@@ -47,6 +49,7 @@ npm run build
 ## Project structure
 
 ```text
+.env.example                      public-safe private deployment checklist; no secrets
 src/data/agentLabData.ts           bundled demo feeds, agents, and models
 src/data/demoAgents.ts             demo agent evidence
 src/modules/adapters.ts            market and strategy adapter shapes
@@ -54,9 +57,30 @@ src/modules/evaluationEngine.ts    discovery, EV calibration, gates, and verdict
 src/components/AgentLab.tsx        discovery and proof demo UI
 src/components/AgentDashboard.tsx  demo evaluation UI
 docs/ARCHITECTURE.md               system design
+docs/DEPLOYMENT_PATH.md            demo-to-private proof path
 docs/TUTORIAL.md                   product walkthrough
 presentation/SLIDES.md             submission presentation outline
 ```
+
+## From demo to real deployment
+
+The intended path is deliberately staged:
+
+1. **Bundled demo data** — run the public UI and inspect safe replay rows.
+2. **Private data adapter** — replace or extend adapter modules with your own market feed, quote archive, paper-trade stream, or agent decision logs.
+3. **Paper proof** — require execution-adjusted EV, outlier-removed EV, largest-winner-removed EV, drawdown limits, quote freshness, and enough sample density.
+4. **Optional tiny canary** — not enabled in this repo. In a private operator build, canary must be disabled by default and gated by explicit config, hard caps, rollback triggers, and human approval.
+5. **Responsible scale** — raise caps progressively only after paper and canary evidence agree; roll back on stale feeds, failed exits, quote mismatches, EV drift, or drawdown breaches.
+
+See [`docs/DEPLOYMENT_PATH.md`](docs/DEPLOYMENT_PATH.md) for the full checklist.
+
+## Data adapter expectations
+
+The public repo ships demo rows only. Real deployments should keep private data outside the repo and normalize it into the same high-level evidence shape PalusOS evaluates: stable event IDs, asset/market labels, replay order or timestamps, signal/liquidity scores, route-risk and execution-cost fields, realized/paper outcomes, and provenance metadata.
+
+## Canary / RPC / wallet boundary
+
+`.env.example` is a placeholder checklist, not a live-trading implementation. Wallets, RPC URLs, and secrets are operator-provided in private infrastructure. This repo does not include transaction signing/sending code, private keys, or live canary execution. Canary must remain disabled by default.
 
 ## Category
 

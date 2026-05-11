@@ -14,7 +14,11 @@ Trading agents are becoming easier to launch than to evaluate. A backtest or pap
 
 ## Public repo / demo-data caveat
 
-This public repo ships bundled demo data only for safety. It includes no wallets, API keys, private databases, `.env` files, private infra, or live-trading configuration. The architecture is data-adapter based: replacing the bundled demo rows with real market feeds or agent decision logs in a private deployment makes the same discovery/evaluation/proof pipeline operate on real inputs. The demo does not claim live profitability.
+This public repo ships bundled demo data only for safety. It includes no wallets, API keys, private databases, real `.env` files, private infra, transaction signing/sending code, or live-trading configuration. The architecture is data-adapter based: replacing the bundled demo rows with real market feeds or agent decision logs in a private deployment makes the same discovery/evaluation/proof pipeline operate on real inputs. `.env.example` is only a placeholder checklist for operator-provided RPC/wallet references, canary caps, and rollback gates. Canary is disabled by default and belongs in private infrastructure only. The demo does not claim live profitability.
+
+## Demo-to-real deployment path
+
+Run the polished website UI with `npm install` and `npm run dev`, inspect bundled demo rows, plug in a private data adapter, prove candidates in replay and quote-backed paper, optionally run a tiny disabled-by-default private canary after explicit approval, and scale only through progressive caps once gates pass. Roll back on failed exits, stale feeds, quote mismatches, drawdown breaches, or EV drift; never skip paper/canary.
 
 ## Technologies/integrations
 

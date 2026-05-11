@@ -11,9 +11,11 @@ npm run dev
 
 Open the local Vite URL printed in the terminal.
 
+You should land on the polished PalusOS website and Agent Lab UI. The public install path is not CLI-only.
+
 ## 2. Read the public demo-data caveat
 
-The repo ships bundled demo rows only. It includes no wallets, API keys, private databases, `.env` files, private infra, or live execution. PalusOS is data-adapter based: in a private deployment, replacing the demo rows with real market feeds or agent decision logs makes the same discovery/evaluation/proof pipeline operate on real inputs.
+The repo ships bundled demo rows only. It includes no wallets, API keys, private databases, real `.env` files, private infra, or live execution. PalusOS is data-adapter based: in a private deployment, replacing the demo rows with real market feeds or agent decision logs makes the same discovery/evaluation/proof pipeline operate on real inputs.
 
 ## 3. Discover candidate profiles
 
@@ -55,5 +57,21 @@ Each candidate shows:
 ## 7. Swap in your own data later
 
 The demo is modular. Replace `src/data/agentLabData.ts` with adapter output, replace `src/data/demoAgents.ts` with your agent report output, or plug a new market adapter into `src/modules/adapters.ts`.
+
+Private adapter rows should preserve the high-level evidence shape PalusOS evaluates: stable event IDs, asset/market labels, replay order or timestamps, signal/liquidity scores, route-risk and execution-cost fields, realized/paper outcomes, and provenance metadata. Keep private feeds, archives, API keys, RPC endpoints, and wallet references outside the public repo.
+
+## 8. Canary, RPC, wallet, and scaling rules
+
+The public repo does not enable canary trading and does not implement transaction signing or sending. `.env.example` is only a placeholder checklist for private operators.
+
+Safe progression:
+
+1. bundled demo rows;
+2. private adapter replay;
+3. quote-backed paper proof;
+4. optional tiny canary, disabled by default and explicitly approved;
+5. progressive caps only after gates pass.
+
+Rollback on stale feeds, failed exits, quote mismatches, drawdown breaches, or EV drift. Never skip paper or canary.
 
 The important rule: do not trust paper PnL until it survives execution-adjusted calibration and robustness gates. The public demo proves the workflow shape; it does not claim live profitability.

@@ -18,6 +18,7 @@ function App() {
       <AgentLab />
       <AgentDashboard />
       <PipelineTimeline />
+      <DeploymentPathSection />
       <ModularSection />
       <TutorialSection />
       <FinalCTA />
@@ -173,6 +174,87 @@ function ModuleCard({ icon, title, items }: { icon: React.ReactNode; title: stri
       <h3>{title}</h3>
       <ul>{items.map((item) => <li key={item}>{item}</li>)}</ul>
     </article>
+  );
+}
+
+function DeploymentPathSection() {
+  const stages = [
+    {
+      step: '00',
+      title: 'Bundled demo data',
+      text: 'Install the repo, run the Vite app, and inspect the public-safe replay rows. Nothing here connects to a wallet, RPC, or private database.',
+    },
+    {
+      step: '01',
+      title: 'Private data adapter',
+      text: 'Replace or extend adapter modules with your own market feed, quote, agent-decision, and outcome streams. Keep the normalized row shape stable so reports stay auditable.',
+    },
+    {
+      step: '02',
+      title: 'Paper proof',
+      text: 'Run replay and quote-backed paper proof until execution-adjusted EV, drawdown, largest-winner-removed EV, and sample-density gates survive.',
+    },
+    {
+      step: '03',
+      title: 'Optional tiny canary',
+      text: 'The public repo does not enable canary trading. In a private operator build, canary must stay disabled by default and require explicit limits, rollback triggers, and human approval.',
+    },
+    {
+      step: '04',
+      title: 'Scale only after gates',
+      text: 'Raise caps gradually only after paper and canary evidence agree. Any drift, failed exit, quote mismatch, or drawdown breach rolls back to paper.',
+    },
+  ];
+
+  return (
+    <section className="deployment-section" id="deployment-path">
+      <div className="section-heading compact">
+        <span className="eyebrow">From demo to real deployment</span>
+        <h2>A safe path from polished demo rows to private proof infrastructure.</h2>
+        <p>
+          PalusOS is intentionally public-safe: demo inputs in the repo, private adapters in your deployment,
+          paper proof before capital, and no live transaction signing or sending code shipped here.
+        </p>
+      </div>
+
+      <div className="deployment-grid" aria-label="PalusOS deployment path">
+        {stages.map((stage) => (
+          <article className="deployment-stage" key={stage.step}>
+            <span>{stage.step}</span>
+            <h3>{stage.title}</h3>
+            <p>{stage.text}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="deployment-details">
+        <article>
+          <div className="module-card__icon"><Layers3 /></div>
+          <h3>Data adapter contract</h3>
+          <p>
+            Demo feeds live in <code>src/data/agentLabData.ts</code>. Private adapters should emit normalized events with
+            stable IDs, asset/market labels, timestamps, signal/liquidity scores, realized or paper outcome fields,
+            and route-risk/execution-cost assumptions. Keep secrets and private archives outside the public repo.
+          </p>
+        </article>
+        <article>
+          <div className="module-card__icon"><LockKeyhole /></div>
+          <h3>Canary, RPC, and wallet boundary</h3>
+          <p>
+            Canary is not enabled here. Use <code>.env.example</code> only as a placeholder checklist: operator-provided RPC,
+            wallet reference, hard caps, explicit enable flag, and rollback thresholds. Never commit keys; never skip paper.
+          </p>
+        </article>
+        <article>
+          <div className="module-card__icon"><ShieldCheck /></div>
+          <h3>Responsible scaling</h3>
+          <p>
+            Start with read-only replay, then paper. If a private canary is approved, use tiny capped exposure, one-way kill
+            switches, quote freshness checks, and automatic rollback on drawdown, failed exit, stale feed, or EV drift.
+          </p>
+        </article>
+      </div>
+    </section>
   );
 }
 
