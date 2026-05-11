@@ -107,7 +107,7 @@ function SystemDiagram() {
   return (
     <section className="system-section" id="architecture">
       <div className="section-heading compact">
-        <span className="eyebrow">How PalusOS works</span>
+        <span className="eyebrow">What is PalusOS</span>
         <h2>Autonomous trading agents are coming, but they need more than a wallet and a prompt.</h2>
         <p>PalusOS is the learning layer for AI trading agents: a full ML lab, backtesting engine, quote-backed paper trader, and live-calibration system that helps agents discover strategies, test realistic EV, and build trading profiles before risking capital.</p>
       </div>
