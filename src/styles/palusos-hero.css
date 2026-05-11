@@ -864,3 +864,34 @@
     padding-left: 5px;
   }
 }
+
+/* Hero proof strip: wider input module, equal narrower proof boxes */
+.hero > .proof-strip {
+  grid-template-columns: minmax(240px, 1.42fr) repeat(4, minmax(0, 1fr));
+}
+
+.hero > .proof-strip article:first-child,
+.hero > .proof-strip .proof-input {
+  padding-left: 0;
+}
+
+.hero > .proof-strip .proof-input,
+.hero > .proof-strip .proof-stack {
+  padding-right: clamp(10px, 1.2vw, 16px);
+}
+
+.hero > .proof-strip .proof-input {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@media (max-width: 720px) {
+  .hero > .proof-strip {
+    grid-template-columns: minmax(110px, 1.45fr) repeat(4, minmax(0, 1fr));
+  }
+
+  .hero > .proof-strip article:first-child,
+  .hero > .proof-strip .proof-input {
+    padding-left: 0;
+  }
+}
