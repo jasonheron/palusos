@@ -1,6 +1,6 @@
 # Tutorial: run your first PalusOS evaluation
 
-This tutorial walks a judge or builder through the demo-safe PalusOS flow.
+This tutorial walks through the demo PalusOS flow.
 
 ## 1. Install and start
 
@@ -15,26 +15,26 @@ Open the local Vite URL printed in the terminal.
 
 The demo includes three curated examples:
 
-- **Slow Bleed Reversal v3** — promising alpha, still in paper.
-- **Universal Snipe v1** — intentionally killed because executable economics fail.
-- **Agent Risk Sentinel** — safety/veto agent eligible for tiny canary after runner acceptance.
+- **Slow Bleed Reversal v3** — promising edge, still in paper mode.
+- **Universal Snipe v1** — intentionally rejected because execution-adjusted economics fail.
+- **Agent Risk Sentinel** — safety/veto agent eligible for a tiny canary after runner acceptance.
 
-## 3. Read the truth report
+## 3. Read the decision report
 
 Each candidate shows:
 
-- replay/paper evidence;
-- quote-adjusted EV;
+- replay and paper evidence;
+- execution-adjusted EV;
 - largest-winner-removed robustness;
-- rug/gap-loss exposure;
+- gap-loss exposure;
 - canary readiness;
 - final gate verdict.
 
 ## 4. Interpret verdicts
 
-- **Kill** — no live funds. The agent fails executable economics or robustness.
+- **Kill** — no real capital. The agent fails executable economics or robustness.
 - **Keep Paper** — promising, but more proof or runner safety is required.
-- **Canary Eligible** — can graduate only to a tiny bounded dev-wallet canary with rollback triggers.
+- **Canary Eligible** — can graduate only to a tiny bounded canary with rollback triggers.
 
 ## 5. Swap in your own agent later
 

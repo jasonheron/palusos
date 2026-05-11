@@ -2,19 +2,19 @@
 
 ## Description under 500 chars
 
-PalusOS is the learning and evaluation layer for autonomous Solana trading agents. It turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.
+PalusOS is the learning layer for agentic trading agents. It evaluates strategies against replay data, paper decisions, execution-cost assumptions, and safety gates, then produces a clear verdict: reject, keep testing, or graduate carefully under limits.
 
 ## What are you building, and who is it for?
 
-We are building PalusOS, an evidence layer for autonomous trading agents on Solana. It is for builders, quants, agent teams, and power users who need to know whether a trading agent has real edge before letting it touch funds. PalusOS ingests live and historical market flow, discovers candidate strategies, runs replay and paper validation, adjusts results for executable quote/slippage reality, and produces an auditable verdict: kill, keep testing, or graduate to a tiny guarded canary. PumpFun/memecoins are our first proving ground because they are fast, adversarial, and brutally honest about whether an agent can survive real execution.
+We are building PalusOS, an evidence layer for autonomous trading agents. It is for builders, quants, agent teams, and power users who need to know whether a trading agent has real edge before trusting it with capital. PalusOS ingests live and historical market flow, runs candidate strategies through replay and paper validation, adjusts results for executable quote and slippage assumptions, and produces an auditable decision: reject, keep testing, or graduate carefully under explicit limits.
 
 ## Why did you decide to build this, and why build it now?
 
-Autonomous trading agents are suddenly easy to launch, but hard to trust. Most demos stop at prompts, backtests, or fantasy paper PnL, then fail when rugs, latency, slippage, quote failures, and adverse selection hit real Solana execution. We built this because we needed a truth layer for our own PumpFun research system: something that learns from market data, punishes fake edge, records drift, and prevents unsafe promotion. Now is the right time because Solana has the speed, liquidity, agent tooling, and memecoin market structure to make autonomous agents inevitable — but without evaluation infrastructure, users will not know which agents are robust and which are just overfit gambling bots.
+Trading agents are becoming easier to launch than to evaluate. A backtest or paper-profit chart can look impressive while hiding slippage, latency, fees, failed exits, adverse selection, and outlier dependence. PalusOS exists to make that gap measurable. It gives teams a repeatable way to record evidence, punish fake edge, track drift, and prevent unsafe promotion. As autonomous agents move closer to real execution, evaluation infrastructure becomes a prerequisite rather than a nice-to-have.
 
 ## Technologies/integrations
 
-Solana, PumpFun/PumpPortal, Yellowstone/Flux-style real-time streaming, SQLite, Python ML pipeline, XGBoost/scikit-learn-style tabular ML, TypeScript/Node.js collector/dashboard/orchestration, quote-backed execution calibration, paper/live-sim/dev-wallet canary framework, OpenClaw AI agent workflows.
+Solana market data, real-time event streaming, SQLite, Python ML/evaluation pipelines, XGBoost/scikit-learn-style tabular models, TypeScript/Node.js dashboard and orchestration, quote-backed execution calibration, paper/live-sim/canary evaluation flows, OpenClaw AI agent workflows.
 
 ## Category
 

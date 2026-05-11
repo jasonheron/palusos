@@ -6,8 +6,9 @@ import './styles/app.css';
 import './styles/palusos-hero.css';
 
 const copy = {
+  tagline: 'The learning layer for agentic trading agents.',
   description:
-    'PalusOS is the learning layer for agentic trading agents. It turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.',
+    'PalusOS evaluates trading agents and strategies against real market data, execution costs, and safety rules so teams can decide what to reject, keep testing, or graduate carefully.',
 };
 
 function App() {
@@ -39,24 +40,25 @@ function Hero() {
 
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
-        <h1>the learning layer for agentic trading agents</h1>
+        <h1>PalusOS</h1>
+        <p className="hero__tagline">{copy.tagline}</p>
         <p>{copy.description}</p>
         <div className="hero__actions">
           <a className="button primary" href="#demo">Explore the system <ArrowRight size={18} /></a>
-          <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><Code2 size={18} /> Public-safe repo</a>
+          <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><Code2 size={18} /> View repo</a>
         </div>
       </div>
 
       <div className="hero-card" aria-label="PalusOS verdict preview">
         <div className="hero-card__header">
           <span className="eyebrow">Current verdict</span>
-          <strong>Keep Paper</strong>
+          <strong>Keep Testing</strong>
         </div>
-        <p>Promising candidate. Not live until executable EV, robustness, and runner safety all pass.</p>
+        <p>Promising candidate. Not promoted until execution costs, robustness, and safety checks all pass.</p>
         <div className="hero-card__rows">
-          <StatusRow icon={<BrainCircuit />} label="Replay + ML discovery" value="Pass" />
-          <StatusRow icon={<LineChart />} label="Quote-adjusted EV" value="Watch" />
-          <StatusRow icon={<ShieldCheck />} label="Canary gate" value="Locked" />
+          <StatusRow icon={<BrainCircuit />} label="Replay + discovery" value="Pass" />
+          <StatusRow icon={<LineChart />} label="Execution-adjusted EV" value="Watch" />
+          <StatusRow icon={<ShieldCheck />} label="Safety gate" value="Locked" />
         </div>
       </div>
     </section>
@@ -70,10 +72,10 @@ function StatusRow({ icon, label, value }: { icon: React.ReactNode; label: strin
 function ProofStrip() {
   return (
     <section className="proof-strip" aria-label="Product proof points">
-      <article><b>Replay</b><span>Historical market lifecycle tests</span></article>
-      <article><b>Paper</b><span>Agent decisions with full audit trails</span></article>
-      <article><b>Calibrate</b><span>Executable quote/slippage reality checks</span></article>
-      <article><b>Canary</b><span>Tiny guarded dev-wallet graduation</span></article>
+      <article><b>Replay</b><span>Test against historical market conditions</span></article>
+      <article><b>Paper</b><span>Record every decision before real capital</span></article>
+      <article><b>Calibrate</b><span>Apply execution cost and slippage assumptions</span></article>
+      <article><b>Report</b><span>Share clear decisions and evidence</span></article>
     </section>
   );
 }
@@ -83,15 +85,15 @@ function ModularSection() {
     <section className="modular-section">
       <div className="section-heading compact">
         <span className="eyebrow">Composable by design</span>
-        <h2>Separate adapters, runners, evaluation, gates, and reports.</h2>
-        <p>For the hackathon, PumpFun is the proving ground. For the product, any Solana agent can plug into the same truth layer.</p>
+        <h2>Plug in your market feed, strategy runner, gates, and reports.</h2>
+        <p>PalusOS is market-agnostic: connect the data source you trust, run the agent you want to evaluate, and get a decision backed by evidence.</p>
       </div>
 
       <div className="module-grid">
         <ModuleCard icon={<Layers3 />} title="Market adapters" items={marketAdapters.map((adapter) => `${adapter.name}: ${adapter.description}`)} />
         <ModuleCard icon={<Bot />} title="Strategy runners" items={strategyRunners.map((runner) => `${runner.name}: ${runner.input}`)} />
-        <ModuleCard icon={<ShieldCheck />} title="Promotion gates" items={['Kill fantasy PnL before live funds', 'Require robust EV after outlier removal', 'Only graduate to tiny canaries under explicit caps']} />
-        <ModuleCard icon={<LockKeyhole />} title="Public-safe packaging" items={['No private keys or .env files', 'Demo-safe artifacts only', 'Clear claims: evaluation infra, not money printer']} />
+        <ModuleCard icon={<ShieldCheck />} title="Promotion gates" items={['Reject weak strategies before real capital', 'Require robust EV after outlier removal', 'Graduate only under explicit limits and rollback rules']} />
+        <ModuleCard icon={<LockKeyhole />} title="Clean product package" items={['No private keys or .env files', 'Demo data only', 'Clear scope: evaluation and reporting infrastructure']} />
       </div>
     </section>
   );
@@ -117,7 +119,7 @@ function TutorialSection() {
       <div className="tutorial-card">
         <code>npm install</code>
         <code>npm run dev</code>
-        <code>Open the demo, choose an agent, inspect the gate verdict.</code>
+        <code>Open the demo, choose an agent, inspect the verdict.</code>
       </div>
     </section>
   );
@@ -127,9 +129,9 @@ function FinalCTA() {
   return (
     <section className="final-cta">
       <span className="eyebrow">Why now?</span>
-      <h2>Agents are becoming traders. They need flight recorders before they need bigger wallets.</h2>
+      <h2>Trading agents need proof before they need bigger budgets.</h2>
       <p>
-        Solana has the speed and liquidity to make autonomous trading agents inevitable. PalusOS makes them measurable before they become dangerous.
+        Markets move too quickly for hand-waved backtests. PalusOS gives teams a repeatable way to evaluate agents against real data, realistic execution assumptions, and clear safety gates.
       </p>
       <a className="button primary" href="#demo">Review the demo verdict <ArrowRight size={18} /></a>
     </section>

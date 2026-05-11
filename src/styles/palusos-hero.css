@@ -11,25 +11,11 @@
   background: #030405 url('/palusos-hero.jpg') center center / cover no-repeat;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 48%, rgba(255,255,255,.06), transparent 17rem),
-    linear-gradient(180deg, rgba(0,0,0,.30) 0%, rgba(0,0,0,.03) 34%, rgba(0,0,0,.05) 64%, rgba(0,0,0,.44) 100%),
-    linear-gradient(90deg, rgba(0,0,0,.24), transparent 31%, transparent 69%, rgba(0,0,0,.24));
-  mask-image: none;
-}
-
+.hero::before,
 .hero::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 28vh;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent, rgba(5,5,5,.72) 86%, var(--bg) 100%);
+  display: none;
+  content: none;
+  background: none;
 }
 
 .nav {
@@ -69,20 +55,37 @@
 }
 
 .hero__copy .badge,
-.hero__copy p,
 .hero__actions {
   display: none;
 }
 
 .hero__copy h1 {
   max-width: 620px;
-  margin: 0 auto;
-  font-size: clamp(32px, 4.7vw, 58px);
-  font-weight: 360;
+  margin: 0 auto 14px;
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 430;
   line-height: 1.04;
   letter-spacing: normal;
   color: #fff;
-  text-transform: lowercase;
+  text-transform: none;
+}
+
+.hero__copy p.hero__tagline {
+  display: block;
+  color: #fff;
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 430;
+  line-height: 1.25;
+  max-width: 720px;
+  margin: 0 auto 14px;
+}
+
+.hero__copy p:not(.hero__tagline) {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: clamp(15px, 1.35vw, 18px);
+  line-height: 1.5;
+  max-width: 680px;
 }
 
 .hero-card {
@@ -103,6 +106,9 @@
   }
   .hero__copy h1 {
     max-width: 340px;
-    font-size: clamp(30px, 9vw, 44px);
+    font-size: clamp(44px, 14vw, 68px);
+  }
+  .hero__copy p.hero__tagline {
+    font-size: clamp(19px, 6vw, 26px);
   }
 }

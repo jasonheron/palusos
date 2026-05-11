@@ -14,16 +14,16 @@ export interface StrategyRunner {
 
 export const marketAdapters: MarketDataAdapter[] = [
   {
-    id: 'pumpfun',
-    name: 'PumpFun adapter',
-    description: 'Normalizes launch flow, trades, reserves, wallet concentration, and lifecycle snapshots.',
-    source: 'PumpPortal / Solana stream',
+    id: 'launch-market',
+    name: 'Launch market adapter',
+    description: 'Normalizes new-asset flow, trades, liquidity, wallet concentration, and lifecycle snapshots.',
+    source: 'Market stream or archive',
   },
   {
-    id: 'solana-dex',
-    name: 'Solana DEX adapter',
-    description: 'Future adapter for thin-liquidity DEX markets, swaps, pools, and quote routes.',
-    source: 'DEX route + quote APIs',
+    id: 'dex-market',
+    name: 'DEX market adapter',
+    description: 'Connects thin-liquidity DEX markets, swaps, pools, and quote routes.',
+    source: 'DEX route and quote APIs',
   },
 ];
 
@@ -38,6 +38,6 @@ export const strategyRunners: StrategyRunner[] = [
     id: 'agent-report',
     name: 'Agent report runner',
     input: 'Third-party autonomous agent decisions and proposed trades.',
-    output: 'Truth report: execution-adjusted EV, robustness, and canary verdict.',
+    output: 'Decision report: execution-adjusted EV, robustness, and canary verdict.',
   },
 ];

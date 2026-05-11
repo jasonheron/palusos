@@ -1,20 +1,18 @@
 # PalusOS
 
-**The learning and evaluation layer for autonomous Solana trading agents.**
+**The learning layer for agentic trading agents.**
 
-PalusOS turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.
+PalusOS evaluates trading agents and strategies against real market data, realistic execution assumptions, and safety gates. It turns noisy market behavior into clear reports: reject the strategy, keep testing it, or graduate it carefully under limits.
 
 ## Why this exists
 
-Autonomous trading agents are easy to launch and hard to trust. Most demos stop at prompts, backtests, or fantasy paper PnL. PalusOS acts as a flight recorder and safety gate: it tells builders whether an agent has execution-survivable edge before it touches meaningful funds.
+Trading agents are easy to launch and hard to trust. Backtests and paper PnL can look convincing until slippage, latency, fees, failed exits, and adverse selection show up. PalusOS gives teams a repeatable way to test whether an agent has execution-survivable edge before real capital is at risk.
 
-## What this hackathon repo contains
-
-This is a public-safe product shell extracted from a deeper PumpFun/Solana research system:
+## What this repo contains
 
 - polished landing page and demo UI;
 - modular architecture for market adapters, strategy runners, evaluation gates, and reports;
-- demo-safe agent evaluation data;
+- demo agent evaluation data;
 - tutorial and presentation outline;
 - no secrets, private keys, `.env` files, or private databases.
 
@@ -22,8 +20,8 @@ This is a public-safe product shell extracted from a deeper PumpFun/Solana resea
 
 1. Choose a candidate trading agent.
 2. Inspect replay and paper metrics.
-3. Compare raw paper results against quote-adjusted execution reality.
-4. Review robustness gates such as largest-winner-removed EV and rug/gap-loss exposure.
+3. Compare raw paper results against execution-adjusted assumptions.
+4. Review robustness gates such as largest-winner-removed EV and gap-loss exposure.
 5. Get a final verdict: **Kill**, **Keep Paper**, or **Canary Eligible**.
 
 ## Quick start
@@ -42,13 +40,13 @@ npm run build
 ## Project structure
 
 ```text
-src/data/demoAgents.ts          demo-safe agent evidence
-src/modules/adapters.ts         market and strategy adapter shapes
-src/modules/evaluationEngine.ts gate scoring and verdict summary
-src/components/AgentDashboard.tsx demo evaluation UI
-docs/ARCHITECTURE.md            system design
-docs/TUTORIAL.md                judge/builder walkthrough
-presentation/SLIDES.md          submission presentation outline
+src/data/demoAgents.ts             demo agent evidence
+src/modules/adapters.ts            market and strategy adapter shapes
+src/modules/evaluationEngine.ts    gate scoring and verdict summary
+src/components/AgentDashboard.tsx  demo evaluation UI
+docs/ARCHITECTURE.md               system design
+docs/TUTORIAL.md                   product walkthrough
+presentation/SLIDES.md             submission presentation outline
 ```
 
 ## Category
@@ -57,6 +55,6 @@ Primary: **AI Platforms / Agents**
 
 Secondary: **Data & Analytics**, **DeFi**, **Developer Infrastructure**
 
-## Public-safe note
+## Scope
 
-PumpFun is the first proving ground because it is fast, adversarial, and brutally honest about execution failure. This repo presents the evaluation layer, not a money-printing bot or production live-trading system.
+PalusOS is evaluation and reporting infrastructure. Bring the market feed, agent logs, and execution assumptions you use; PalusOS provides the structure to test, compare, gate, and explain the result.

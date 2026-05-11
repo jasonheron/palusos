@@ -19,10 +19,10 @@ export function AgentDashboard() {
     <section className="dashboard-section" id="demo">
       <div className="section-heading">
         <span className="eyebrow">Live demo flow</span>
-        <h2>One agent enters. PalusOS decides if it deserves capital.</h2>
+        <h2>Choose an agent. PalusOS shows whether the evidence is strong enough.</h2>
         <p>
-          A judge-friendly view of the modular pipeline: ingest market data, run a candidate,
-          calibrate paper PnL against executable reality, and produce a promotion verdict.
+          The demo follows the same product path teams use in practice: ingest market data, run a candidate,
+          adjust paper results for execution assumptions, and produce a decision report.
         </p>
       </div>
 
@@ -64,7 +64,7 @@ export function AgentDashboard() {
             <div className="truth-report">
               <div className="truth-report__icon"><ShieldAlert size={24} /></div>
               <div>
-                <span className="eyebrow">Truth report</span>
+                <span className="eyebrow">Decision report</span>
                 <h4>{summary.headline}</h4>
                 <p>{agent.report}</p>
                 <div className="mini-stats">
@@ -105,7 +105,7 @@ export function PipelineTimeline() {
     <section className="timeline-section" id="architecture">
       <div className="section-heading compact">
         <span className="eyebrow">Modular architecture</span>
-        <h2>Built to swap markets, runners, and agents — not hard-code PumpFun forever.</h2>
+        <h2>Swap in the markets, runners, and agents your team already uses.</h2>
       </div>
       <div className="timeline">
         {agent.timeline.map((step, index) => (
