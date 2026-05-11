@@ -18,10 +18,10 @@ export function AgentDashboard() {
   return (
     <section className="dashboard-section" id="demo">
       <div className="section-heading">
-        <span className="eyebrow">Live demo flow</span>
+        <span className="eyebrow">Actionable ML EV reports, not a blackbox</span>
         <h2>Choose an agent. PalusOS shows whether the evidence is strong enough.</h2>
         <p>
-          The demo follows the same product path teams use in practice: ingest market data, run a candidate,
+          Following the same path as industrial quants: ingest market data, run a candidate,
           adjust paper results for execution assumptions, and produce a decision report.
         </p>
       </div>
