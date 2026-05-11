@@ -47,13 +47,13 @@ function DemoPage() {
         </nav>
 
         <div className="hero__copy demo-hero__copy">
-          <div className="badge"><RadioIcon /> Server-side live paper route</div>
-          <h1>/demo</h1>
+          <div className="badge"><RadioIcon /> Public paper trading terminal</div>
+          <h1>/demo terminal</h1>
           <p className="hero__tagline">
-            Select a trading profile and ML model, then evaluate recent Pump/PumpSwap activity through a read-only RPC feed and server-side Jupiter paper quotes.
+            Monitor active paper positions, PnL, live-style market rows, and model decisions from a read-only Pump/PumpSwap feed — with no wallet path.
           </p>
           <div className="hero__actions">
-            <a className="button primary" href="#live-paper-demo">Run Paper Demo <ArrowRight size={18} /></a>
+            <a className="button primary" href="#live-paper-demo">Open Paper Terminal <ArrowRight size={18} /></a>
             <a className="button secondary" href="/">Back to site</a>
           </div>
         </div>
@@ -61,13 +61,13 @@ function DemoPage() {
         <div className="hero-card demo-boundary-card" aria-label="Demo safety boundary">
           <div className="hero-card__header">
             <span className="eyebrow">Safety boundary</span>
-            <strong>No Wallet</strong>
+            <strong>Paper Only</strong>
           </div>
-          <p>RPC and Jupiter calls run server-side only. The client receives normalized evidence rows, paper quote status, and proof metrics — never API keys, RPC URLs, wallet material, or transaction payloads.</p>
+          <p>Start/Stop controls only pause the public paper simulation. RPC and Jupiter calls run server-side; the client receives normalized evidence rows and paper quote status, never API keys, wallet material, or transaction payloads.</p>
           <div className="hero-card__rows">
-            <StatusRow icon={<DatabaseZap />} label="RPC feed" value="Server" />
-            <StatusRow icon={<LineChart />} label="Jupiter quotes" value="Server" />
-            <StatusRow icon={<ShieldCheck />} label="Signing / swaps" value="Absent" />
+            <StatusRow icon={<DatabaseZap />} label="RPC feed" value="Read only" />
+            <StatusRow icon={<LineChart />} label="Quotes" value="Server side" />
+            <StatusRow icon={<ShieldCheck />} label="Wallet controls" value="Absent" />
           </div>
         </div>
       </section>
