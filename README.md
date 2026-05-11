@@ -8,11 +8,17 @@ PalusOS is the discovery and proof engine for autonomous trading agents. It sear
 
 Trading agents are easy to launch and hard to trust. Backtests and paper PnL can look convincing until slippage, latency, fees, failed exits, adverse selection, and outlier dependence show up. PalusOS gives teams a repeatable way to discover candidates, punish fake signal, compare profiles, and decide what to reject, keep testing, or graduate carefully under limits.
 
-## Public repo safety caveat
+## Demo data included
 
-This public repo ships **bundled demo data only**. It intentionally includes no wallets, API keys, private databases, `.env` files, or live-trading configuration.
+This repo ships with bundled demo data so you can run the full UI immediately. The architecture is data-adapter based: replace the demo rows with your own market feeds or agent decision logs, and the same discovery/evaluation/proof pipeline runs on those inputs.
 
-The architecture is data-adapter based: replace the bundled demo rows with real market feeds or agent decision logs in a private deployment, and the same discovery/evaluation/proof pipeline operates on real inputs. This repo demonstrates the pipeline and product shape; it does **not** claim live profitability.
+## Screenshots
+
+![PalusOS hero](docs/assets/palusos-hero.png)
+
+![PalusOS Agent Lab](docs/assets/palusos-agent-lab.png)
+
+![PalusOS deployment path](docs/assets/palusos-deployment-path.png)
 
 ## What this repo contains
 
