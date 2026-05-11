@@ -35,50 +35,10 @@ function App() {
 
 function DemoPage() {
   return (
-    <main>
-      <section className="hero demo-hero" id="top">
-        <nav className="nav" aria-label="Demo navigation">
-          <a href="/" className="brand"><span aria-hidden="true" />PalusOS</a>
-          <div className="nav__spacer" />
-          <div className="nav__actions">
-            <a className="nav__cta" href="/#agent-lab">Agent Lab</a>
-            <button className="nav__menu" aria-label="Open menu"><Menu size={18} /></button>
-          </div>
-        </nav>
-
-        <div className="hero__copy demo-hero__copy">
-          <div className="badge"><RadioIcon /> Public paper trading terminal</div>
-          <h1>/demo terminal</h1>
-          <p className="hero__tagline">
-            Monitor active paper positions, PnL, live-style market rows, and model decisions from a read-only Pump/PumpSwap feed — with no wallet path.
-          </p>
-          <div className="hero__actions">
-            <a className="button primary" href="#live-paper-demo">Open Paper Terminal <ArrowRight size={18} /></a>
-            <a className="button secondary" href="/">Back to site</a>
-          </div>
-        </div>
-
-        <div className="hero-card demo-boundary-card" aria-label="Demo safety boundary">
-          <div className="hero-card__header">
-            <span className="eyebrow">Safety boundary</span>
-            <strong>Paper Only</strong>
-          </div>
-          <p>Start/Stop controls only pause the public paper simulation. RPC and Jupiter calls run server-side; the client receives normalized evidence rows and paper quote status, never API keys, wallet material, or transaction payloads.</p>
-          <div className="hero-card__rows">
-            <StatusRow icon={<DatabaseZap />} label="RPC feed" value="Read only" />
-            <StatusRow icon={<LineChart />} label="Quotes" value="Server side" />
-            <StatusRow icon={<ShieldCheck />} label="Wallet controls" value="Absent" />
-          </div>
-        </div>
-      </section>
+    <main className="demo-terminal-page">
       <LivePaperDemo />
-      <FinalCTA />
     </main>
   );
-}
-
-function RadioIcon() {
-  return <span aria-hidden="true" className="inline-radio-dot" />;
 }
 
 function Hero() {
