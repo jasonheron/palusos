@@ -908,3 +908,62 @@
     padding-left: 7px;
   }
 }
+
+/* Six visual boxes: wider PalusOS input + five equal following boxes */
+.hero > .proof-strip {
+  grid-template-columns: minmax(150px, 1.35fr) repeat(5, minmax(0, 1fr));
+}
+
+.hero > .proof-strip .proof-module {
+  display: contents;
+}
+
+.hero > .proof-strip .proof-input,
+.hero > .proof-strip .proof-stack,
+.hero > .proof-strip article:not(.proof-module) {
+  min-height: 86px;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(255,255,255,.18);
+  background: transparent !important;
+}
+
+.hero > .proof-strip .proof-input,
+.hero > .proof-strip .proof-stack {
+  width: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.hero > .proof-strip .proof-input {
+  grid-column: 1;
+  padding-left: clamp(10px, 1.2vw, 18px);
+  padding-right: clamp(10px, 1.2vw, 16px);
+  border-right-style: dotted;
+  border-right-color: rgba(255,255,255,.42);
+}
+
+.hero > .proof-strip .proof-stack {
+  grid-column: 2;
+  padding-left: clamp(10px, 1.2vw, 16px);
+  padding-right: clamp(10px, 1.2vw, 16px);
+}
+
+.hero > .proof-strip article:not(.proof-module):last-child {
+  border-right: 0;
+}
+
+@media (max-width: 720px) {
+  .hero > .proof-strip {
+    grid-template-columns: minmax(72px, 1.25fr) repeat(5, minmax(0, 1fr));
+  }
+
+  .hero > .proof-strip .proof-input,
+  .hero > .proof-strip .proof-stack,
+  .hero > .proof-strip article:not(.proof-module) {
+    min-height: 74px;
+  }
+
+  .hero > .proof-strip .proof-input {
+    padding-left: 7px;
+  }
+}
