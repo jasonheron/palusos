@@ -37,8 +37,6 @@ function Hero() {
         <a className="nav__cta" href="#demo">View demo</a>
       </nav>
 
-      <div className="hero-grid" aria-hidden="true" />
-
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
         <h1>the learning layer for agentic trading agents</h1>
