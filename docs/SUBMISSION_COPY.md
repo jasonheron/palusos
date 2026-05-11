@@ -2,19 +2,23 @@
 
 ## Description under 500 chars
 
-PalusOS is the learning layer for agentic trading agents. It evaluates strategies against replay data, paper decisions, execution-cost assumptions, and safety gates, then produces a clear verdict: reject, keep testing, or graduate carefully under limits.
+PalusOS is the discovery and proof engine for autonomous trading agents. It searches for candidate trading profiles, tests them through replay and quote-backed paper trading, calibrates results against execution reality, and produces EV reports before capital is at risk.
 
 ## What are you building, and who is it for?
 
-We are building PalusOS, an evidence layer for autonomous trading agents. It is for builders, quants, agent teams, and power users who need to know whether a trading agent has real edge before trusting it with capital. PalusOS ingests live and historical market flow, runs candidate strategies through replay and paper validation, adjusts results for executable quote and slippage assumptions, and produces an auditable decision: reject, keep testing, or graduate carefully under explicit limits.
+We are building PalusOS, the discovery and proof engine for autonomous trading agents. It is for builders, quants, agent teams, and power users who need to know whether a candidate strategy profile deserves more testing before any capital path. PalusOS ingests market flow through adapters, runs agent/profile candidates through replay and paper validation, adjusts results for executable quote and slippage assumptions, and produces an auditable decision: reject, keep testing, or graduate carefully under explicit limits.
 
 ## Why did you decide to build this, and why build it now?
 
-Trading agents are becoming easier to launch than to evaluate. A backtest or paper-profit chart can look impressive while hiding slippage, latency, fees, failed exits, adverse selection, and outlier dependence. PalusOS exists to make that gap measurable. It gives teams a repeatable way to record evidence, punish fake edge, track drift, and prevent unsafe promotion. As autonomous agents move closer to real execution, evaluation infrastructure becomes a prerequisite rather than a nice-to-have.
+Trading agents are becoming easier to launch than to evaluate. A backtest or paper-profit chart can look impressive while hiding slippage, latency, fees, failed exits, adverse selection, and outlier dependence. PalusOS exists to make that gap measurable. It gives teams a repeatable way to discover strategy candidates, punish fake signal, track drift, calibrate execution assumptions, and prevent unsafe promotion. As autonomous agents move closer to real execution, proof infrastructure becomes a prerequisite rather than a nice-to-have.
+
+## Public repo / demo-data caveat
+
+This public repo ships bundled demo data only for safety. It includes no wallets, API keys, private databases, `.env` files, private infra, or live-trading configuration. The architecture is data-adapter based: replacing the bundled demo rows with real market feeds or agent decision logs in a private deployment makes the same discovery/evaluation/proof pipeline operate on real inputs. The demo does not claim live profitability.
 
 ## Technologies/integrations
 
-Solana market data, real-time event streaming, SQLite, Python ML/evaluation pipelines, XGBoost/scikit-learn-style tabular models, TypeScript/Node.js dashboard and orchestration, quote-backed execution calibration, paper/live-sim/canary evaluation flows, OpenClaw AI agent workflows.
+Solana-style market data adapters, real-time event streaming patterns, SQLite/Python-style ML evaluation pipelines, XGBoost/scikit-learn-style tabular models, TypeScript/Node.js dashboard and orchestration, quote-backed execution calibration, paper/live-sim/canary evaluation flows, OpenClaw AI agent workflows.
 
 ## Category
 

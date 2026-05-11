@@ -5,6 +5,7 @@ import { agentDefinitions, dataFeedDefinitions, modelDefinitions } from '../src/
 import {
   calculateMaxDrawdown,
   defaultExecutionAssumptions,
+  discoverStrategyProfiles,
   evaluateAgentLab,
   evaluateTrade,
   largestWinnerRemovedMean,
@@ -86,4 +87,20 @@ test('fragile majors momentum configuration is rejected after execution costs', 
   assert.equal(report.stats.selectedTrades, 12);
   assert.ok(report.stats.averageEvSol < 0);
   assert.ok(report.stats.outlierRemovedEvSol < 0);
+});
+
+test('strategy discovery ranks every agent/feed/model profile with proof metadata', () => {
+  const candidates = discoverStrategyProfiles(
+    agentDefinitions,
+    dataFeedDefinitions,
+    modelDefinitions,
+    defaultExecutionAssumptions,
+  );
+
+  assert.equal(candidates.length, agentDefinitions.length * dataFeedDefinitions.length * modelDefinitions.length);
+  assert.ok(candidates[0].proofScore >= candidates.at(-1).proofScore);
+  assert.ok(candidates.some((candidate) => candidate.stage === 'promotion_candidate'));
+  assert.ok(candidates.some((candidate) => candidate.stage === 'reject'));
+  assert.ok(candidates.every((candidate) => candidate.profileId.includes(candidate.agent.id)));
+  assert.ok(candidates.every((candidate) => candidate.proofPoints.length === 3));
 });

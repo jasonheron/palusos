@@ -7,7 +7,7 @@ import './styles/app.css';
 import './styles/palusos-hero.css';
 
 const copy = {
-  tagline: 'The learning layer for agentic trading agents',
+  tagline: 'Discovery + proof for autonomous trading agents',
 };
 
 function App() {
@@ -54,7 +54,7 @@ function Hero() {
           <span className="eyebrow">Current verdict</span>
           <strong>Keep Testing</strong>
         </div>
-        <p>Promising candidate. Not promoted until execution costs, robustness, and safety checks all pass.</p>
+        <p>Candidate profile discovered. Not promoted until realistic EV, execution calibration, robustness, and safety checks all pass.</p>
         <div className="hero-card__rows">
           <StatusRow icon={<BrainCircuit />} label="Replay + discovery" value="Pass" />
           <StatusRow icon={<LineChart />} label="Execution-adjusted EV" value="Watch" />
@@ -100,18 +100,18 @@ function SystemDiagram() {
     { title: 'ML Model', options: ['PalusOS Custom', 'XGBoost Bundle', 'LSTM Regime Model', 'PalusOS Memes'] },
   ];
   const loop = [
-    { title: 'Replay', text: 'Run the agent against historical market conditions.' },
-    { title: 'Paper', text: 'Record every decision before capital is at risk.' },
-    { title: 'Calibrate', text: 'Feed outcomes back into the ML loop with execution costs.' },
-    { title: 'Report', text: 'Output clear evidence for what to reject, keep testing, or graduate.' },
+    { title: 'Discover', text: 'Search agent/feed/model combinations for candidate strategy profiles.' },
+    { title: 'Replay', text: 'Run candidates against historical or adapter-supplied market conditions.' },
+    { title: 'Calibrate', text: 'Apply fees, slippage, latency, route risk, and execution assumptions.' },
+    { title: 'Prove', text: 'Output clear evidence for what to reject, keep testing, or graduate.' },
   ];
 
   return (
     <section className="system-section" id="architecture">
       <div className="section-heading compact">
         <span className="eyebrow">What is PalusOS</span>
-        <h2>Autonomous trading agents are coming, but they need more than a wallet and a prompt.</h2>
-        <p>PalusOS is the learning layer for AI trading agents: a full ML lab, backtesting engine, quote-backed paper trader, and live-calibration system that helps agents discover strategies, test realistic EV, and build trading profiles before risking capital.</p>
+        <h2>PalusOS is the discovery and proof engine for autonomous trading agents.</h2>
+        <p>It searches for candidate trading profiles, tests them through replay and quote-backed paper trading, calibrates results against execution reality, and produces EV reports before capital is at risk.</p>
       </div>
 
       <div className="system-diagram" aria-label="PalusOS system diagram">
@@ -153,12 +153,12 @@ function ModularSection() {
       <div className="section-heading compact">
         <span className="eyebrow">Composable by design</span>
         <h2>Plug in your market feed, strategy runner, gates, and reports.</h2>
-        <p>PalusOS is market-agnostic: connect the data source you trust, run the agent you want to evaluate, and get a decision backed by evidence.</p>
+        <p>PalusOS is data-adapter based. This repo ships bundled demo rows for safety, but replacing them with real market feeds makes the same discovery, evaluation, and proof pipeline operate on real inputs.</p>
       </div>
 
       <div className="module-grid">
-        <ModuleCard icon={<Layers3 />} title="Market adapters" items={marketAdapters.map((adapter) => `${adapter.name}: ${adapter.description}`)} />
-        <ModuleCard icon={<Bot />} title="Strategy runners" items={strategyRunners.map((runner) => `${runner.name}: ${runner.input}`)} />
+        <ModuleCard icon={<Layers3 />} title="Market adapters" items={[...marketAdapters.map((adapter) => `${adapter.name}: ${adapter.description}`), 'Swap bundled demo rows for real feeds in private deployments']} />
+        <ModuleCard icon={<Bot />} title="Strategy discovery" items={['Discover candidate profiles across agent/feed/model combinations', ...strategyRunners.map((runner) => `${runner.name}: ${runner.input}`)]} />
         <ModuleCard icon={<ShieldCheck />} title="Promotion gates" items={['Reject weak strategies before real capital', 'Require robust EV after outlier removal', 'Graduate only under explicit limits and rollback rules']} />
         <ModuleCard icon={<LockKeyhole />} title="Clean product package" items={['No private keys or .env files', 'Demo data only', 'Clear scope: evaluation and reporting infrastructure']} />
       </div>
@@ -196,9 +196,9 @@ function FinalCTA() {
   return (
     <section className="final-cta">
       <span className="eyebrow">Why now?</span>
-      <h2>Actionable ML EV reports, not a blackbox.</h2>
+      <h2>Prove before capital.</h2>
       <p>
-        In the words of your favourite LLM: "no more hand-waving, just real results". PalusOS gives teams a repeatable way to evaluate agents against real data, realistic execution assumptions, and clear safety gates.
+        PalusOS gives teams a repeatable way to discover candidate strategy profiles, evaluate them against adapter-backed data, calibrate execution assumptions, and produce clear evidence without claiming live profitability.
       </p>
       <a className="button primary" href="#agent-lab">Run the Agent Lab <ArrowRight size={18} /></a>
     </section>

@@ -1,6 +1,6 @@
-# Tutorial: run your first PalusOS evaluation
+# Tutorial: run your first PalusOS strategy discovery
 
-This tutorial walks through the demo PalusOS flow.
+This tutorial walks through the public-safe PalusOS demo flow.
 
 ## 1. Install and start
 
@@ -11,33 +11,49 @@ npm run dev
 
 Open the local Vite URL printed in the terminal.
 
-## 2. Pick a candidate agent
+## 2. Read the public demo-data caveat
+
+The repo ships bundled demo rows only. It includes no wallets, API keys, private databases, `.env` files, private infra, or live execution. PalusOS is data-adapter based: in a private deployment, replacing the demo rows with real market feeds or agent decision logs makes the same discovery/evaluation/proof pipeline operate on real inputs.
+
+## 3. Discover candidate profiles
+
+The Agent Lab ranks candidate profiles across:
+
+- agent definition;
+- data feed;
+- ML model;
+- execution assumptions.
+
+Click any discovered profile to load its deterministic proof report.
+
+## 4. Pick a candidate agent
 
 The demo includes three curated examples:
 
-- **Slow Bleed Reversal v3** — promising edge, still in paper mode.
+- **Slow Bleed Reversal v3** — promising proof profile, still in paper mode.
 - **Universal Snipe v1** — intentionally rejected because execution-adjusted economics fail.
-- **Agent Risk Sentinel** — safety/veto agent eligible for a tiny canary after runner acceptance.
+- **Agent Risk Sentinel** — safety/veto agent eligible for a tiny canary only after runner acceptance.
 
-## 3. Read the decision report
+## 5. Read the proof report
 
 Each candidate shows:
 
 - replay and paper evidence;
 - execution-adjusted EV;
+- outlier-removed EV;
 - largest-winner-removed robustness;
-- gap-loss exposure;
+- drawdown behavior;
 - canary readiness;
 - final gate verdict.
 
-## 4. Interpret verdicts
+## 6. Interpret verdicts
 
-- **Kill** — no real capital. The agent fails executable economics or robustness.
-- **Keep Paper** — promising, but more proof or runner safety is required.
-- **Canary Eligible** — can graduate only to a tiny bounded canary with rollback triggers.
+- **Reject** — no real capital. The agent fails executable economics or robustness.
+- **Keep Testing** — promising, but more proof or runner safety is required.
+- **Promote / Canary Eligible** — can graduate only to a tiny bounded canary with rollback triggers.
 
-## 5. Swap in your own agent later
+## 7. Swap in your own data later
 
-The demo is modular. Replace `src/data/demoAgents.ts` with your agent report output, or plug a new market adapter into `src/modules/adapters.ts`.
+The demo is modular. Replace `src/data/agentLabData.ts` with adapter output, replace `src/data/demoAgents.ts` with your agent report output, or plug a new market adapter into `src/modules/adapters.ts`.
 
-The important rule: do not trust paper PnL until it survives execution-adjusted calibration and robustness gates.
+The important rule: do not trust paper PnL until it survives execution-adjusted calibration and robustness gates. The public demo proves the workflow shape; it does not claim live profitability.

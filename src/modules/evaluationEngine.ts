@@ -107,6 +107,19 @@ export interface EvaluationReport {
   rationale: string[];
 }
 
+export interface StrategyDiscoveryCandidate {
+  profileId: string;
+  agent: AgentDefinition;
+  dataFeed: DataFeedDefinition;
+  model: ModelDefinition;
+  report: EvaluationReport;
+  proofScore: number;
+  stage: 'reject' | 'continue_proof' | 'promotion_candidate';
+  headline: string;
+  proofPoints: string[];
+  riskFlags: string[];
+}
+
 export const defaultExecutionAssumptions: ExecutionAssumptions = {
   tradeSizeSol: 0.05,
   feeBps: 45,
@@ -175,6 +188,32 @@ export function evaluateAgentLab(input: EvaluationInput): EvaluationReport {
     action: actionForVerdict(verdict),
     rationale: buildRationale(stats, assumptions, verdict),
   };
+}
+
+export function discoverStrategyProfiles(
+  agents: AgentDefinition[],
+  dataFeeds: DataFeedDefinition[],
+  models: ModelDefinition[],
+  assumptions: ExecutionAssumptions,
+): StrategyDiscoveryCandidate[] {
+  return agents
+    .flatMap((agent) => dataFeeds.flatMap((dataFeed) => models.map((model) => {
+      const report = evaluateAgentLab({ agent, dataFeed, model, assumptions });
+      const proofScore = scoreDiscoveryCandidate(report);
+      return {
+        profileId: `${agent.id}__${dataFeed.id}__${model.id}`,
+        agent,
+        dataFeed,
+        model,
+        report,
+        proofScore,
+        stage: discoveryStage(report),
+        headline: discoveryHeadline(report),
+        proofPoints: buildDiscoveryProofPoints(report),
+        riskFlags: buildDiscoveryRiskFlags(report),
+      } satisfies StrategyDiscoveryCandidate;
+    })))
+    .sort((a, b) => b.proofScore - a.proofScore || b.report.stats.selectedTrades - a.report.stats.selectedTrades);
 }
 
 export function evaluateTrade(
@@ -292,6 +331,53 @@ function actionForVerdict(verdict: AgentLabVerdict): string {
     case 'promote':
       return 'Prepare a small, reversible promotion plan with explicit limits and rollback triggers.';
   }
+}
+
+function scoreDiscoveryCandidate(report: EvaluationReport): number {
+  const verdictBase = report.verdict === 'promote' ? 36 : report.verdict === 'keep_testing' ? 18 : 0;
+  const sampleScore = Math.min(18, report.stats.selectedTrades * 0.9);
+  const robustEvScore = clamp(report.stats.outlierRemovedEvSol / report.assumptions.tradeSizeSol * 100 * 2.2, -18, 28);
+  const winnerRemovedScore = clamp(report.stats.largestWinnerRemovedEvSol / report.assumptions.tradeSizeSol * 100 * 1.7, -16, 22);
+  const drawdownPenalty = report.stats.maxDrawdownSol > report.assumptions.maxDrawdownSol
+    ? 20
+    : (report.stats.maxDrawdownSol / report.assumptions.maxDrawdownSol) * 8;
+
+  return clamp(Math.round(verdictBase + sampleScore + robustEvScore + winnerRemovedScore + report.stats.confidenceScore * 0.24 - drawdownPenalty), 0, 99);
+}
+
+function discoveryStage(report: EvaluationReport): StrategyDiscoveryCandidate['stage'] {
+  if (report.verdict === 'promote') return 'promotion_candidate';
+  if (report.verdict === 'reject') return 'reject';
+  return 'continue_proof';
+}
+
+function discoveryHeadline(report: EvaluationReport): string {
+  switch (report.verdict) {
+    case 'promote':
+      return 'Candidate profile discovered: strong demo proof, still gated before capital.';
+    case 'keep_testing':
+      return 'Candidate profile needs more proof before promotion.';
+    case 'reject':
+      return 'Rejected in proof engine before any capital path.';
+  }
+}
+
+function buildDiscoveryProofPoints(report: EvaluationReport): string[] {
+  return [
+    `${report.stats.selectedTrades} selected replay events`,
+    `${formatSol(report.stats.outlierRemovedEvSol)} outlier-removed EV`,
+    `${formatSol(report.stats.largestWinnerRemovedEvSol)} largest-winner-removed EV`,
+  ];
+}
+
+function buildDiscoveryRiskFlags(report: EvaluationReport): string[] {
+  const flags: string[] = [];
+  if (report.stats.selectedTrades < 14) flags.push('low proof density');
+  if (report.stats.outlierRemovedEvSol <= 0) flags.push('negative robust EV');
+  if (report.stats.largestWinnerRemovedEvSol <= 0) flags.push('single-winner dependence');
+  if (report.stats.maxDrawdownSol > report.assumptions.maxDrawdownSol) flags.push('drawdown breach');
+  if (flags.length === 0) flags.push('no demo risk breach detected');
+  return flags;
 }
 
 function sum(values: number[]): number {

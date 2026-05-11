@@ -1,6 +1,6 @@
 # PalusOS architecture
 
-PalusOS is packaged as a focused product shell for evaluating autonomous trading agents and strategy candidates.
+PalusOS is the discovery and proof engine for autonomous trading agents. It searches for candidate trading profiles, tests them through replay and quote-backed paper trading, calibrates results against execution reality, and produces EV reports before capital is at risk.
 
 ## Modules
 
@@ -9,18 +9,20 @@ market data adapter
   ↓
 strategy / agent runner
   ↓
+candidate discovery
+  ↓
 replay + paper evaluation
   ↓
 execution calibration
   ↓
 robustness and safety gates
   ↓
-human-readable decision report
+human-readable proof report
 ```
 
 ## 1. Market data adapter
 
-Adapters normalize market events into comparable snapshots that the evaluation engine can replay and score.
+Adapters normalize market events into comparable snapshots that the discovery and evaluation engine can replay and score.
 
 Example adapter targets:
 
@@ -29,7 +31,9 @@ Example adapter targets:
 - perps or spot markets;
 - third-party agent decision logs.
 
-## 2. Strategy runner
+The public repo uses bundled demo rows only. In a private deployment, replacing those rows with real adapter outputs makes the same pipeline operate on real inputs.
+
+## 2. Strategy / agent runner
 
 Runs either:
 
@@ -37,30 +41,47 @@ Runs either:
 - a third-party autonomous agent's proposed decisions;
 - a baseline strategy used for comparison.
 
-## 3. Evaluation engine
+## 3. Candidate discovery
+
+Ranks agent/feed/model combinations into candidate strategy profiles using deterministic proof scoring. The goal is not to claim profitability; it is to identify which profiles deserve deeper evaluation and which should be rejected early.
+
+## 4. Evaluation engine
 
 Computes:
 
 - paper PnL;
 - execution-adjusted EV;
 - win/loss distribution;
+- outlier-removed EV;
 - largest-winner-removed robustness;
 - loss cluster and drawdown behavior;
 - gap-loss exposure;
 - proof density.
 
-## 4. Promotion gate
+## 5. Execution calibration
+
+Applies assumptions for:
+
+- fees;
+- slippage;
+- latency;
+- route risk;
+- trade size;
+- drawdown limits.
+
+## 6. Promotion gate
 
 Outputs one of three decisions:
 
-- **Kill** — rejected before real capital.
-- **Keep Paper** — promising but needs more proof.
-- **Canary Eligible** — may graduate to a tiny guarded canary.
+- **Reject** — rejected before real capital.
+- **Keep Testing** — promising but needs more proof.
+- **Promote / Canary Eligible** — may graduate only to a tiny guarded canary under explicit limits and rollback triggers.
 
-## 5. Report UI
+## 7. Report UI
 
 The UI turns machine evidence into a builder-readable audit trail:
 
+- what profile was discovered;
 - what the agent tried;
 - why paper PnL is or is not believable;
 - what the execution-adjusted result says;
@@ -68,4 +89,4 @@ The UI turns machine evidence into a builder-readable audit trail:
 
 ## Boundaries
 
-This repo excludes secrets, private databases, `.env` files, private wallets, and any scaled live-trading configuration.
+This repo excludes secrets, private databases, `.env` files, private wallets, and any scaled live-trading configuration. It demonstrates discovery/evaluation/reporting infrastructure with demo data only and makes no live-profitability claim.

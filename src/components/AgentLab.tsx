@@ -1,13 +1,15 @@
 import type React from 'react';
 import { useMemo, useState } from 'react';
-import { BarChart3, BrainCircuit, Calculator, DatabaseZap, Play, ShieldCheck } from 'lucide-react';
+import { BarChart3, BrainCircuit, Calculator, DatabaseZap, Play, SearchCheck, ShieldCheck } from 'lucide-react';
 import { agentDefinitions, dataFeedDefinitions, modelDefinitions } from '../data/agentLabData';
 import {
   defaultExecutionAssumptions,
+  discoverStrategyProfiles,
   evaluateAgentLab,
   formatPct,
   formatSol,
   type ExecutionAssumptions,
+  type StrategyDiscoveryCandidate,
 } from '../modules/evaluationEngine';
 
 type AssumptionKey = keyof Pick<ExecutionAssumptions, 'tradeSizeSol' | 'feeBps' | 'slippageBps' | 'latencyMs' | 'maxDrawdownSol'>;
@@ -36,6 +38,10 @@ export function AgentLab() {
   const [runCount, setRunCount] = useState(1);
 
   const draftReport = useMemo(() => evaluateAgentLab({ ...selected, assumptions }), [selected, assumptions]);
+  const discoveryCandidates = useMemo(
+    () => discoverStrategyProfiles(agentDefinitions, dataFeedDefinitions, modelDefinitions, assumptions).slice(0, 5),
+    [assumptions],
+  );
   const isStale = report.agent.id !== selected.agent.id
     || report.dataFeed.id !== selected.dataFeed.id
     || report.model.id !== selected.model.id
@@ -43,6 +49,14 @@ export function AgentLab() {
 
   const runEvaluation = () => {
     setReport(draftReport);
+    setRunCount((count) => count + 1);
+  };
+
+  const loadDiscoveryCandidate = (candidate: StrategyDiscoveryCandidate) => {
+    setAgentId(candidate.agent.id);
+    setFeedId(candidate.dataFeed.id);
+    setModelId(candidate.model.id);
+    setReport(candidate.report);
     setRunCount((count) => count + 1);
   };
 
@@ -54,10 +68,11 @@ export function AgentLab() {
     <section className="agent-lab-section" id="agent-lab">
       <div className="section-heading compact">
         <span className="eyebrow">Agent Lab MVP</span>
-        <h2>Choose an agent, data feed, and ML model. Then run a deterministic EV report.</h2>
+        <h2>Discover candidate strategy profiles, then prove their realistic EV before capital.</h2>
         <p>
-          This is a public-safe local demo: bundled market rows only, no wallets, no API keys,
-          no private infra, and no real execution.
+          PalusOS ranks agent/feed/model combinations, calibrates execution assumptions, and turns
+          each candidate into an auditable proof report. This public demo uses bundled rows only;
+          the same adapter pipeline can run on real market feeds in a private deployment.
         </p>
       </div>
 
@@ -111,9 +126,40 @@ export function AgentLab() {
             <Calculator size={18} />
             <span>Selection threshold: {draftReport.threshold}. Run #{runCount}{isStale ? ' · pending changes' : ' · report current'}.</span>
           </div>
+
+          <div className="demo-data-note">
+            <b>Public repo safety note</b>
+            <span>Demo data only: no wallets, API keys, private databases, or live execution are shipped here.</span>
+          </div>
         </div>
 
         <div className="lab-report-panel">
+          <div className="discovery-panel" aria-label="Strategy discovery candidates">
+            <div className="discovery-panel__header">
+              <div>
+                <span className="eyebrow">Strategy discovery OS</span>
+                <h3>Candidate profiles found in the bundled replay set</h3>
+              </div>
+              <SearchCheck size={22} />
+            </div>
+            <div className="discovery-cards">
+              {discoveryCandidates.map((candidate) => (
+                <button
+                  key={candidate.profileId}
+                  className={`discovery-card ${candidate.stage}`}
+                  type="button"
+                  onClick={() => loadDiscoveryCandidate(candidate)}
+                >
+                  <span>{candidate.proofScore} proof score</span>
+                  <strong>{candidate.agent.name}</strong>
+                  <small>{candidate.dataFeed.market} · {candidate.model.name}</small>
+                  <em>{candidate.headline}</em>
+                  <i>{candidate.riskFlags.join(' · ')}</i>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="lab-report-hero">
             <div>
               <span className="eyebrow">Current report</span>

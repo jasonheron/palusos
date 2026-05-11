@@ -19,10 +19,10 @@ export function AgentDashboard() {
     <section className="dashboard-section" id="demo">
       <div className="section-heading">
         <span className="eyebrow">Decision reports</span>
-        <h2>Actionable ML EV reports, not a blackbox.</h2>
+        <h2>Proof reports, not black boxes.</h2>
         <p>
-          Following the same path as industrial quants: ingest market data, run a candidate,
-          adjust paper results for execution assumptions, and produce a decision report.
+          Following the same path as industrial quants: ingest adapter-backed market data, discover a candidate,
+          calibrate paper results against execution reality, and produce an EV proof report.
         </p>
       </div>
 
