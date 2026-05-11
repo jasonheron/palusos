@@ -15,6 +15,16 @@ import { formatSol } from '../modules/evaluationEngine';
 const POLL_MS = 7_500;
 const PAPER_STARTING_EQUITY_SOL = 10;
 
+const PROFILE_BUILD_STAGES = [
+  { title: 'DATA TRUTH', text: 'Audit lifecycle coverage, censoring, quote freshness, and route observability.' },
+  { title: 'LABEL FOUNDRY', text: 'Design trade-realistic labels before training or selecting any model.' },
+  { title: 'ML LAB', text: 'Search models, near-misses, failure modes, and supported label families.' },
+  { title: 'STRATEGY PROFILE', text: 'Bind entry, exit, size, route, score, and veto assumptions into a profile.' },
+  { title: 'PROOF ENGINE', text: 'Require pre-outcome intent, trusted quotes, failed exits, costs, and realistic EV.' },
+  { title: 'PAPER / CANARY', text: 'Paper first; canary stays private, tiny, capped, and explicitly enabled.' },
+  { title: 'SCALE', text: 'Scale only after proof, paper, and canary evidence agree under drift limits.' },
+];
+
 type PaperPositionStatus = 'OPEN' | 'CLOSED';
 
 interface PaperPosition {
@@ -146,7 +156,7 @@ export function LivePaperDemo() {
   const selectedAgent = useMemo(() => agentDefinitions.find((agent) => agent.id === agentId) ?? agentDefinitions[0], [agentId]);
   const selectedModel = useMemo(() => modelDefinitions.find((model) => model.id === modelId) ?? modelDefinitions[0], [modelId]);
   const profileName = selectedAgent.name.replace(/\s+Agent$/i, '');
-  const profileSubtitle = `${selectedAgent.role.toUpperCase()} - MIN SCORE ${selectedAgent.minSignalScore}`;
+  const profileSubtitle = `${selectedAgent.role.toUpperCase()} / MIN SCORE ${selectedAgent.minSignalScore}`;
 
   return (
     <section className="live-paper-section" id="live-paper-demo" aria-label="PalusOS paper terminal">
@@ -203,9 +213,17 @@ export function LivePaperDemo() {
             <div className="rail-divider" />
 
             <div className="profile-process-list">
-              <span className="rail-label">HOW A PROFILE IS MADE:</span>
+              <span className="rail-label">HOW A PROFILE IS MADE</span>
+              <p className="profile-process-copy">
+                PalusOS does not start with a wallet. It turns audited data into labels, models, proof, then paper evidence.
+              </p>
               <ol>
-                {['DATA FEED', 'DISCOVERY ENGINE', 'PROOF ENGINE', 'PAPER TRADING', 'CANARY TRADING', 'AUTO-SCALE TRADING'].map((step) => <li key={step}>{step}</li>)}
+                {PROFILE_BUILD_STAGES.map((stage) => (
+                  <li key={stage.title}>
+                    <b>{stage.title}</b>
+                    <small>{stage.text}</small>
+                  </li>
+                ))}
               </ol>
             </div>
           </aside>
@@ -220,32 +238,22 @@ export function LivePaperDemo() {
 
             <article className="chart-panel terminal-chart-panel">
               <div className="chart-header-minimal">
-                <div>
-                  <span>PALUSOS PAPER CHART / PROOF ZONE</span>
-                  <b>{activePair.pair}</b>
-                </div>
+                <span>CHART</span>
                 <small>{modeLabel} · {quoteSummary(snapshot.events)}</small>
               </div>
 
               <EquityChart points={equityCurve} markerLabel={activePair.price} />
-
-              <div className="chart-stat-strip" aria-label="Paper chart stats">
-                <span><small>AVG EV</small><b>{formatSol(snapshot.paper.metrics.averageEvSol)}</b></span>
-                <span><small>OUTLIER EV</small><b>{formatSol(snapshot.paper.metrics.outlierRemovedEvSol)}</b></span>
-                <span><small>MAX DD</small><b>{formatSol(snapshot.paper.metrics.maxDrawdownSol)}</b></span>
-                <span><small>STAGE</small><b>{snapshot.selectedProfile.stage}</b></span>
-              </div>
             </article>
           </main>
 
           <aside className="terminal-right-rail" aria-label="Paper positions and proof details">
             <section className="right-module">
               <div className="right-module-header">
-                <span>PAPER POSITIONS</span>
+                <span>POSITIONS</span>
                 <b>{positions.length} TOTAL</b>
               </div>
               <div className="compact-position-list">
-                {positions.length > 0 ? positions.slice(0, 5).map((position) => {
+                {positions.length > 0 ? positions.slice(0, 4).map((position) => {
                   const pnl = position.realizedPnlSol + position.unrealizedPnlSol;
                   return (
                     <div className="compact-position-row" key={position.id}>
@@ -267,13 +275,13 @@ export function LivePaperDemo() {
                 <b>{snapshot.paper.decisions.length} ROWS</b>
               </div>
               <div className="decision-tape" aria-label="Paper decision log">
-                {snapshot.paper.decisions.slice(0, 6).map((decision) => <DecisionRow key={decision.eventId} decision={decision} />)}
+                {snapshot.paper.decisions.slice(0, 5).map((decision) => <DecisionRow key={decision.eventId} decision={decision} />)}
               </div>
             </section>
 
             <section className="right-module proof-module-right">
               <div className="right-module-header">
-                <span>ROUTE / PROOF</span>
+                <span>PROOF TRACE</span>
                 <b>{snapshot.paper.verdictLabel}</b>
               </div>
               <div className="route-proof-grid">
@@ -284,7 +292,7 @@ export function LivePaperDemo() {
               </div>
               <p>{snapshot.paper.action}</p>
               <ul>
-                {snapshot.paper.rationale.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
+                {snapshot.paper.rationale.slice(0, 2).map((item) => <li key={item}>{item}</li>)}
               </ul>
             </section>
 
@@ -324,6 +332,7 @@ function EquityChart({ points, markerLabel }: { points: EquityPoint[]; markerLab
 
   return (
     <div className="equity-chart" aria-label={`Synthetic paper equity curve ending at ${last.value.toFixed(4)} SOL`}>
+      <div className="chart-center-label" aria-hidden="true">CHART</div>
       <svg viewBox="0 0 120 100" role="img" aria-hidden="true" preserveAspectRatio="none">
         <defs>
           <linearGradient id="paperEquityGlow" x1="0" x2="0" y1="0" y2="1">
