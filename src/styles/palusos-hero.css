@@ -895,3 +895,16 @@
     padding-left: 0;
   }
 }
+
+/* Human amount of breathing room for the hero proof strip */
+.hero > .proof-strip article:first-child,
+.hero > .proof-strip .proof-input {
+  padding-left: clamp(10px, 1.2vw, 18px);
+}
+
+@media (max-width: 720px) {
+  .hero > .proof-strip article:first-child,
+  .hero > .proof-strip .proof-input {
+    padding-left: 7px;
+  }
+}
