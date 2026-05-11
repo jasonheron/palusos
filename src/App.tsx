@@ -110,8 +110,8 @@ function SystemDiagram() {
     <section className="system-section" id="architecture">
       <div className="section-heading compact">
         <span className="eyebrow">What is PalusOS</span>
-        <h2>PalusOS is the discovery and proof engine for autonomous trading agents.</h2>
-        <p>It searches for candidate trading profiles, tests them through replay and quote-backed paper trading, calibrates results against execution reality, and produces EV reports before capital is at risk.</p>
+        <h2>Autonomous trading agents are coming, but “Claude, make profit trading PumpFun” does not work yet.</h2>
+        <p>PalusOS gives AI agents the framework needed to discover and test trading profiles: Discovery Lab candidate search, historical backtesting, quote-backed paper trading, execution calibration, robustness gates, and EV proof reports before capital is at risk.</p>
       </div>
 
       <div className="system-diagram" aria-label="PalusOS system diagram">
