@@ -18,8 +18,8 @@ export function AgentDashboard() {
   return (
     <section className="dashboard-section" id="demo">
       <div className="section-heading">
-        <span className="eyebrow">Actionable ML EV reports, not a blackbox</span>
-        <h2>Choose an agent. PalusOS shows whether the evidence is strong enough.</h2>
+        <span className="eyebrow">Decision reports</span>
+        <h2>Actionable ML EV reports, not a blackbox.</h2>
         <p>
           Following the same path as industrial quants: ingest market data, run a candidate,
           adjust paper results for execution assumptions, and produce a decision report.
