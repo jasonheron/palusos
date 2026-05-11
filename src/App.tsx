@@ -1,5 +1,5 @@
 import type React from 'react';
-import { ArrowRight, Bot, BrainCircuit, Layers3, LineChart, LockKeyhole, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, Bot, BrainCircuit, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
 import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
 import { marketAdapters, strategyRunners } from './modules/adapters';
 import './styles/app.css';
@@ -28,12 +28,11 @@ function Hero() {
     <section className="hero" id="top">
       <nav className="nav" aria-label="Primary navigation">
         <a href="#top" className="brand"><span aria-hidden="true" />PalusOS</a>
-        <div className="nav__links">
-          <a href="#demo">Demo</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#tutorial">Tutorial</a>
+        <div className="nav__spacer" />
+        <div className="nav__actions">
+          <a className="nav__cta" href="#demo">Demo</a>
+          <button className="nav__menu" aria-label="Open menu"><Menu size={18} /></button>
         </div>
-        <a className="nav__cta" href="#demo">View demo</a>
       </nav>
 
       <div className="hero__copy">
@@ -42,7 +41,7 @@ function Hero() {
         <p className="hero__tagline">{copy.tagline}</p>
         <div className="hero__actions">
           <a className="button primary" href="#demo">Explore <ArrowRight size={18} /></a>
-          <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><GitHubMark /> GitHub</a>
+          <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><GitHubMark /> GitHub <ExternalLink size={16} /></a>
         </div>
       </div>
 
