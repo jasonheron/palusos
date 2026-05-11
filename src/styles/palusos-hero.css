@@ -619,3 +619,63 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Mobile proof strip fix: keep the bottom modules in one row */
+@media (max-width: 720px) {
+  .hero {
+    min-height: 100svh;
+    padding-bottom: 0;
+  }
+
+  .hero > .proof-strip {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: 74px;
+  }
+
+  .hero > .proof-strip article {
+    min-height: 74px;
+    padding: 8px 7px;
+    border-right: 1px solid rgba(255,255,255,.18);
+    border-bottom: 0;
+  }
+
+  .hero > .proof-strip article:last-child {
+    border-right: 0;
+  }
+
+  .hero > .proof-strip article:first-child {
+    padding-left: 0;
+  }
+
+  .hero > .proof-strip .proof-module {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero > .proof-strip .proof-input,
+  .hero > .proof-strip .proof-stack {
+    padding: 8px 5px;
+  }
+
+  .hero > .proof-strip .proof-input {
+    padding-left: 7px;
+  }
+
+  .hero > .proof-strip b,
+  .hero > .proof-strip .proof-input b {
+    font-size: 7px;
+    line-height: 1.05;
+    margin-bottom: 3px;
+  }
+
+  .hero > .proof-strip span,
+  .hero > .proof-strip .proof-stack span {
+    font-size: 5.8px;
+    line-height: 1.15;
+    letter-spacing: .02em;
+    max-width: none;
+  }
+
+  .hero > .proof-strip .proof-stack {
+    gap: 2px;
+  }
+}
