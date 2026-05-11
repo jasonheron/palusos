@@ -41,7 +41,7 @@ function Hero() {
         <p className="hero__tagline">{copy.tagline}</p>
         <div className="hero__actions">
           <a className="button primary" href="#demo">Explore <ArrowRight size={18} /></a>
-          <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><GitHubMark /> GitHub <ExternalLink size={16} /></a>
+          <a className="button secondary" href="https://github.com/jasonheron/palusos" aria-label="PalusOS GitHub repository"><GitHubMark /> GitHub <ExternalLink size={16} /></a>
         </div>
       </div>
 
