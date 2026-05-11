@@ -79,6 +79,7 @@ function GitHubMark() {
 function ProofStrip() {
   return (
     <section className="proof-strip" aria-label="Product proof points">
+      <article><b>PalusOS Module Input</b><span>Connect agents, data feeds, and model bundles</span></article>
       <article><b>Replay</b><span>Test against historical market conditions</span></article>
       <article><b>Paper</b><span>Record every decision before real capital</span></article>
       <article><b>Calibrate</b><span>Apply execution cost and slippage assumptions</span></article>

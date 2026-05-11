@@ -8,7 +8,7 @@
   grid-template-rows: auto 1fr;
   justify-items: center;
   align-content: stretch;
-  background: #030405 url('/palusos-hero.jpg') center center / cover no-repeat;
+  background: #030405 url('/palusos-background.png') center center / cover no-repeat;
 }
 
 .hero::before,
@@ -49,7 +49,7 @@
 .hero__copy {
   z-index: 2;
   align-self: center;
-  transform: translateY(-1.5vh);
+  transform: translateY(-7vh);
   max-width: 760px;
   text-shadow: 0 3px 24px rgba(0,0,0,.70), 0 0 34px rgba(255,255,255,.20);
 }
@@ -68,8 +68,9 @@
 .hero__copy h1 {
   max-width: 620px;
   margin: 0 auto 14px;
-  font-size: clamp(48px, 7vw, 96px);
-  font-weight: 430;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(54px, 8vw, 112px);
+  font-weight: 500;
   line-height: 1.04;
   letter-spacing: normal;
   color: #fff;
@@ -79,8 +80,9 @@
 .hero__copy p.hero__tagline {
   display: block;
   color: #fff;
+  font-family: "Google Sans", "Product Sans", Arial, sans-serif;
   font-size: clamp(20px, 2.4vw, 30px);
-  font-weight: 430;
+  font-weight: 400;
   line-height: 1.25;
   max-width: 720px;
   margin: 0 auto 14px;
@@ -101,7 +103,7 @@
     background-position: center center;
   }
   .hero__copy {
-    transform: translateY(-3vh);
+    transform: translateY(-8vh);
   }
   .hero__copy h1 {
     max-width: 340px;
@@ -123,7 +125,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0;
   border-top: 1px solid rgba(255,255,255,.22);
   background: rgba(0,0,0,.18);
