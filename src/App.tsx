@@ -6,7 +6,7 @@ import './styles/app.css';
 import './styles/palusos-hero.css';
 
 const copy = {
-  tagline: <>The learning layer <br />for agentic trading agents.</>,
+  tagline: <>The learning layer for<br />agentic trading agents.</>,
 };
 
 function App() {
