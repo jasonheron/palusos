@@ -1,8 +1,8 @@
-# TrenchLab presentation outline
+# PalusOS presentation outline
 
 ## Slide 1 — Title
 
-**TrenchLab**
+**PalusOS**
 The learning layer for autonomous Solana trading agents.
 
 ## Slide 2 — Problem
@@ -13,7 +13,7 @@ Most demos show prompts, backtests, or fantasy paper PnL. Then real execution ad
 
 ## Slide 3 — Solution
 
-TrenchLab evaluates agents before they touch meaningful funds.
+PalusOS evaluates agents before they touch meaningful funds.
 
 It turns raw market flow into strategy candidates, tests them in replay and paper mode, calibrates against executable quote economics, and outputs a gate verdict: kill, keep paper, or canary eligible.
 
@@ -44,7 +44,7 @@ Not another trading bot.
 - Agent launchers create agents.
 - Paper trading apps simulate users.
 - Risk scanners flag tokens.
-- TrenchLab decides whether an autonomous trading agent has real, execution-survivable edge.
+- PalusOS decides whether an autonomous trading agent has real, execution-survivable edge.
 
 ## Slide 8 — Business / users
 

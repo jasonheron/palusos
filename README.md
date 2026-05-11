@@ -1,12 +1,12 @@
-# TrenchLab
+# PalusOS
 
 **The learning and evaluation layer for autonomous Solana trading agents.**
 
-TrenchLab turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.
+PalusOS turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.
 
 ## Why this exists
 
-Autonomous trading agents are easy to launch and hard to trust. Most demos stop at prompts, backtests, or fantasy paper PnL. TrenchLab acts as a flight recorder and safety gate: it tells builders whether an agent has execution-survivable edge before it touches meaningful funds.
+Autonomous trading agents are easy to launch and hard to trust. Most demos stop at prompts, backtests, or fantasy paper PnL. PalusOS acts as a flight recorder and safety gate: it tells builders whether an agent has execution-survivable edge before it touches meaningful funds.
 
 ## What this hackathon repo contains
 

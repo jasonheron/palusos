@@ -3,10 +3,11 @@ import { ArrowRight, Bot, BrainCircuit, Code2, Layers3, LineChart, LockKeyhole, 
 import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
 import { marketAdapters, strategyRunners } from './modules/adapters';
 import './styles/app.css';
+import './styles/palusos-hero.css';
 
 const copy = {
   description:
-    'TrenchLab is the learning and evaluation layer for autonomous Solana trading agents. It turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.',
+    'PalusOS is the learning layer for agentic trading agents. It turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.',
 };
 
 function App() {
@@ -27,7 +28,7 @@ function Hero() {
   return (
     <section className="hero" id="top">
       <nav className="nav" aria-label="Primary navigation">
-        <a href="#top" className="brand"><span aria-hidden="true" />TrenchLab</a>
+        <a href="#top" className="brand"><span aria-hidden="true" />PalusOS</a>
         <div className="nav__links">
           <a href="#demo">Demo</a>
           <a href="#architecture">Architecture</a>
@@ -37,16 +38,16 @@ function Hero() {
       </nav>
 
       <div className="hero__copy">
-        <div className="badge"><Sparkles size={14} /> Frontier Hackathon Submission</div>
-        <h1>The learning layer for autonomous Solana trading agents.</h1>
+        <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
+        <h1>the learning layer for agentic trading agents</h1>
         <p>{copy.description}</p>
         <div className="hero__actions">
-          <a className="button primary" href="#demo">See the evaluation flow <ArrowRight size={18} /></a>
+          <a className="button primary" href="#demo">Explore the system <ArrowRight size={18} /></a>
           <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><Code2 size={18} /> Public-safe repo</a>
         </div>
       </div>
 
-      <div className="hero-card" aria-label="TrenchLab verdict preview">
+      <div className="hero-card" aria-label="PalusOS verdict preview">
         <div className="hero-card__header">
           <span className="eyebrow">Current verdict</span>
           <strong>Keep Paper</strong>
@@ -128,7 +129,7 @@ function FinalCTA() {
       <span className="eyebrow">Why now?</span>
       <h2>Agents are becoming traders. They need flight recorders before they need bigger wallets.</h2>
       <p>
-        Solana has the speed and liquidity to make autonomous trading agents inevitable. TrenchLab makes them measurable before they become dangerous.
+        Solana has the speed and liquidity to make autonomous trading agents inevitable. PalusOS makes them measurable before they become dangerous.
       </p>
       <a className="button primary" href="#demo">Review the demo verdict <ArrowRight size={18} /></a>
     </section>

@@ -2,11 +2,11 @@
 
 ## Description under 500 chars
 
-TrenchLab is the learning and evaluation layer for autonomous Solana trading agents. It turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.
+PalusOS is the learning and evaluation layer for autonomous Solana trading agents. It turns noisy on-chain market data into strategy candidates, tests them in replay and paper mode, calibrates results against executable quote economics, and only graduates agents to bounded canaries when robust safety gates pass.
 
 ## What are you building, and who is it for?
 
-We are building TrenchLab, an evidence layer for autonomous trading agents on Solana. It is for builders, quants, agent teams, and power users who need to know whether a trading agent has real edge before letting it touch funds. TrenchLab ingests live and historical market flow, discovers candidate strategies, runs replay and paper validation, adjusts results for executable quote/slippage reality, and produces an auditable verdict: kill, keep testing, or graduate to a tiny guarded canary. PumpFun/memecoins are our first proving ground because they are fast, adversarial, and brutally honest about whether an agent can survive real execution.
+We are building PalusOS, an evidence layer for autonomous trading agents on Solana. It is for builders, quants, agent teams, and power users who need to know whether a trading agent has real edge before letting it touch funds. PalusOS ingests live and historical market flow, discovers candidate strategies, runs replay and paper validation, adjusts results for executable quote/slippage reality, and produces an auditable verdict: kill, keep testing, or graduate to a tiny guarded canary. PumpFun/memecoins are our first proving ground because they are fast, adversarial, and brutally honest about whether an agent can survive real execution.
 
 ## Why did you decide to build this, and why build it now?
 

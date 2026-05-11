@@ -1,6 +1,6 @@
-# Tutorial: run your first TrenchLab evaluation
+# Tutorial: run your first PalusOS evaluation
 
-This tutorial walks a judge or builder through the demo-safe TrenchLab flow.
+This tutorial walks a judge or builder through the demo-safe PalusOS flow.
 
 ## 1. Install and start
 

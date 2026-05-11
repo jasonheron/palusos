@@ -1,6 +1,6 @@
-# TrenchLab architecture
+# PalusOS architecture
 
-TrenchLab is intentionally packaged as a thin, understandable product shell around a deeper trading research system.
+PalusOS is intentionally packaged as a thin, understandable product shell around a deeper trading research system.
 
 ## Modules
 
