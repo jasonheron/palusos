@@ -25,38 +25,37 @@ function App() {
 
 function Hero() {
   return (
-    <section className="hero">
-      <nav className="nav">
-        <a href="#top" className="brand"><span>▰</span> TrenchLab</a>
-        <div>
+    <section className="hero" id="top">
+      <nav className="nav" aria-label="Primary navigation">
+        <a href="#top" className="brand"><span aria-hidden="true" />TrenchLab</a>
+        <div className="nav__links">
           <a href="#demo">Demo</a>
           <a href="#architecture">Architecture</a>
           <a href="#tutorial">Tutorial</a>
         </div>
+        <a className="nav__cta" href="#demo">View demo</a>
       </nav>
 
-      <div className="hero__grid" id="top">
-        <div className="hero__copy">
-          <div className="badge"><Sparkles size={16} /> Frontier Hackathon Submission</div>
-          <h1>The learning layer for autonomous Solana trading agents.</h1>
-          <p>{copy.description}</p>
-          <div className="hero__actions">
-            <a className="button primary" href="#demo">See the evaluation flow <ArrowRight size={18} /></a>
-            <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><Code2 size={18} /> Public-safe repo</a>
-          </div>
+      <div className="hero__copy">
+        <div className="badge"><Sparkles size={14} /> Frontier Hackathon Submission</div>
+        <h1>The learning layer for autonomous Solana trading agents.</h1>
+        <p>{copy.description}</p>
+        <div className="hero__actions">
+          <a className="button primary" href="#demo">See the evaluation flow <ArrowRight size={18} /></a>
+          <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><Code2 size={18} /> Public-safe repo</a>
         </div>
+      </div>
 
-        <div className="hero-card" aria-label="TrenchLab verdict preview">
-          <div className="orb orb-one" />
-          <div className="orb orb-two" />
+      <div className="hero-card" aria-label="TrenchLab verdict preview">
+        <div className="hero-card__header">
           <span className="eyebrow">Current verdict</span>
-          <h2>Keep Paper</h2>
-          <p>Promising candidate. Not live until executable EV, robustness, and runner safety all pass.</p>
-          <div className="hero-card__rows">
-            <StatusRow icon={<BrainCircuit />} label="Replay + ML discovery" value="Pass" />
-            <StatusRow icon={<LineChart />} label="Quote-adjusted EV" value="Watch" />
-            <StatusRow icon={<ShieldCheck />} label="Canary gate" value="Locked" />
-          </div>
+          <strong>Keep Paper</strong>
+        </div>
+        <p>Promising candidate. Not live until executable EV, robustness, and runner safety all pass.</p>
+        <div className="hero-card__rows">
+          <StatusRow icon={<BrainCircuit />} label="Replay + ML discovery" value="Pass" />
+          <StatusRow icon={<LineChart />} label="Quote-adjusted EV" value="Watch" />
+          <StatusRow icon={<ShieldCheck />} label="Canary gate" value="Locked" />
         </div>
       </div>
     </section>
