@@ -1218,3 +1218,37 @@
     letter-spacing: .06em;
   }
 }
+
+/* Label-first system lifecycle: quote + six real pipeline stages */
+.hero > .proof-strip {
+  grid-template-columns: minmax(150px, 1.2fr) repeat(6, minmax(0, 1fr));
+}
+
+.hero > .proof-strip .proof-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.hero > .proof-strip .proof-stage b {
+  color: #fff;
+  font-size: clamp(10px, .74vw, 13px);
+  font-weight: 760;
+  letter-spacing: .08em;
+  line-height: 1.05;
+}
+
+.hero > .proof-strip .proof-stage span {
+  color: rgba(255,255,255,.66);
+  font-size: clamp(8px, .62vw, 10px);
+  letter-spacing: .04em;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+@media (max-width: 720px) {
+  .hero > .proof-strip {
+    grid-template-columns: minmax(72px, 1.15fr) repeat(6, minmax(0, 1fr));
+  }
+}

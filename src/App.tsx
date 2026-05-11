@@ -99,12 +99,13 @@ function ProofStrip() {
     <section className="proof-strip" aria-label="Product proof points">
       <article className="proof-module">
         <div className="proof-input proof-input--quote"><span>THE PALUS WAS THE GLADIATOR’S SILENT TRAINING GROUND — A WOODEN POST WHERE DISCIPLINE, MUSCLE MEMORY, AND SURVIVAL WERE FORGED LONG BEFORE THE ARENA EVER SAW THEM.</span></div>
-        <div className="proof-stack" aria-label="Module input types"><span>Agent</span><span>Data</span><span>ML Model</span></div>
+        <div className="proof-stack proof-stage" aria-label="Discovery stage"><b>DISCOVERY ENGINE</b><span>Search agent, feed, and model space</span></div>
       </article>
-      <article><b>REPLAY</b><span>Test against historical market conditions</span></article>
-      <article><b>PAPER</b><span>Record every decision before real capital</span></article>
-      <article><b>CALIBRATE</b><span>Apply execution cost and slippage assumptions</span></article>
-      <article><b>REPORT</b><span>Share clear decisions and evidence</span></article>
+      <article><b>LABEL FOUNDRY</b><span>Design data labels worth predicting</span></article>
+      <article><b>ML LAB</b><span>Find models and strategy profiles</span></article>
+      <article><b>PROOF ENGINE</b><span>Require trusted quotes and outcomes</span></article>
+      <article><b>PAPER → CANARY</b><span>Graduate only after realistic EV</span></article>
+      <article><b>SCALE</b><span>Autonomous trading after proof</span></article>
     </section>
   );
 }
