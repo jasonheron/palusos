@@ -1087,3 +1087,8 @@
 .diagram-choice {
   width: min(100%, 320px);
 }
+
+/* Section two headline size */
+.system-section .section-heading h2 {
+  font-size: 40px;
+}
