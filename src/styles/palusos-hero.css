@@ -474,3 +474,71 @@
 .hero > .proof-strip .proof-stack {
   width: auto;
 }
+
+/* Correct module input cell grouping */
+.hero > .proof-strip {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.hero > .proof-strip .proof-module {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 0;
+  padding: 0;
+  background: rgba(0,0,0,.52);
+}
+
+.hero > .proof-strip .proof-input,
+.hero > .proof-strip .proof-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px clamp(10px, 1.2vw, 16px);
+}
+
+.hero > .proof-strip .proof-input {
+  border-right: 1px solid rgba(255,255,255,.10);
+}
+
+.hero > .proof-strip .proof-stack {
+  width: max-content;
+  min-width: 0;
+  align-content: center;
+}
+
+.hero > .proof-strip .proof-stack span {
+  white-space: nowrap;
+}
+
+.hero > .proof-strip .proof-input b {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(14px, 1.25vw, 18px);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 5px;
+  text-transform: none !important;
+}
+
+.hero > .proof-strip .proof-module b,
+.hero > .proof-strip .proof-module span {
+  text-transform: none;
+}
+
+.hero > .proof-strip article:nth-child(1),
+.hero > .proof-strip article:nth-child(2) {
+  border-left: 0;
+  border-right: 1px solid rgba(255,255,255,.18);
+}
+
+.hero > .proof-strip article:nth-child(2)::before {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .hero > .proof-strip {
+    grid-template-columns: 1fr;
+  }
+  .hero > .proof-strip .proof-module {
+    grid-template-columns: 1fr max-content;
+  }
+}

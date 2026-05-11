@@ -78,8 +78,10 @@ function GitHubMark() {
 function ProofStrip() {
   return (
     <section className="proof-strip" aria-label="Product proof points">
-      <article className="proof-input"><b>PalusOS</b><span>Model Inputs</span></article>
-      <article className="proof-stack" aria-label="Module input types"><span>Agent</span><span>Data</span><span>ML Model</span></article>
+      <article className="proof-module">
+        <div className="proof-input"><b>PalusOS</b><span>Model Inputs</span></div>
+        <div className="proof-stack" aria-label="Module input types"><span>Agent</span><span>Data</span><span>ML Model</span></div>
+      </article>
       <article><b>REPLAY</b><span>Test against historical market conditions</span></article>
       <article><b>PAPER</b><span>Record every decision before real capital</span></article>
       <article><b>CALIBRATE</b><span>Apply execution cost and slippage assumptions</span></article>
