@@ -11,6 +11,13 @@ import {
   largestWinnerRemovedMean,
   outlierRemovedMean,
 } from '../src/modules/evaluationEngine.ts';
+import {
+  applyPaperQuoteObservation,
+  buildFallbackLivePaperSnapshot,
+  buildRpcLivePaperSnapshot,
+  enrichEventWithMint,
+  normalizeRpcSignatures,
+} from '../src/modules/livePaper.ts';
 
 const statusScore = { pass: 1, watch: 0.5, fail: 0 };
 
@@ -103,4 +110,45 @@ test('strategy discovery ranks every agent/feed/model profile with proof metadat
   assert.ok(candidates.some((candidate) => candidate.stage === 'reject'));
   assert.ok(candidates.every((candidate) => candidate.profileId.includes(candidate.agent.id)));
   assert.ok(candidates.every((candidate) => candidate.proofPoints.length === 3));
+});
+
+test('live paper fallback honors selected profile and stays wallet-free', () => {
+  const snapshot = buildFallbackLivePaperSnapshot('missing_rpc_env', {
+    agentId: agentDefinitions[2].id,
+    modelId: modelDefinitions[1].id,
+  });
+
+  assert.equal(snapshot.meta.mode, 'demo-fallback');
+  assert.equal(snapshot.meta.wallet, 'none');
+  assert.equal(snapshot.meta.paperOnly, true);
+  assert.equal(snapshot.selectedProfile.agentId, agentDefinitions[2].id);
+  assert.equal(snapshot.selectedProfile.modelId, modelDefinitions[1].id);
+  assert.ok(snapshot.events.length > 0);
+});
+
+test('RPC live snapshot normalizes signatures, mints, and server-side paper quotes', () => {
+  const [baseEvent] = normalizeRpcSignatures([
+    { signature: '5JqTestSignature1111111111111111111111111111111111111111111', slot: 123, blockTime: 1_700_000_000 },
+  ], { label: 'Pump.fun bonding curve program', address: 'program' });
+  const withMint = enrichEventWithMint(baseEvent, 'Abcd111111111111111111111111111111111111pump');
+  const quoted = applyPaperQuoteObservation(withMint, {
+    status: 'quoted',
+    inputSol: 0.01,
+    outputMint: withMint.mint,
+    buyOutAmount: '1000000',
+    roundTripSol: 0.0094,
+    roundTripReturnPct: -0.06,
+    priceImpactPct: 0.5,
+    routePlanHops: 2,
+  });
+  const snapshot = buildRpcLivePaperSnapshot([quoted], {
+    agentId: agentDefinitions[0].id,
+    modelId: modelDefinitions[0].id,
+  });
+
+  assert.equal(snapshot.meta.mode, 'rpc-live-readonly');
+  assert.equal(snapshot.events[0].mint, 'Abcd111111111111111111111111111111111111pump');
+  assert.equal(snapshot.events[0].quote.status, 'quoted');
+  assert.equal(snapshot.paper.decisions[0].quoteStatus, 'quoted');
+  assert.equal(snapshot.selectedProfile.agentId, agentDefinitions[0].id);
 });

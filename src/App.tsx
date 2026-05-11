@@ -1,7 +1,8 @@
 import type React from 'react';
-import { ArrowRight, Bot, BrainCircuit, ChevronDown, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, Bot, BrainCircuit, ChevronDown, DatabaseZap, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
 import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
 import { AgentLab } from './components/AgentLab';
+import { LivePaperDemo } from './components/LivePaperDemo';
 import { marketAdapters, strategyRunners } from './modules/adapters';
 import './styles/app.css';
 import './styles/palusos-hero.css';
@@ -11,6 +12,12 @@ const copy = {
 };
 
 function App() {
+  const isDemoRoute = typeof window !== 'undefined' && window.location.pathname === '/demo';
+
+  if (isDemoRoute) {
+    return <DemoPage />;
+  }
+
   return (
     <main>
       <Hero />
@@ -26,6 +33,54 @@ function App() {
   );
 }
 
+function DemoPage() {
+  return (
+    <main>
+      <section className="hero demo-hero" id="top">
+        <nav className="nav" aria-label="Demo navigation">
+          <a href="/" className="brand"><span aria-hidden="true" />PalusOS</a>
+          <div className="nav__spacer" />
+          <div className="nav__actions">
+            <a className="nav__cta" href="/#agent-lab">Agent Lab</a>
+            <button className="nav__menu" aria-label="Open menu"><Menu size={18} /></button>
+          </div>
+        </nav>
+
+        <div className="hero__copy demo-hero__copy">
+          <div className="badge"><RadioIcon /> Server-side live paper route</div>
+          <h1>/demo</h1>
+          <p className="hero__tagline">
+            Select a trading profile and ML model, then evaluate recent Pump/PumpSwap activity through a read-only RPC feed and server-side Jupiter paper quotes.
+          </p>
+          <div className="hero__actions">
+            <a className="button primary" href="#live-paper-demo">Run Paper Demo <ArrowRight size={18} /></a>
+            <a className="button secondary" href="/">Back to site</a>
+          </div>
+        </div>
+
+        <div className="hero-card demo-boundary-card" aria-label="Demo safety boundary">
+          <div className="hero-card__header">
+            <span className="eyebrow">Safety boundary</span>
+            <strong>No Wallet</strong>
+          </div>
+          <p>RPC and Jupiter calls run server-side only. The client receives normalized evidence rows, paper quote status, and proof metrics — never API keys, RPC URLs, wallet material, or transaction payloads.</p>
+          <div className="hero-card__rows">
+            <StatusRow icon={<DatabaseZap />} label="RPC feed" value="Server" />
+            <StatusRow icon={<LineChart />} label="Jupiter quotes" value="Server" />
+            <StatusRow icon={<ShieldCheck />} label="Signing / swaps" value="Absent" />
+          </div>
+        </div>
+      </section>
+      <LivePaperDemo />
+      <FinalCTA />
+    </main>
+  );
+}
+
+function RadioIcon() {
+  return <span aria-hidden="true" className="inline-radio-dot" />;
+}
+
 function Hero() {
   return (
     <section className="hero" id="top">
@@ -33,7 +88,7 @@ function Hero() {
         <a href="#top" className="brand"><span aria-hidden="true" />PalusOS</a>
         <div className="nav__spacer" />
         <div className="nav__actions">
-          <a className="nav__cta" href="#agent-lab">Agent Lab</a>
+          <a className="nav__cta" href="/demo">Live Demo</a>
           <button className="nav__menu" aria-label="Open menu"><Menu size={18} /></button>
         </div>
       </nav>
@@ -43,7 +98,8 @@ function Hero() {
         <h1>PalusOS</h1>
         <p className="hero__tagline">{copy.tagline}</p>
         <div className="hero__actions">
-          <a className="button primary" href="#agent-lab">Run Agent Lab <ArrowRight size={18} /></a>
+          <a className="button primary" href="/demo">Open Live Demo <ArrowRight size={18} /></a>
+          <a className="button secondary" href="#agent-lab">Run Agent Lab</a>
           <a className="button secondary" href="https://github.com/jasonheron/palusos" aria-label="PalusOS GitHub repository"><GitHubMark /> GitHub <ExternalLink size={16} /></a>
         </div>
       </div>

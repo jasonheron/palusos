@@ -37,6 +37,15 @@ This repo ships with bundled demo data so you can run the full UI immediately. T
 4. Review robustness gates such as outlier-removed EV, largest-winner-removed EV, and drawdown limits.
 5. Get a final verdict: **Reject**, **Keep Testing**, or **Promote / Canary Eligible** under explicit limits.
 
+## Live `/demo` route
+
+The app also ships a proper `/demo` page. It uses the same PalusOS UI language, lets the user select the trading profile and ML model, and calls server-side endpoints for live inputs:
+
+- `api/live-feed.ts` reads recent Pump/PumpSwap signatures from one Solana JSON-RPC endpoint (`PALUS_RPC_URL`, `PALUS_HELIUS_RPC_URL`, `HELIUS_RPC_URL`, or `FLUX_RPC_URL`).
+- The same server endpoint can call Jupiter quotes with `PALUS_JUPITER_API_KEY` to compute paper-only round-trip quote observations.
+- The client never receives RPC URLs, Jupiter keys, wallet material, transaction payloads, or signing capability.
+- If env is unavailable or an upstream request fails, `/demo` falls back to bundled public-safe demo rows.
+
 ## Quick start
 
 ```bash
@@ -44,7 +53,7 @@ npm install
 npm run dev
 ```
 
-Open the local Vite URL printed in the terminal. The first-run experience is the polished PalusOS website and Agent Lab UI, not a CLI-only workflow.
+Open the local Vite URL printed in the terminal. The first-run experience is the polished PalusOS website and Agent Lab UI, not a CLI-only workflow. Visit `/demo` for the live-paper demo route; without server env it intentionally shows the demo fallback.
 
 ## Build
 
@@ -60,7 +69,10 @@ src/data/agentLabData.ts           bundled demo feeds, agents, and models
 src/data/demoAgents.ts             demo agent evidence
 src/modules/adapters.ts            market and strategy adapter shapes
 src/modules/evaluationEngine.ts    discovery, EV calibration, gates, and verdicts
+src/modules/livePaper.ts           shared live-feed normalization and paper snapshot logic
 src/components/AgentLab.tsx        discovery and proof demo UI
+src/components/LivePaperDemo.tsx   /demo profile/model selector and live-paper UI
+api/live-feed.ts                   server-only RPC + Jupiter quote endpoint
 src/components/AgentDashboard.tsx  demo evaluation UI
 docs/ARCHITECTURE.md               system design
 docs/DEPLOYMENT_PATH.md            demo-to-private proof path
