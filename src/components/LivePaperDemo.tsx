@@ -179,6 +179,8 @@ export function LivePaperDemo() {
           </div>
         </header>
 
+        <div className="terminal-sim-disclaimer">SIMULATED PAPER VIEW — NOT VERIFIED STRATEGY PNL. PUBLIC DEMO VISUALIZES THE PROOF LOOP; REAL LABEL DISCOVERY, ML SEARCH, AND QUOTE-BACKED OUTCOMES RUN IN PRIVATE SYSTEM INFRASTRUCTURE.</div>
+
         <section className="terminal-dashboard" aria-label="PalusOS paper dashboard">
           <aside className="terminal-profile-rail" aria-label="Profile controls and pipeline">
             <div className="profile-control-stack">
@@ -213,9 +215,9 @@ export function LivePaperDemo() {
             <div className="rail-divider" />
 
             <div className="profile-process-list">
-              <span className="rail-label">HOW A PROFILE IS MADE</span>
+              <span className="rail-label">DISCOVERY ENGINE</span>
               <p className="profile-process-copy">
-                PalusOS does not start with a wallet. It turns audited data into labels, models, proof, then paper evidence.
+                Simulated public view of the PalusOS discovery loop: read-only evidence becomes labels, model searches, strategy profiles, and proof gates before paper or canary.
               </p>
               <ol>
                 {DISCOVERY_ENGINE_STAGES.map((stage) => (
