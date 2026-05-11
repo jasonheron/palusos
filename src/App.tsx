@@ -13,7 +13,7 @@ function App() {
   return (
     <main>
       <Hero />
-      <ProofStrip />
+      <SystemDiagram />
       <AgentDashboard />
       <PipelineTimeline />
       <ModularSection />
@@ -45,6 +45,8 @@ function Hero() {
           <a className="button secondary" href="https://github.com" aria-label="Repository placeholder"><GitHubMark /> GitHub</a>
         </div>
       </div>
+
+      <ProofStrip />
 
       <div className="hero-card" aria-label="PalusOS verdict preview">
         <div className="hero-card__header">
@@ -82,6 +84,51 @@ function ProofStrip() {
       <article><b>Calibrate</b><span>Apply execution cost and slippage assumptions</span></article>
       <article><b>Report</b><span>Share clear decisions and evidence</span></article>
     </section>
+  );
+}
+
+
+function SystemDiagram() {
+  const agents = ['Claude 4.7', 'GPT-5.5', 'Gemini Quant', 'Kimi Trader', 'Qwen Analyst'];
+  const feeds = ['PumpFun historical + live collector', 'BTC/USD spot', 'SOL perps', 'DEX pool flow', 'Order-book snapshots'];
+  const models = ['PalusOS Custom', 'PalusOS Traditional', 'PalusOS Memes', 'XGBoost Bundle', 'LSTM Regime Model'];
+  const outputs = ['Replay', 'Paper', 'Calibrate', 'Report'];
+
+  return (
+    <section className="system-section" id="architecture">
+      <div className="section-heading compact">
+        <span className="eyebrow">How PalusOS works</span>
+        <h2>Connect agents, data feeds, and ML models into one evaluation loop.</h2>
+        <p>Bring the agent you want to test, the market data you trust, and the models you already use. PalusOS turns them into a repeatable loop for testing, calibration, and reporting.</p>
+      </div>
+
+      <div className="system-diagram" aria-label="PalusOS system diagram">
+        <DiagramColumn title="Agent" items={agents} />
+        <DiagramColumn title="Data Feed" items={feeds} />
+        <DiagramColumn title="ML Models" items={models} />
+        <div className="diagram-arrow" aria-hidden="true">→</div>
+        <div className="diagram-core">
+          <span>Plug into</span>
+          <strong>PalusOS</strong>
+        </div>
+        <div className="diagram-arrow" aria-hidden="true">→</div>
+        <div className="diagram-loop">
+          {outputs.map((item) => <b key={item}>{item}</b>)}
+          <small>ML Loop</small>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DiagramColumn({ title, items }: { title: string; items: string[] }) {
+  return (
+    <article className="diagram-column">
+      <h3>{title}</h3>
+      <div className="swap-list">
+        {items.map((item) => <span key={item}>{item}</span>)}
+      </div>
+    </article>
   );
 }
 
