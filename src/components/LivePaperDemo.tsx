@@ -15,14 +15,14 @@ import { formatSol } from '../modules/evaluationEngine';
 const POLL_MS = 7_500;
 const PAPER_STARTING_EQUITY_SOL = 10;
 
-const PROFILE_BUILD_STAGES = [
-  { title: 'DATA TRUTH', text: 'Audit lifecycle coverage, censoring, quote freshness, and route observability.' },
-  { title: 'LABEL FOUNDRY', text: 'Design trade-realistic labels before training or selecting any model.' },
-  { title: 'ML LAB', text: 'Search models, near-misses, failure modes, and supported label families.' },
-  { title: 'STRATEGY PROFILE', text: 'Bind entry, exit, size, route, score, and veto assumptions into a profile.' },
-  { title: 'PROOF ENGINE', text: 'Require pre-outcome intent, trusted quotes, failed exits, costs, and realistic EV.' },
-  { title: 'PAPER / CANARY', text: 'Paper first; canary stays private, tiny, capped, and explicitly enabled.' },
-  { title: 'SCALE', text: 'Scale only after proof, paper, and canary evidence agree under drift limits.' },
+const DISCOVERY_ENGINE_STAGES = [
+  { title: 'DATA TRUTH', text: 'Audit lifecycle coverage, freshness, censoring, and route visibility.' },
+  { title: 'LABEL FOUNDRY', text: 'Generate candidate labels that are actually worth predicting.' },
+  { title: 'ML LAB', text: 'Train/search models and expose near-misses plus failure modes.' },
+  { title: 'PROFILE BUILDER', text: 'Bind entry, exit, size, route, score, and veto assumptions.' },
+  { title: 'PROOF ENGINE', text: 'Require intent, trusted quotes, failed exits, costs, and realistic EV.' },
+  { title: 'PAPER / CANARY', text: 'Paper first; canary stays private, tiny, capped, and explicit.' },
+  { title: 'SCALE', text: 'Scale only after proof, paper, and canary evidence agree.' },
 ];
 
 type PaperPositionStatus = 'OPEN' | 'CLOSED';
@@ -93,7 +93,7 @@ interface RouteStatusSummary {
 export function LivePaperDemo() {
   const [agentId, setAgentId] = useState(agentDefinitions[0].id);
   const [modelId, setModelId] = useState(modelDefinitions[0].id);
-  const [isRunning, setIsRunning] = useState(true);
+  const [isRunning, setIsRunning] = useState(false);
   const [snapshot, setSnapshot] = useState<LivePaperSnapshot>(() => buildClientFetchFallbackSnapshot({ agentId, modelId }));
   const [lastError, setLastError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -218,7 +218,7 @@ export function LivePaperDemo() {
                 PalusOS does not start with a wallet. It turns audited data into labels, models, proof, then paper evidence.
               </p>
               <ol>
-                {PROFILE_BUILD_STAGES.map((stage) => (
+                {DISCOVERY_ENGINE_STAGES.map((stage) => (
                   <li key={stage.title}>
                     <b>{stage.title}</b>
                     <small>{stage.text}</small>
@@ -230,10 +230,10 @@ export function LivePaperDemo() {
 
           <main className="terminal-chart-column" aria-label="Portfolio metrics and chart">
             <section className="terminal-metrics-grid" aria-label="Paper portfolio metrics">
-              <TerminalMetric label="NET PNL" value={formatSol(terminalMetrics.totalPnlSol)} detail="REAL + UNRL" tone={terminalMetrics.totalPnlSol >= 0 ? 'positive' : 'negative'} />
-              <TerminalMetric label="UNREALIZED" value={formatSol(terminalMetrics.unrealizedPnlSol)} detail={`${terminalMetrics.openPositions} OPEN`} tone={terminalMetrics.unrealizedPnlSol >= 0 ? 'positive' : 'negative'} />
-              <TerminalMetric label="CLOSED" value={String(terminalMetrics.closedPositions)} detail={terminalMetrics.winRatePct === null ? 'NO CLOSED ROWS' : `${terminalMetrics.winRatePct.toFixed(0)}% WIN`} tone="neutral" />
-              <TerminalMetric label="OPEN" value={String(terminalMetrics.openPositions)} detail={`${snapshot.paper.metrics.selectedTrades} SELECTED`} tone="neutral" />
+              <TerminalMetric label="CUM. PNL" value={formatSol(terminalMetrics.totalPnlSol)} detail="REALIZED + UNREALIZED" tone={terminalMetrics.totalPnlSol >= 0 ? 'positive' : 'negative'} />
+              <TerminalMetric label="CUM. UNREALIZED" value={formatSol(terminalMetrics.unrealizedPnlSol)} detail={`${terminalMetrics.openPositions} OPEN POSITIONS`} tone={terminalMetrics.unrealizedPnlSol >= 0 ? 'positive' : 'negative'} />
+              <TerminalMetric label="TRADES" value={String(positions.length)} detail={terminalMetrics.winRatePct === null ? 'CUMULATIVE PAPER' : `${terminalMetrics.winRatePct.toFixed(0)}% CLOSED WIN`} tone="neutral" />
+              <TerminalMetric label="OPEN" value={String(terminalMetrics.openPositions)} detail={`${terminalMetrics.closedPositions} CLOSED`} tone="neutral" />
             </section>
 
             <article className="chart-panel terminal-chart-panel">
@@ -244,16 +244,14 @@ export function LivePaperDemo() {
 
               <EquityChart points={equityCurve} markerLabel={activePair.price} />
             </article>
-          </main>
 
-          <aside className="terminal-right-rail" aria-label="Paper positions and proof details">
-            <section className="right-module">
+            <section className="positions-under-chart">
               <div className="right-module-header">
                 <span>POSITIONS</span>
-                <b>{positions.length} TOTAL</b>
+                <b>{positions.length} CUMULATIVE</b>
               </div>
-              <div className="compact-position-list">
-                {positions.length > 0 ? positions.slice(0, 4).map((position) => {
+              <div className="compact-position-list compact-position-list--wide">
+                {positions.length > 0 ? positions.map((position) => {
                   const pnl = position.realizedPnlSol + position.unrealizedPnlSol;
                   return (
                     <div className="compact-position-row" key={position.id}>
@@ -265,10 +263,12 @@ export function LivePaperDemo() {
                       <strong className={pnl >= 0 ? 'positive' : 'negative'}>{formatSol(pnl)}</strong>
                     </div>
                   );
-                }) : <p className="terminal-empty-copy">No active paper positions for this profile yet.</p>}
+                }) : <p className="terminal-empty-copy">Press START to begin the paper feed. No active paper positions yet.</p>}
               </div>
             </section>
+          </main>
 
+          <aside className="terminal-right-rail" aria-label="Signal and proof details">
             <section className="right-module signal-module">
               <div className="right-module-header">
                 <span>SIGNAL LOG</span>
