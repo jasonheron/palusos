@@ -73,9 +73,9 @@ function Hero() {
         </div>
         <p>Candidate profile discovered. Not promoted until realistic EV, execution calibration, robustness, and safety checks all pass.</p>
         <div className="hero-card__rows">
-          <StatusRow icon={<BrainCircuit />} label="Replay + discovery" value="Pass" />
-          <StatusRow icon={<LineChart />} label="Execution-adjusted EV" value="Watch" />
-          <StatusRow icon={<ShieldCheck />} label="Safety gate" value="Locked" />
+          <StatusRow icon={<BrainCircuit />} label="Label foundry" value="Active" />
+          <StatusRow icon={<LineChart />} label="Realistic EV" value="Watch" />
+          <StatusRow icon={<ShieldCheck />} label="Proof gate" value="Locked" />
         </div>
       </div>
     </section>
@@ -113,23 +113,23 @@ function ProofStrip() {
 
 function SystemDiagram() {
   const inputs = [
-    { title: 'Agent', options: ['Claude 4.7', 'GPT-5.5', 'Gemini Quant', 'Kimi Trader'] },
-    { title: 'Data Feed', options: ['PumpFun live collector', 'BTC/USD spot', 'SOL perps', 'DEX pool flow'] },
-    { title: 'ML Model', options: ['PalusOS Custom', 'XGBoost Bundle', 'LSTM Regime Model', 'PalusOS Memes'] },
+    { title: 'Dataset Adapter', options: ['PumpFun lifecycle DB', 'Quote archive', 'Agent decisions', 'DEX flow'] },
+    { title: 'Label Candidate', options: ['First 2x continuation', 'Migration follow-through', 'Buyer breadth accel', 'Executable EV'] },
+    { title: 'ML / Profile', options: ['Label Foundry', 'ML Lab', 'Strategy Profile', 'Proof Pack'] },
   ];
   const loop = [
-    { title: 'Discover', text: 'Search agent/feed/model combinations for candidate strategy profiles.' },
-    { title: 'Replay', text: 'Run candidates against historical or adapter-supplied market conditions.' },
-    { title: 'Calibrate', text: 'Apply fees, slippage, latency, route risk, and execution assumptions.' },
-    { title: 'Prove', text: 'Output clear evidence for what to reject, keep testing, or graduate.' },
+    { title: 'Data Truth', text: 'Audit lifecycle coverage, censoring, freshness, labels, and route observability.' },
+    { title: 'Label Foundry', text: 'Design trade-realistic labels before deciding what any model should predict.' },
+    { title: 'ML Lab', text: 'Search models and strategy profiles against supported labels and full data.' },
+    { title: 'Proof Engine', text: 'Accept only quote-backed intents, outcomes, costs, failed exits, and realistic EV.' },
   ];
 
   return (
     <section className="system-section" id="architecture">
       <div className="section-heading compact">
         <span className="eyebrow">What is PalusOS</span>
-        <h2>Autonomous trading agents are coming, but “Claude, make profit trading PumpFun” does not work yet.</h2>
-        <p>PalusOS gives AI agents the framework needed to discover and test trading profiles: Discovery Lab candidate search, historical backtesting, quote-backed paper trading, execution calibration, robustness gates, and EV proof reports before capital is at risk.</p>
+        <h2>Autonomous trading agents need a research system before they need a wallet.</h2>
+        <p>PalusOS is a label-first discovery and proof stack: it audits real market data, designs trade-realistic labels, searches the ML lab for strategy profiles, then proves candidates with quote-backed paper outcomes, realistic EV, and gated canary readiness before capital is at risk.</p>
       </div>
 
       <div className="system-diagram" aria-label="PalusOS system diagram">
@@ -170,15 +170,15 @@ function ModularSection() {
     <section className="modular-section">
       <div className="section-heading compact">
         <span className="eyebrow">Composable by design</span>
-        <h2>Plug in your market feed, strategy runner, gates, and reports.</h2>
-        <p>PalusOS is data-adapter based. This repo ships bundled demo rows for safety, but replacing them with real market feeds makes the same discovery, evaluation, and proof pipeline operate on real inputs.</p>
+        <h2>Plug in data truth, label design, ML search, proof gates, and reports.</h2>
+        <p>PalusOS is adapter based. This repo ships safe demo rows, but the real architecture is built for private lifecycle data, label candidates, model searches, strategy profiles, proof packs, and staged paper/canary promotion.</p>
       </div>
 
       <div className="module-grid">
-        <ModuleCard icon={<Layers3 />} title="Market adapters" items={[...marketAdapters.map((adapter) => `${adapter.name}: ${adapter.description}`), 'Swap bundled demo rows for real feeds in private deployments']} />
-        <ModuleCard icon={<Bot />} title="Strategy discovery" items={['Discover candidate profiles across agent/feed/model combinations', ...strategyRunners.map((runner) => `${runner.name}: ${runner.input}`)]} />
-        <ModuleCard icon={<ShieldCheck />} title="Promotion gates" items={['Reject weak strategies before real capital', 'Require robust EV after outlier removal', 'Graduate only under explicit limits and rollback rules']} />
-        <ModuleCard icon={<LockKeyhole />} title="Clean product package" items={['No private keys or .env files', 'Demo data only', 'Clear scope: evaluation and reporting infrastructure']} />
+        <ModuleCard icon={<Layers3 />} title="Data truth layer" items={[...marketAdapters.map((adapter) => `${adapter.name}: ${adapter.description}`), 'Audit coverage, freshness, censoring, and route observability before modelling']} />
+        <ModuleCard icon={<Bot />} title="Label Foundry + ML Lab" items={['Generate labels as auditable artifacts, not hardcoded guesses', 'Search models, profiles, near-misses, and failure modes across full data']} />
+        <ModuleCard icon={<ShieldCheck />} title="Proof Engine" items={['Require pre-outcome intent, trusted entry/exit quotes, failed-exit accounting, and realistic EV', 'Graduate to paper/canary only under explicit limits']} />
+        <ModuleCard icon={<LockKeyhole />} title="Public-safe package" items={['No private keys or .env files', 'Demo data included', 'Private adapters and wallets stay outside the repo']} />
       </div>
     </section>
   );
@@ -198,28 +198,28 @@ function DeploymentPathSection() {
   const stages = [
     {
       step: '00',
-      title: 'Bundled demo data',
-      text: 'Install the repo, run the Vite app, and inspect the public-safe replay rows. Nothing here connects to a wallet, RPC, or private database.',
+      title: 'Public demo shell',
+      text: 'Install the repo, run the Vite app, and inspect the safe UI/data contract. Nothing here ships wallets, private databases, or transaction signing.',
     },
     {
       step: '01',
-      title: 'Private data adapter',
-      text: 'Replace or extend adapter modules with your own market feed, quote, agent-decision, and outcome streams. Keep the normalized row shape stable so reports stay auditable.',
+      title: 'Data Truth layer',
+      text: 'Connect private lifecycle data, quote archives, agent decisions, and outcome streams. Audit freshness, coverage, censoring, and route observability before ML work counts.',
     },
     {
       step: '02',
-      title: 'Paper proof',
-      text: 'Run replay and quote-backed paper proof until execution-adjusted EV, drawdown, largest-winner-removed EV, and sample-density gates survive.',
+      title: 'Label Foundry + ML Lab',
+      text: 'Design labels worth predicting, evaluate supported label families, train/search models, and emit complete strategy profiles with entry, exit, size, and route assumptions.',
     },
     {
       step: '03',
-      title: 'Optional tiny canary',
-      text: 'The public repo does not enable canary trading. In a private operator build, canary must stay disabled by default and require explicit limits, rollback triggers, and human approval.',
+      title: 'Proof Engine → paper',
+      text: 'Record pre-outcome intents, trusted entry/exit quotes, failed quote/exit rows, fees, latency, slippage, and realistic EV before any capital path.',
     },
     {
       step: '04',
-      title: 'Scale only after gates',
-      text: 'Raise caps gradually only after paper and canary evidence agree. Any drift, failed exit, quote mismatch, or drawdown breach rolls back to paper.',
+      title: 'Canary → scale',
+      text: 'Canary is private, tiny, and disabled by default. Scale only after proof, paper, and canary evidence agree; rollback on drift, failed exits, or EV decay.',
     },
   ];
 
@@ -227,10 +227,10 @@ function DeploymentPathSection() {
     <section className="deployment-section" id="deployment-path">
       <div className="section-heading compact">
         <span className="eyebrow">From demo to real deployment</span>
-        <h2>A safe path from polished demo rows to private proof infrastructure.</h2>
+        <h2>A safe path from demo shell to label-first autonomous trading research.</h2>
         <p>
           PalusOS is intentionally public-safe: demo inputs in the repo, private adapters in your deployment,
-          paper proof before capital, and no live transaction signing or sending code shipped here.
+          label-first discovery before modelling, proof before capital, and no live transaction signing or sending code shipped here.
         </p>
       </div>
 
@@ -249,9 +249,9 @@ function DeploymentPathSection() {
           <div className="module-card__icon"><Layers3 /></div>
           <h3>Data adapter contract</h3>
           <p>
-            Demo feeds live in <code>src/data/agentLabData.ts</code>. Private adapters should emit normalized events with
-            stable IDs, asset/market labels, timestamps, signal/liquidity scores, realized or paper outcome fields,
-            and route-risk/execution-cost assumptions. Keep secrets and private archives outside the public repo.
+            Demo feeds live in <code>src/data/agentLabData.ts</code>. Private adapters should emit auditable lifecycle,
+            quote, decision, and outcome records with stable IDs, timestamps, provenance, route observability,
+            and explicit censoring/unknown handling. Keep secrets and private archives outside the public repo.
           </p>
         </article>
         <article>
@@ -266,8 +266,9 @@ function DeploymentPathSection() {
           <div className="module-card__icon"><ShieldCheck /></div>
           <h3>Responsible scaling</h3>
           <p>
-            Start with read-only replay, then paper. If a private canary is approved, use tiny capped exposure, one-way kill
-            switches, quote freshness checks, and automatic rollback on drawdown, failed exit, stale feed, or EV drift.
+            Start with data truth, label discovery, ML search, and quote-backed proof. If a private canary is approved,
+            use tiny capped exposure, one-way kill switches, quote freshness checks, and automatic rollback on failed exits,
+            stale feeds, drawdown, or EV drift.
           </p>
         </article>
       </div>
@@ -297,7 +298,7 @@ function FinalCTA() {
       <span className="eyebrow">Why now?</span>
       <h2>Prove before capital.</h2>
       <p>
-        PalusOS gives teams a repeatable way to discover candidate strategy profiles, evaluate them against adapter-backed data, calibrate execution assumptions, and produce clear evidence without claiming live profitability.
+        PalusOS gives teams a repeatable way to turn raw market data into label candidates, ML-tested strategy profiles, quote-backed proof packs, and staged paper/canary decisions without pretending a model deserves capital before the evidence exists.
       </p>
       <a className="button primary" href="#agent-lab">Run the Agent Lab <ArrowRight size={18} /></a>
     </section>

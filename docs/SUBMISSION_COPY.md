@@ -1,31 +1,31 @@
-# Submission copy
+# PalusOS Submission Copy
 
-## Description under 500 chars
+## One-liner
 
-PalusOS is the discovery and proof engine for autonomous trading agents. It searches for candidate trading profiles, tests them through replay and quote-backed paper trading, calibrates results against execution reality, and produces EV reports before capital is at risk.
+PalusOS is the label-first discovery and proof engine for autonomous trading agents.
 
-## What are you building, and who is it for?
+## Short description
 
-We are building PalusOS, the discovery and proof engine for autonomous trading agents. It is for builders, quants, agent teams, and power users who need to know whether a candidate strategy profile deserves more testing before any capital path. PalusOS ingests market flow through adapters, runs agent/profile candidates through replay and paper validation, adjusts results for executable quote and slippage assumptions, and produces an auditable decision: reject, keep testing, or graduate carefully under explicit limits.
+PalusOS turns raw market data into candidate labels, searches for ML-backed strategy profiles, and proves or rejects those profiles with quote-backed paper outcomes, realistic EV, and staged canary readiness before capital is at risk.
 
-## Why did you decide to build this, and why build it now?
+## Longer description
 
-Trading agents are becoming easier to launch than to evaluate. A backtest or paper-profit chart can look impressive while hiding slippage, latency, fees, failed exits, adverse selection, and outlier dependence. PalusOS exists to make that gap measurable. It gives teams a repeatable way to discover strategy candidates, punish fake signal, track drift, calibrate execution assumptions, and prevent unsafe promotion. As autonomous agents move closer to real execution, proof infrastructure becomes a prerequisite rather than a nice-to-have.
+We are building PalusOS for builders, quants, agent teams, and power users who need proof infrastructure before autonomous agents touch capital. The system starts with data truth: lifecycle coverage, freshness, censoring, quote/route observability, and labelable event availability. From there, a Label Foundry designs trade-realistic labels, an ML Lab searches for models and complete strategy profiles, and a Proof Engine accepts only auditable intent-before-outcome records with trusted entry/exit quotes, costs, failed exits, and realistic EV.
 
-## Public repo / demo-data caveat
+The public hackathon repo is intentionally safe and polished: bundled demo data, a landing page, Agent Lab, and a live read-only `/demo` route. The real architecture is modular. In a private deployment, teams can replace the demo rows with lifecycle data, quote archives, agent decision logs, and paper/canary outcomes while keeping the same proof contracts.
 
-This public repo ships bundled demo data only for safety. It includes no wallets, API keys, private databases, real `.env` files, private infra, transaction signing/sending code, or live-trading configuration. The architecture is data-adapter based: replacing the bundled demo rows with real market feeds or agent decision logs in a private deployment makes the same discovery/evaluation/proof pipeline operate on real inputs. `.env.example` is only a placeholder checklist for operator-provided RPC/wallet references, canary caps, and rollback gates. Canary is disabled by default and belongs in private infrastructure only. The demo does not claim live profitability.
+## Why now
 
-## Demo-to-real deployment path
+Autonomous trading agents are getting easier to launch than to evaluate. A fixed label, backtest, or paper-profit chart can look convincing while hiding slippage, latency, fees, failed exits, stale/censored data, route depth, adverse selection, and one-lucky-winner dependence. PalusOS exists to make that gap measurable. It asks the more important first question: what should the model be trying to predict?
 
-Run the polished website UI with `npm install` and `npm run dev`, inspect bundled demo rows, plug in a private data adapter, prove candidates in replay and quote-backed paper, optionally run a tiny disabled-by-default private canary after explicit approval, and scale only through progressive caps once gates pass. Roll back on failed exits, stale feeds, quote mismatches, drawdown breaches, or EV drift; never skip paper/canary.
+## Safety / scope
 
-## Technologies/integrations
+This public repo ships demo data only. It includes no wallets, private keys, real `.env` files, private databases, transaction signing/sending code, live canary execution, or public live-trading configuration. RPC and Jupiter keys are optional server-side environment variables for the read-only demo route. Canary is disabled by default and belongs in private infrastructure only. The demo does not claim live profitability.
 
-Solana-style market data adapters, real-time event streaming patterns, SQLite/Python-style ML evaluation pipelines, XGBoost/scikit-learn-style tabular models, TypeScript/Node.js dashboard and orchestration, quote-backed execution calibration, paper/live-sim/canary evaluation flows, OpenClaw AI agent workflows.
+## User journey
 
-## Category
+Run the polished website UI, inspect the public-safe demo contract, open `/demo` for a read-only paper terminal, then in a private deployment connect real data truth, design labels, run the ML Lab, generate strategy profiles, and pass candidates through quote-backed proof before paper/canary/scale.
 
-Best single category: **AI Platforms / Agents**.
+## Suggested tagline
 
-If multi-select is available: **AI Platforms / Agents**, **Data & Analytics**, **DeFi**, **Developer Infrastructure**.
+Prove the agent before the arena.
