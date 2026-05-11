@@ -5,6 +5,7 @@ import {
   BarChart3,
   BrainCircuit,
   DatabaseZap,
+  ExternalLink,
   Pause,
   Play,
   Radio,
@@ -59,6 +60,36 @@ interface EquityPoint {
   y: number;
   value: number;
   label: string;
+}
+
+interface ActivePairSummary {
+  symbol: string;
+  name: string;
+  pair: string;
+  price: string;
+  changeLabel: string;
+  changeTone: 'positive' | 'negative' | 'neutral';
+  liquidity: string;
+  marketCap: string;
+  volume: string;
+  signal: string;
+  quoteLabel: string;
+  statusLabel: string;
+}
+
+interface MarketRowMetrics {
+  marketCap: string;
+  volume: string;
+  liquidity: string;
+  quoteLabel: string;
+  quoteTone: string;
+}
+
+interface RouteStatusSummary {
+  slippageCap: string;
+  route: string;
+  impact: string;
+  quote: string;
 }
 
 export function LivePaperDemo() {
@@ -118,10 +149,10 @@ export function LivePaperDemo() {
   const statusText = snapshot.meta.mode === 'rpc-live-readonly'
     ? 'Read-only Solana RPC input'
     : `Demo replay${snapshot.meta.reason ? ` · ${snapshot.meta.reason.replaceAll('_', ' ')}` : ''}`;
-  const selectedAgent = agentDefinitions.find((agent) => agent.id === agentId) ?? agentDefinitions[0];
-  const selectedModel = modelDefinitions.find((model) => model.id === modelId) ?? modelDefinitions[0];
   const latestEvent = snapshot.events[0];
   const latestCoin = latestEvent ? coinIdentity(latestEvent, 0) : null;
+  const activePair = useMemo(() => buildActivePairSummary(latestEvent), [latestEvent]);
+  const routeStatus = useMemo(() => buildRouteStatus(snapshot.events), [snapshot.events]);
 
   return (
     <section className="live-paper-section" id="live-paper-demo" aria-label="PalusOS paper terminal">
@@ -130,16 +161,14 @@ export function LivePaperDemo() {
           <a href="/" className="terminal-brand-block" aria-label="Back to PalusOS site">
             <span className={`terminal-status-dot ${isRunning ? 'active' : 'paused'}`} />
             <div>
-              <b>PALUSOS</b>
+              <b>PalusOS</b>
               <small>/demo · {modeLabel}</small>
             </div>
           </a>
 
           <nav className="terminal-route-tabs" aria-label="Demo terminal navigation">
-            <span className="active">Terminal</span>
-            <span>Paper</span>
-            <span>Feed</span>
-            <a href="/">Site</a>
+            <span className="active">Demo</span>
+            <a href="/">Home <ExternalLink size={12} aria-hidden="true" /></a>
           </nav>
 
           <div className="terminal-search-field" aria-label="Current watched market">
@@ -184,10 +213,10 @@ export function LivePaperDemo() {
         </section>
 
         <section className="terminal-metrics-grid" aria-label="Paper portfolio metrics">
-          <TerminalMetric label="Paper equity" value={formatUnsignedSol(terminalMetrics.paperEquitySol)} detail="10 SOL simulated start" tone="neutral" />
-          <TerminalMetric label="Net paper PnL" value={formatSol(terminalMetrics.totalPnlSol)} detail="realized + unrealized" tone={terminalMetrics.totalPnlSol >= 0 ? 'positive' : 'negative'} />
+          <TerminalMetric label="Equity" value={formatUnsignedSol(terminalMetrics.paperEquitySol)} detail="10 SOL sim" tone="neutral" />
+          <TerminalMetric label="Net PnL" value={formatSol(terminalMetrics.totalPnlSol)} detail="real + unrl" tone={terminalMetrics.totalPnlSol >= 0 ? 'positive' : 'negative'} />
           <TerminalMetric label="Unrealized" value={formatSol(terminalMetrics.unrealizedPnlSol)} detail={`${terminalMetrics.openPositions} open positions`} tone={terminalMetrics.unrealizedPnlSol >= 0 ? 'positive' : 'negative'} />
-          <TerminalMetric label="Realized" value={formatSol(terminalMetrics.realizedPnlSol)} detail={`${terminalMetrics.closedPositions} closed rows`} tone={terminalMetrics.realizedPnlSol >= 0 ? 'positive' : 'negative'} />
+          <TerminalMetric label="Realized" value={formatSol(terminalMetrics.realizedPnlSol)} detail={`${terminalMetrics.closedPositions} closed`} tone={terminalMetrics.realizedPnlSol >= 0 ? 'positive' : 'negative'} />
           <TerminalMetric label="Open" value={String(terminalMetrics.openPositions)} detail={`${snapshot.paper.metrics.selectedTrades} selected rows`} tone="neutral" />
           <TerminalMetric label="Confidence" value={`${snapshot.paper.metrics.confidenceScore}%`} detail={terminalMetrics.winRatePct === null ? 'no closed rows' : `${terminalMetrics.winRatePct.toFixed(0)}% win rate`} tone="neutral" />
         </section>
@@ -203,22 +232,29 @@ export function LivePaperDemo() {
             </div>
             <div className="market-feed-list">
               <div className="market-feed-row market-feed-heading" aria-hidden="true">
-                <b>Coin</b>
+                <b>Pair</b>
+                <span>MC</span>
+                <span>Vol</span>
                 <span>Sig</span>
-                <span>Liq</span>
-                <small>Quote / age</small>
+                <small>Quote</small>
               </div>
-              {snapshot.events.slice(0, 12).map((event, index) => {
+              {snapshot.events.slice(0, 14).map((event, index) => {
                 const coin = coinIdentity(event, index);
+                const metrics = buildMarketRowMetrics(event, index);
                 return (
                   <div className="market-feed-row" key={event.id}>
+                    <span className="token-icon" aria-hidden="true">{coin.symbol.slice(0, 2)}</span>
                     <div className="coin-cell">
                       <b>{coin.symbol}</b>
                       <small>{coin.name}</small>
                     </div>
-                    <span>{event.score}</span>
-                    <span>{event.liquidityScore}</span>
-                    <small>{event.quote?.status ?? 'not_configured'} · {timeAgo(event.timestamp)}</small>
+                    <small className="market-age">{timeAgo(event.timestamp)}</small>
+                    <div className="market-row-metrics" aria-label={`${coin.symbol} market metrics`}>
+                      <span><small>MC</small><b>{metrics.marketCap}</b></span>
+                      <span><small>Vol</small><b>{metrics.volume}</b></span>
+                      <span><small>Sig</small><b>{event.score}</b></span>
+                      <span className={`quote-badge ${metrics.quoteTone}`}><small>Quote</small><b>{metrics.quoteLabel}</b></span>
+                    </div>
                   </div>
                 );
               })}
@@ -227,14 +263,14 @@ export function LivePaperDemo() {
 
           <div className="terminal-center-stack">
             <article className="terminal-panel chart-panel">
-              <div className="terminal-panel-header compact">
-                <div>
-                  <span className="eyebrow">Paper equity</span>
-                  <h3>{formatUnsignedSol(terminalMetrics.paperEquitySol)}</h3>
+              <ActivePairHeader pair={activePair} modePill={isRunning ? 'LIVE LOOP' : 'PAUSED'} />
+              <div className="chart-toolbar" aria-label="Chart time range">
+                <div className="time-range-chips">
+                  {['1m', '5m', '15m', '1h'].map((range) => <span className={range === '5m' ? 'active' : ''} key={range}>{range}</span>)}
                 </div>
-                <span className="terminal-mode-pill">{isRunning ? 'LIVE LOOP' : 'PAUSED'}</span>
+                <small>{snapshot.meta.mode === 'rpc-live-readonly' ? 'read-only mark stream' : 'bundled demo mark stream'}</small>
               </div>
-              <EquityChart points={equityCurve} />
+              <EquityChart points={equityCurve} markerLabel={activePair.price} />
               <div className="chart-stat-strip" aria-label="Paper chart stats">
                 <span><small>Avg EV</small><b>{formatSol(snapshot.paper.metrics.averageEvSol)}</b></span>
                 <span><small>Outlier EV</small><b>{formatSol(snapshot.paper.metrics.outlierRemovedEvSol)}</b></span>
@@ -275,11 +311,11 @@ export function LivePaperDemo() {
                           <small>{position.name}</small>
                         </td>
                         <td>{position.side}</td>
-                        <td>{formatTokenPrice(position.entryPrice)}</td>
-                        <td>{formatTokenPrice(position.markPrice)}</td>
-                        <td>{position.sizeSol.toFixed(4)} SOL</td>
-                        <td className={position.unrealizedPnlSol >= 0 ? 'positive' : 'negative'}>{formatSol(position.unrealizedPnlSol)}</td>
-                        <td className={position.realizedPnlSol >= 0 ? 'positive' : 'negative'}>{formatSol(position.realizedPnlSol)}</td>
+                        <td className="numeric">{formatTokenPrice(position.entryPrice)}</td>
+                        <td className="numeric">{formatTokenPrice(position.markPrice)}</td>
+                        <td className="numeric">{position.sizeSol.toFixed(4)} SOL</td>
+                        <td className={`numeric pnl-cell ${position.unrealizedPnlSol >= 0 ? 'positive' : 'negative'}`}>{formatSol(position.unrealizedPnlSol)}</td>
+                        <td className={`numeric pnl-cell ${position.realizedPnlSol >= 0 ? 'positive' : 'negative'}`}>{formatSol(position.realizedPnlSol)}</td>
                         <td><span className={`position-status ${position.status.toLowerCase()}`}>{position.status}</span></td>
                         <td>
                           <span>{position.age}</span>
@@ -302,33 +338,43 @@ export function LivePaperDemo() {
           <aside className="terminal-panel terminal-ticket-panel">
             <div className="terminal-panel-header compact">
               <div>
-                <span className="eyebrow">Paper control</span>
-                <h3>Simulation only</h3>
+                <span className="eyebrow">Paper order sim</span>
+                <h3>{activePair.pair}</h3>
               </div>
+              <span className="terminal-mode-pill">NO WALLET</span>
             </div>
 
-            <div className="paper-ticket-card" aria-label="Paper-only simulation ticket">
-              <span>Read-only ticket</span>
+            <div className="paper-order-card" aria-label="Paper-only order simulation ticket">
+              <div className="order-ticket-topline">
+                <span>Paper mark</span>
+                <b>{activePair.price}</b>
+                <small className={activePair.changeTone}>{activePair.changeLabel}</small>
+              </div>
+              <div className="size-preset-grid" aria-label="Paper size presets">
+                {['0.005', '0.010', '0.025', '0.050'].map((size, index) => <span className={index === 1 ? 'active' : ''} key={size}>{size} SOL</span>)}
+              </div>
+              <div className="order-route-grid">
+                <span><small>Slippage cap</small><b>{routeStatus.slippageCap}</b></span>
+                <span><small>Route</small><b>{routeStatus.route}</b></span>
+                <span><small>Impact</small><b>{routeStatus.impact}</b></span>
+                <span><small>Quote</small><b>{routeStatus.quote}</b></span>
+              </div>
+              <div className="paper-sim-actions">
+                <button className="paper-sim-button buy" type="button" disabled>Paper Buy Sim</button>
+                <button className="paper-sim-button sell" type="button" disabled>Paper Sell Sim</button>
+              </div>
+              <small className="paper-only-copy">Simulation-only controls. No wallet connect, signing, swaps, transaction creation, or broadcasts.</small>
+            </div>
+
+            <div className="proof-log-card">
+              <span>Proof / gate status</span>
               <b>{snapshot.paper.verdictLabel}</b>
               <small>{snapshot.paper.action}</small>
-              <button className="paper-sim-button" type="button" disabled>Paper simulation only</button>
+              <ul>
+                {snapshot.paper.rationale.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
+              </ul>
             </div>
 
-            <div className="ticket-profile">
-              <span>Profile</span>
-              <b>{selectedAgent.name}</b>
-              <small>{selectedAgent.description}</small>
-            </div>
-            <div className="ticket-profile">
-              <span>Model</span>
-              <b>{selectedModel.name}</b>
-              <small>{selectedModel.description}</small>
-            </div>
-            <div className="ticket-profile">
-              <span>Feed / quote</span>
-              <b>{quoteSummary(snapshot.events)}</b>
-              <small>{snapshot.meta.quoteSource}</small>
-            </div>
             <div className="terminal-safety-grid">
               <SafetyPill icon={<ShieldCheck size={14} />} label="RPC" value={snapshot.meta.readOnly ? 'read only' : 'disabled'} />
               <SafetyPill icon={<Activity size={14} />} label="Mode" value={snapshot.meta.paperOnly ? 'paper' : 'unknown'} />
@@ -381,11 +427,15 @@ function TerminalMetric({ label, value, detail, tone }: { label: string; value: 
   );
 }
 
-function EquityChart({ points }: { points: EquityPoint[] }) {
+function EquityChart({ points, markerLabel }: { points: EquityPoint[]; markerLabel: string }) {
   if (points.length === 0) return null;
 
   const first = points[0];
   const last = points[points.length - 1];
+  const values = points.map((point) => point.value);
+  const maxValue = Math.max(...values);
+  const minValue = Math.min(...values);
+  const markerY = clamp(last.y, 10, 86);
   const linePath = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
   const areaPath = `${linePath} L ${last.x} 94 L ${first.x} 94 Z`;
   const pointString = points.map((point) => `${point.x},${point.y}`).join(' ');
@@ -399,9 +449,13 @@ function EquityChart({ points }: { points: EquityPoint[] }) {
             <stop offset="100%" stopColor="rgba(245,242,235,0)" />
           </linearGradient>
         </defs>
+        <text className="equity-chart__axis" x="4" y="13">{maxValue.toFixed(4)}</text>
+        <text className="equity-chart__axis" x="4" y="88">{minValue.toFixed(4)}</text>
         <path className="equity-chart__area" d={areaPath} />
         <polyline className="equity-chart__line" points={pointString} />
         {points.map((point) => <circle className="equity-chart__point" cx={point.x} cy={point.y} r="1.4" key={`${point.label}-${point.x}`} />)}
+        <line className="equity-chart__price-line" x1="0" x2="120" y1={markerY} y2={markerY} />
+        <text className="equity-chart__price-label" x="116" y={Math.max(12, markerY - 3)}>{markerLabel}</text>
         <circle className="equity-chart__last" cx={last.x} cy={last.y} r="2.8" />
       </svg>
       <div className="equity-chart__labels">
@@ -409,6 +463,34 @@ function EquityChart({ points }: { points: EquityPoint[] }) {
         <b>{last.value.toFixed(4)} SOL</b>
         <span>{last.label}</span>
       </div>
+    </div>
+  );
+}
+
+function ActivePairHeader({ pair, modePill }: { pair: ActivePairSummary; modePill: string }) {
+  return (
+    <div className="active-pair-header">
+      <div className="active-pair-title">
+        <span className="token-icon large" aria-hidden="true">{pair.symbol.slice(0, 2)}</span>
+        <div>
+          <span className="eyebrow">Active pair</span>
+          <h3>{pair.pair}</h3>
+          <small>{pair.name}</small>
+        </div>
+      </div>
+      <div className="active-pair-price">
+        <strong>{pair.price}</strong>
+        <span className={pair.changeTone}>{pair.changeLabel}</span>
+      </div>
+      <div className="active-pair-meta" aria-label="Active pair market metadata">
+        <span><small>Liq</small><b>{pair.liquidity}</b></span>
+        <span><small>MC</small><b>{pair.marketCap}</b></span>
+        <span><small>Vol</small><b>{pair.volume}</b></span>
+        <span><small>Signal</small><b>{pair.signal}</b></span>
+        <span><small>Quote</small><b>{pair.quoteLabel}</b></span>
+        <span><small>Status</small><b>{pair.statusLabel}</b></span>
+      </div>
+      <span className="terminal-mode-pill">{modePill}</span>
     </div>
   );
 }
@@ -525,6 +607,114 @@ function buildEquityCurve(snapshot: LivePaperSnapshot, positions: PaperPosition[
   }));
 }
 
+function buildActivePairSummary(event: LiveMarketEvent | undefined): ActivePairSummary {
+  if (!event) {
+    return {
+      symbol: 'PUMP',
+      name: 'Waiting for read-only demo feed',
+      pair: 'PUMP/SOL',
+      price: formatTokenPrice(0.0000125),
+      changeLabel: '+0.0%',
+      changeTone: 'neutral',
+      liquidity: '$0',
+      marketCap: '$0',
+      volume: '$0',
+      signal: '—',
+      quoteLabel: 'read-only',
+      statusLabel: 'watching',
+    };
+  }
+
+  const identity = coinIdentity(event, 0);
+  const metrics = buildMarketRowMetrics(event, 0);
+  const changePct = event.realizedReturnPct * 100;
+  const quoteLabel = quoteStatusLabel(event.quote?.status);
+
+  return {
+    symbol: identity.symbol,
+    name: identity.name,
+    pair: `${identity.symbol}/SOL`,
+    price: formatTokenPrice(syntheticMarkPrice(event, 0)),
+    changeLabel: `${changePct >= 0 ? '+' : ''}${changePct.toFixed(1)}%`,
+    changeTone: changePct > 0 ? 'positive' : changePct < 0 ? 'negative' : 'neutral',
+    liquidity: metrics.liquidity,
+    marketCap: metrics.marketCap,
+    volume: metrics.volume,
+    signal: String(event.score),
+    quoteLabel,
+    statusLabel: event.quote?.status === 'quoted' ? 'quoted paper' : event.source === 'solana-rpc' ? 'read-only' : 'demo row',
+  };
+}
+
+function buildMarketRowMetrics(event: LiveMarketEvent, index: number): MarketRowMetrics {
+  const seed = hashToUnit(`${event.id}:${event.signature}:${index}:market`);
+  const liquidityUsd = 18_000 + event.liquidityScore * 2_250 + seed * 72_000;
+  const marketCapUsd = liquidityUsd * (2.4 + seed * 4.8);
+  const volumeUsd = 5_000 + event.score * 480 + Math.abs(event.realizedReturnPct) * 120_000 + seed * 26_000;
+
+  return {
+    marketCap: formatCompactUsd(marketCapUsd),
+    volume: formatCompactUsd(volumeUsd),
+    liquidity: formatCompactUsd(liquidityUsd),
+    quoteLabel: quoteStatusLabel(event.quote?.status),
+    quoteTone: quoteStatusClass(event.quote?.status),
+  };
+}
+
+function buildRouteStatus(events: LiveMarketEvent[]): RouteStatusSummary {
+  const event = events.find((item) => item.quote?.status === 'quoted') ?? events[0];
+  if (!event) {
+    return { slippageCap: '1.0%', route: 'no route', impact: 'n/a', quote: 'read-only' };
+  }
+
+  const impact = typeof event.quote?.priceImpactPct === 'number'
+    ? `${Math.abs(event.quote.priceImpactPct * 100).toFixed(2)}%`
+    : `${Math.max(0.10, event.routeRiskBps / 100).toFixed(2)}%`;
+
+  return {
+    slippageCap: '1.0%',
+    route: event.quote?.routePlanHops ? `${event.quote.routePlanHops} hops` : `${event.routeRiskBps} bps risk`,
+    impact,
+    quote: quoteSummary(events),
+  };
+}
+
+function syntheticMarkPrice(event: LiveMarketEvent, index: number): number {
+  const seed = hashToUnit(`${event.signature}:${event.asset}:${index}`);
+  return roundTokenPrice(0.0000012 + seed * 0.000019);
+}
+
+function quoteStatusLabel(status: PaperQuoteStatus | undefined): string {
+  switch (status) {
+    case 'quoted':
+      return 'quoted';
+    case 'partial':
+      return 'partial';
+    case 'unroutable':
+      return 'no route';
+    case 'error':
+      return 'error';
+    case 'not_configured':
+    default:
+      return 'demo';
+  }
+}
+
+function quoteStatusClass(status: PaperQuoteStatus | undefined): string {
+  switch (status) {
+    case 'quoted':
+      return 'quoted';
+    case 'partial':
+      return 'partial';
+    case 'unroutable':
+    case 'error':
+      return 'warning';
+    case 'not_configured':
+    default:
+      return 'demo';
+  }
+}
+
 function coinIdentity(event: LiveMarketEvent, index: number): { symbol: string; name: string } {
   const asset = event.asset.replace(/[·…]/g, '').replace(/[^a-zA-Z0-9-]/g, '');
   const fallback = String(index + 1).padStart(2, '0');
@@ -591,6 +781,15 @@ function formatUnsignedSol(value: number): string {
 function formatTokenPrice(value: number): string {
   if (value < 0.00001) return value.toExponential(2);
   return value.toFixed(7);
+}
+
+function formatCompactUsd(value: number): string {
+  return new Intl.NumberFormat('en-US', {
+    currency: 'USD',
+    maximumFractionDigits: 1,
+    notation: 'compact',
+    style: 'currency',
+  }).format(value);
 }
 
 function roundTokenPrice(value: number): number {
