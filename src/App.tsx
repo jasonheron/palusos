@@ -56,6 +56,7 @@ function Hero() {
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
         <h1>PalusOS</h1>
+        <p className="hero__palus-quote">“The palus was the gladiator’s silent training ground — a wooden post where discipline, muscle memory, and survival were forged long before the arena ever saw them.”</p>
         <p className="hero__tagline">{copy.tagline}</p>
         <div className="hero__actions">
           <a className="button primary" href="/demo">Open Live Demo <ArrowRight size={18} /></a>
