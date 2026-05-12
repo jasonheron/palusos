@@ -141,7 +141,6 @@ function HeroVideo({ onReveal }: { onReveal: () => void }) {
           onEnded={handleEnded}
         />
       )}
-      <div className="hero-video__shade" />
     </div>
   );
 }

@@ -1301,15 +1301,6 @@
   opacity: 0;
 }
 
-.hero-video__shade {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255,255,255,.10), transparent 24rem),
-    linear-gradient(180deg, rgba(0,0,0,.58), rgba(0,0,0,.12) 40%, rgba(0,0,0,.74) 100%),
-    linear-gradient(90deg, rgba(0,0,0,.62), rgba(0,0,0,.08) 46%, rgba(0,0,0,.58));
-}
 
 .hero__copy {
   transform: translateY(-2vh) !important;
