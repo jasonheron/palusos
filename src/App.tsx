@@ -51,8 +51,10 @@ function DemoPage() {
 }
 
 function Hero() {
+  const [heroUiVisible, setHeroUiVisible] = useState(false);
+
   return (
-    <section className="hero" id="top">
+    <section className={`hero${heroUiVisible ? ' hero--ui-visible' : ''}`} id="top">
       <nav className="nav" aria-label="Primary navigation">
         <a href="#top" className="brand"><span aria-hidden="true" />PalusOS</a>
         <div className="nav__spacer" />
@@ -61,7 +63,7 @@ function Hero() {
         </div>
       </nav>
 
-      <HeroVideo />
+      <HeroVideo onReveal={() => setHeroUiVisible(true)} />
 
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
@@ -92,13 +94,36 @@ function Hero() {
   );
 }
 
-function HeroVideo() {
+function HeroVideo({ onReveal }: { onReveal: () => void }) {
   const [showFinalFrame, setShowFinalFrame] = useState(false);
+  const [hasRevealed, setHasRevealed] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) setShowFinalFrame(true);
-  }, []);
+    if (prefersReducedMotion) {
+      setShowFinalFrame(true);
+      setHasRevealed(true);
+      onReveal();
+    }
+  }, [onReveal]);
+
+  const revealHeroUi = () => {
+    if (hasRevealed) return;
+    setHasRevealed(true);
+    onReveal();
+  };
+
+  const handleTimeUpdate = (event: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = event.currentTarget;
+    if (Number.isFinite(video.duration) && video.duration - video.currentTime <= 5) {
+      revealHeroUi();
+    }
+  };
+
+  const handleEnded = () => {
+    revealHeroUi();
+    setShowFinalFrame(true);
+  };
 
   return (
     <div className={`hero-video${showFinalFrame ? ' hero-video--ended' : ''}`} aria-hidden="true">
@@ -112,7 +137,8 @@ function HeroVideo() {
           muted
           playsInline
           preload="auto"
-          onEnded={() => setShowFinalFrame(true)}
+          onTimeUpdate={handleTimeUpdate}
+          onEnded={handleEnded}
         />
       )}
       <div className="hero-video__shade" />

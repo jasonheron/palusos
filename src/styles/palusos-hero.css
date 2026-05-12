@@ -22,6 +22,10 @@
   position: relative;
   top: auto;
   z-index: 5;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 1.4s ease, transform 1.4s ease;
   width: 100%;
   display: grid;
   grid-template-columns: minmax(130px, 1fr) auto minmax(130px, 1fr);
@@ -51,7 +55,20 @@
   align-self: center;
   transform: translateY(-7vh);
   max-width: 760px;
+  opacity: 0;
+  pointer-events: none;
   text-shadow: 0 3px 24px rgba(0,0,0,.70), 0 0 34px rgba(255,255,255,.20);
+  transition: opacity 1.8s ease, transform 1.8s ease;
+}
+
+.hero--ui-visible .nav,
+.hero--ui-visible .hero__copy {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero--ui-visible .nav {
+  transform: translateY(0);
 }
 
 .hero__copy .badge {
@@ -1295,9 +1312,13 @@
 }
 
 .hero__copy {
-  transform: translateY(-4vh) !important;
+  transform: translateY(-2vh) !important;
   align-self: center;
   margin-top: 0;
+}
+
+.hero--ui-visible .hero__copy {
+  transform: translateY(-4vh) !important;
 }
 
 .nav__actions {
