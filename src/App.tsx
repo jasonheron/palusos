@@ -1,6 +1,6 @@
 import type React from 'react';
 import { ArrowRight, Bot, BrainCircuit, ChevronDown, ExternalLink, Layers3, LineChart, LockKeyhole, ShieldCheck, Sparkles } from 'lucide-react';
-import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
+import { PipelineTimeline } from './components/AgentDashboard';
 import { AgentLab } from './components/AgentLab';
 import { DashboardPage } from './components/DashboardPage';
 import { LivePaperDemo } from './components/LivePaperDemo';
@@ -31,7 +31,6 @@ function App() {
       <SystemDiagram />
       <DemoExperienceSection />
       <AgentLab />
-      <AgentDashboard />
       <PipelineTimeline />
       <DeploymentPathSection />
       <ModularSection />
@@ -136,32 +135,59 @@ function DemoBridgeHeader() {
 
 function DemoExperienceSection() {
   const modules = ['Discovery Engine', 'Label Foundry', 'ML Lab', 'Proof Engine', 'Paper → Canary', 'Scale'];
+  const dashboardChecks = ['Module health', 'Proof gates', 'Paper readiness', 'Canary locked'];
+  const terminalChecks = ['Active profile', 'Quote evidence', 'Paper positions', 'No wallet path'];
 
   return (
-    <section className="demo-experience-section" id="demo" aria-label="Connected PalusOS demo">
+    <section className="demo-experience-section" id="demo" aria-label="Connected PalusOS demo workspace">
       <div className="section-heading compact">
-        <span className="eyebrow">Demo flow</span>
-        <h2>The demo is the connected dashboard and paper-proof terminal.</h2>
-        <p>PalusOS is not a PnL flex. It is the discovery-and-proof operating loop for autonomous trading agents: find candidate labels, search profiles, collect evidence, and keep capital locked until proof survives.</p>
+        <span className="eyebrow">Connected demo</span>
+        <h2>Dashboard + Demo are one PalusOS demo workspace.</h2>
+        <p>Start with the dashboard layer to see the discovery-and-proof system, then open the paper terminal to watch the same loop in motion. Together they show how PalusOS finds candidates, proves evidence, and keeps capital locked until proof survives.</p>
       </div>
 
-      <div className="demo-bridge-grid">
-        <article>
-          <span>01 / Local dashboard</span>
-          <h3>See the system map.</h3>
-          <p>Use the dashboard to understand module health, proof gates, paper readiness, and why canary/scale remain locked until evidence is strong enough.</p>
-          <a className="button secondary" href="/dashboard">Open dashboard</a>
-        </article>
-        <article>
-          <span>02 / Public paper terminal</span>
-          <h3>Watch the demo loop.</h3>
-          <p>Use the paper terminal to inspect the read-only public demo stream: decisions, positions, route/proof details, and safety boundaries with no wallet path.</p>
-          <a className="button primary" href="/demo">Open paper demo <ArrowRight size={18} /></a>
-        </article>
-      </div>
+      <div className="demo-workspace-card" aria-label="Dashboard and paper terminal are connected demo layers">
+        <div className="demo-workspace-card__topline">
+          <div>
+            <span className="eyebrow">PalusOS demo workspace</span>
+            <h3>One flow: system map → paper-proof terminal.</h3>
+          </div>
+          <div className="demo-workspace-status" aria-label="Demo safety status">
+            <span>Read-only</span>
+            <span>Paper</span>
+            <span>No wallet</span>
+          </div>
+        </div>
 
-      <div className="demo-module-row" aria-label="PalusOS modules">
-        {modules.map((module) => <span key={module}>{module}</span>)}
+        <div className="demo-layer-flow">
+          <article className="demo-layer-card">
+            <span>Layer 01 / Dashboard</span>
+            <h4>View the operating system.</h4>
+            <p>Use the dashboard to understand module health, proof gates, paper readiness, and why canary/scale stay locked.</p>
+            <ul>
+              {dashboardChecks.map((check) => <li key={check}>{check}</li>)}
+            </ul>
+            <a className="button secondary" href="/dashboard">View dashboard layer</a>
+          </article>
+
+          <div className="demo-flow-connector" aria-hidden="true">
+            <span>same proof loop</span>
+          </div>
+
+          <article className="demo-layer-card demo-layer-card--primary">
+            <span>Layer 02 / Paper terminal</span>
+            <h4>Run the public demo.</h4>
+            <p>Open the terminal to inspect simulated paper decisions, route/proof details, positions, and safety boundaries.</p>
+            <ul>
+              {terminalChecks.map((check) => <li key={check}>{check}</li>)}
+            </ul>
+            <a className="button primary" href="/demo">Open demo workspace <ArrowRight size={18} /></a>
+          </article>
+        </div>
+
+        <div className="demo-module-row" aria-label="PalusOS modules included in the connected demo">
+          {modules.map((module) => <span key={module}>{module}</span>)}
+        </div>
       </div>
     </section>
   );
