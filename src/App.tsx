@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import type React from 'react';
 import { ArrowRight, Bot, BrainCircuit, ChevronDown, ExternalLink, Layers3, LineChart, LockKeyhole, ShieldCheck, Sparkles } from 'lucide-react';
 import { PipelineTimeline } from './components/AgentDashboard';
@@ -60,7 +61,7 @@ function Hero() {
         </div>
       </nav>
 
-      <img className="hero__preview" src="/palusos-demo-dashboard.jpg" alt="PalusOS demo preview: discovery and proof for autonomous trading agents" />
+      <HeroVideo />
 
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
@@ -88,6 +89,34 @@ function Hero() {
         </div>
       </div>
     </section>
+  );
+}
+
+function HeroVideo() {
+  const [showFinalFrame, setShowFinalFrame] = useState(false);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) setShowFinalFrame(true);
+  }, []);
+
+  return (
+    <div className={`hero-video${showFinalFrame ? ' hero-video--ended' : ''}`} aria-hidden="true">
+      <img className="hero-video__final" src="/palusos-hero-final.jpg" alt="" />
+      {!showFinalFrame && (
+        <video
+          className="hero-video__media"
+          src="/palusos-hero-open.mp4"
+          poster="/palusos-hero-final.jpg"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          onEnded={() => setShowFinalFrame(true)}
+        />
+      )}
+      <div className="hero-video__shade" />
+    </div>
   );
 }
 
@@ -121,13 +150,8 @@ function ProofStrip() {
 
 function DemoBridgeHeader() {
   return (
-    <section className="demo-page-bridge" aria-label="Connected PalusOS demo explanation">
+    <section className="demo-page-bridge demo-page-bridge--compact" aria-label="PalusOS demo navigation">
       <a href="/" className="brand"><span aria-hidden="true" />PalusOS</a>
-      <div>
-        <span className="eyebrow">Connected demo</span>
-        <h1>Dashboard + paper terminal = the PalusOS demo.</h1>
-        <p>The dashboard shows how Discovery Engine, Label Foundry, ML Lab, Proof Engine, Paper → Canary, and Scale fit together. This paper terminal shows the public-safe proof loop in motion. It is simulated paper evidence, not verified strategy PnL.</p>
-      </div>
       <a className="button secondary" href="/dashboard">Open dashboard view</a>
     </section>
   );

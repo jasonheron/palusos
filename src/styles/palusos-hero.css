@@ -1246,28 +1246,57 @@
 
 /* 2026 public demo refresh */
 .hero {
-  min-height: auto;
-  grid-template-rows: auto auto auto auto;
-  align-content: start;
+  min-height: 100svh;
+  grid-template-rows: auto 1fr auto;
+  align-content: stretch;
   background: #030405;
   padding-bottom: 128px;
 }
 
-.hero__preview {
-  position: relative;
-  z-index: 2;
-  display: block;
-  width: min(1120px, 94vw);
-  margin: clamp(18px, 3vw, 34px) auto clamp(18px, 3vw, 30px);
-  border: 1px solid rgba(255,255,255,.22);
-  border-radius: 22px;
-  box-shadow: 0 34px 100px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.12);
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #030405;
+}
+
+.hero-video__media,
+.hero-video__final {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
+}
+
+.hero-video__media {
+  z-index: 2;
+}
+
+.hero-video__final {
+  z-index: 1;
+  opacity: 1;
+}
+
+.hero-video--ended .hero-video__media {
+  opacity: 0;
+}
+
+.hero-video__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255,255,255,.10), transparent 24rem),
+    linear-gradient(180deg, rgba(0,0,0,.58), rgba(0,0,0,.12) 40%, rgba(0,0,0,.74) 100%),
+    linear-gradient(90deg, rgba(0,0,0,.62), rgba(0,0,0,.08) 46%, rgba(0,0,0,.58));
 }
 
 .hero__copy {
-  transform: none !important;
-  align-self: auto;
+  transform: translateY(-4vh) !important;
+  align-self: center;
   margin-top: 0;
 }
 
@@ -1457,6 +1486,11 @@
   align-items: center;
 }
 
+.demo-page-bridge--compact {
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+}
+
 .demo-page-bridge h1 {
   margin: 8px 0;
   font-size: clamp(32px, 4.8vw, 62px);
@@ -1514,9 +1548,8 @@
   .hero {
     padding-bottom: 360px;
   }
-  .hero__preview {
-    width: min(100%, 94vw);
-    border-radius: 16px;
+  .hero__copy {
+    transform: translateY(-2vh) !important;
   }
   .demo-layer-card ul {
     grid-template-columns: 1fr;
