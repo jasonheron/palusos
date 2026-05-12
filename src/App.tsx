@@ -286,7 +286,7 @@ function TutorialSection() {
       <div className="tutorial-card">
         <code>npm install</code>
         <code>npm run dev</code>
-        <code>Open the demo, choose an agent, inspect the verdict.</code>
+        <code>“Use my pumpfun data feed and PalusOS to find profitable trading profiles.”</code>
       </div>
     </section>
   );
