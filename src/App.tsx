@@ -22,7 +22,6 @@ function App() {
     <main>
       <Hero />
       <SystemDiagram />
-      <AgentIntegrationSection />
       <AgentLab />
       <AgentDashboard />
       <PipelineTimeline />
@@ -163,61 +162,6 @@ function DiagramInput({ title, options }: { title: string; options: string[] }) 
         {options.map((option, index) => <b key={option} style={{ '--option-index': index } as React.CSSProperties}>{option}<ChevronDown size={16} /></b>)}
       </div>
     </article>
-  );
-}
-
-function AgentIntegrationSection() {
-  const tools = [
-    'palusos.discover_labels',
-    'palusos.generate_strategy_profile',
-    'palusos.collect_quote_proof',
-    'palusos.evaluate_gates',
-    'palusos.report_next_action',
-  ];
-  const flow = [
-    { title: 'OpenClaw agent', text: 'Receives a goal and chooses PalusOS actions as tools.' },
-    { title: 'PalusOS actions', text: 'Run discovery, label design, profile generation, and read-only proof collection.' },
-    { title: 'Artifacts + gates', text: 'Write evidence/state, then decide reject, keep testing, paper, or canary eligible.' },
-    { title: 'Read-only console', text: 'Visualizes the agent loop as a black-box recorder, not a controller.' },
-  ];
-
-  return (
-    <section className="agent-integration-section" id="agent-integration">
-      <div className="section-heading compact">
-        <span className="eyebrow">Agent integration</span>
-        <h2>Agents operate PalusOS through tools. The UI records the proof trail.</h2>
-        <p>
-          PalusOS is designed for OpenClaw-style agents and autonomous research workers. An agent calls the PalusOS tool surface, PalusOS writes auditable artifacts and gate decisions, and the console shows what happened across Discovery, Label Foundry, ML Lab, Proof Engine, Paper / Canary, and Scale.
-        </p>
-      </div>
-
-      <div className="agent-integration-grid">
-        <article className="agent-command-card">
-          <div className="module-card__icon"><Bot /></div>
-          <span className="eyebrow">Example OpenClaw prompt</span>
-          <p>
-            “Use PalusOS to find a candidate trading label, build a strategy profile, collect read-only quote proof, and tell me whether it can advance to paper or is blocked.”
-          </p>
-        </article>
-
-        <article className="agent-tools-card">
-          <span className="eyebrow">Agent-facing tool surface</span>
-          <div className="tool-list">
-            {tools.map((tool) => <code key={tool}>{tool}</code>)}
-          </div>
-        </article>
-      </div>
-
-      <div className="agent-flow" aria-label="OpenClaw to PalusOS integration flow">
-        {flow.map((item, index) => (
-          <article className="agent-flow-step" key={item.title}>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
-          </article>
-        ))}
-      </div>
-    </section>
   );
 }
 
