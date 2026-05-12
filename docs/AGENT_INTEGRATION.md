@@ -13,7 +13,7 @@ The website is the presentation layer. The useful integration point is the data 
 ## Minimal agent prompt
 
 ```text
-Use my pumpfun data feed and PalusOS to find profitable trading profiles.
+Use my market data feed and PalusOS to discover and prove candidate trading profiles in paper/proof mode.
 ```
 
 A stronger production prompt is:

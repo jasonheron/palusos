@@ -16,7 +16,7 @@ export function AgentDashboard() {
   const summary = useMemo(() => summarizeEvaluation(agent), [agent]);
 
   return (
-    <section className="dashboard-section" id="demo">
+    <section className="dashboard-section" id="reports">
       <div className="section-heading">
         <span className="eyebrow">Decision reports</span>
         <h2>Proof reports, not black boxes.</h2>

@@ -1,10 +1,10 @@
 import type React from 'react';
-import { ArrowRight, Bot, BrainCircuit, ChevronDown, DatabaseZap, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, Bot, BrainCircuit, ChevronDown, ExternalLink, Layers3, LineChart, LockKeyhole, ShieldCheck, Sparkles } from 'lucide-react';
 import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
 import { AgentLab } from './components/AgentLab';
 import { DashboardPage } from './components/DashboardPage';
 import { LivePaperDemo } from './components/LivePaperDemo';
-import { marketAdapters, strategyRunners } from './modules/adapters';
+import { marketAdapters } from './modules/adapters';
 import './styles/app.css';
 import './styles/palusos-hero.css';
 
@@ -29,6 +29,7 @@ function App() {
     <main>
       <Hero />
       <SystemDiagram />
+      <DemoExperienceSection />
       <AgentLab />
       <AgentDashboard />
       <PipelineTimeline />
@@ -43,6 +44,7 @@ function App() {
 function DemoPage() {
   return (
     <main className="demo-terminal-page">
+      <DemoBridgeHeader />
       <LivePaperDemo />
     </main>
   );
@@ -56,17 +58,18 @@ function Hero() {
         <div className="nav__spacer" />
         <div className="nav__actions">
           <a className="nav__cta" href="/demo">Live Demo</a>
-          <button className="nav__menu" aria-label="Open menu"><Menu size={18} /></button>
         </div>
       </nav>
+
+      <img className="hero__preview" src="/palusos-demo-dashboard.jpg" alt="PalusOS demo preview: discovery and proof for autonomous trading agents" />
 
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
         <h1>PalusOS</h1>
         <p className="hero__tagline">{copy.tagline}</p>
         <div className="hero__actions">
-          <a className="button primary" href="/demo">Open Live Demo <ArrowRight size={18} /></a>
-          <a className="button secondary" href="#agent-lab">Run Agent Lab</a>
+          <a className="button primary" href="/demo">Open connected demo <ArrowRight size={18} /></a>
+          <a className="button secondary" href="/dashboard">View system dashboard</a>
           <a className="button secondary" href="https://github.com/jasonheron/palusos" aria-label="PalusOS GitHub repository"><GitHubMark /> GitHub <ExternalLink size={16} /></a>
         </div>
       </div>
@@ -113,6 +116,53 @@ function ProofStrip() {
       <article><b>PROOF ENGINE</b><span>Require trusted quotes and outcomes</span></article>
       <article><b>PAPER → CANARY</b><span>Graduate only after realistic EV</span></article>
       <article><b>SCALE</b><span>Autonomous trading after proof</span></article>
+    </section>
+  );
+}
+
+function DemoBridgeHeader() {
+  return (
+    <section className="demo-page-bridge" aria-label="Connected PalusOS demo explanation">
+      <a href="/" className="brand"><span aria-hidden="true" />PalusOS</a>
+      <div>
+        <span className="eyebrow">Connected demo</span>
+        <h1>Dashboard + paper terminal = the PalusOS demo.</h1>
+        <p>The dashboard shows how Discovery Engine, Label Foundry, ML Lab, Proof Engine, Paper → Canary, and Scale fit together. This paper terminal shows the public-safe proof loop in motion. It is simulated paper evidence, not verified strategy PnL.</p>
+      </div>
+      <a className="button secondary" href="/dashboard">Open dashboard view</a>
+    </section>
+  );
+}
+
+function DemoExperienceSection() {
+  const modules = ['Discovery Engine', 'Label Foundry', 'ML Lab', 'Proof Engine', 'Paper → Canary', 'Scale'];
+
+  return (
+    <section className="demo-experience-section" id="demo" aria-label="Connected PalusOS demo">
+      <div className="section-heading compact">
+        <span className="eyebrow">Demo flow</span>
+        <h2>The demo is the connected dashboard and paper-proof terminal.</h2>
+        <p>PalusOS is not a PnL flex. It is the discovery-and-proof operating loop for autonomous trading agents: find candidate labels, search profiles, collect evidence, and keep capital locked until proof survives.</p>
+      </div>
+
+      <div className="demo-bridge-grid">
+        <article>
+          <span>01 / Local dashboard</span>
+          <h3>See the system map.</h3>
+          <p>Use the dashboard to understand module health, proof gates, paper readiness, and why canary/scale remain locked until evidence is strong enough.</p>
+          <a className="button secondary" href="/dashboard">Open dashboard</a>
+        </article>
+        <article>
+          <span>02 / Public paper terminal</span>
+          <h3>Watch the demo loop.</h3>
+          <p>Use the paper terminal to inspect the read-only public demo stream: decisions, positions, route/proof details, and safety boundaries with no wallet path.</p>
+          <a className="button primary" href="/demo">Open paper demo <ArrowRight size={18} /></a>
+        </article>
+      </div>
+
+      <div className="demo-module-row" aria-label="PalusOS modules">
+        {modules.map((module) => <span key={module}>{module}</span>)}
+      </div>
     </section>
   );
 }
@@ -293,7 +343,7 @@ function TutorialSection() {
       <div className="tutorial-card">
         <code>npm install</code>
         <code>npm run dev</code>
-        <code>“Use my pumpfun data feed and PalusOS to find profitable trading profiles.”</code>
+        <code>“Use my market data feed and PalusOS to discover and prove candidate trading profiles in paper/proof mode.”</code>
       </div>
     </section>
   );

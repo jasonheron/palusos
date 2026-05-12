@@ -33,4 +33,4 @@ Prove the agent before the arena.
 
 ## Agent integration
 
-PalusOS can be integrated into OpenClaw, Claude, or another agent runtime by exposing a small tool surface: discover labels, generate strategy profiles, collect quote proof, evaluate gates, and report the next action. A judge-facing prompt is: “Use my pumpfun data feed and PalusOS to find profitable trading profiles.” The agent drives the research loop; PalusOS produces the proof artifacts and dashboard/reporting layer.
+PalusOS can be integrated into OpenClaw, Claude, or another agent runtime by exposing a small tool surface: discover labels, generate strategy profiles, collect quote proof, evaluate gates, and report the next action. A judge-facing prompt is: “Use my market data feed and PalusOS to discover and prove candidate trading profiles in paper/proof mode.” The agent drives the research loop; PalusOS produces the proof artifacts and dashboard/reporting layer.

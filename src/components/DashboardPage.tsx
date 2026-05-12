@@ -83,7 +83,7 @@ export function DashboardPage() {
       <header className="ops-topbar">
         <a href="/" className="ops-brand" aria-label="PalusOS home"><span />PalusOS</a>
         <nav className="ops-nav" aria-label="Dashboard navigation">
-          <a href="/demo">Demo</a>
+          <a href="/demo">Paper demo</a>
           <a href="/#architecture">Architecture</a>
           <a href="/">Home</a>
         </nav>
@@ -91,13 +91,13 @@ export function DashboardPage() {
 
       <section className="ops-hero" aria-label="PalusOS dashboard overview">
         <div className="ops-hero__copy">
-          <div className="ops-badge"><Sparkles size={14} /> Public system dashboard</div>
-          <h1>Real-system view of the PalusOS proof loop.</h1>
+          <div className="ops-badge"><Sparkles size={14} /> Connected demo dashboard</div>
+          <h1>The dashboard half of the PalusOS demo.</h1>
           <p>
-            A polished read-only dashboard for the operating stack: discovery, label design, model search, proof gates, paper readiness, and scale locks.
+            Use this view to understand the operating modules behind the public paper terminal: discovery, label design, model search, proof gates, paper readiness, canary locks, and scale controls.
           </p>
           <div className="ops-hero__actions">
-            <a className="button primary" href="/demo">Open paper demo <ArrowRight size={18} /></a>
+            <a className="button primary" href="/demo">Open connected paper demo <ArrowRight size={18} /></a>
             <span className="ops-pill"><LockKeyhole size={14} /> Simulation state / no wallet path</span>
           </div>
         </div>
@@ -107,7 +107,7 @@ export function DashboardPage() {
             <span>VERDICT</span>
             <strong>KEEP TESTING</strong>
           </div>
-          <p>Discovery and paper evidence are active. Canary and scale remain locked until proof-pack requirements clear.</p>
+          <p>Discovery and paper evidence are visible for the demo. Canary and scale remain locked until proof-pack requirements clear.</p>
           <div className="ops-mini-grid">
             <b><DatabaseZap size={16} /> Data fresh</b>
             <b><CheckCircle2 size={16} /> Paper enabled</b>

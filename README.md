@@ -12,13 +12,7 @@ Trading agents are easy to launch and hard to trust. The first hard question is 
 
 This repo ships with bundled demo data so you can run the full UI immediately. The architecture is adapter based: replace the demo rows with private lifecycle data, quote archives, agent decisions, and outcome streams, and the same discovery/proof pipeline operates on those inputs.
 
-## Screenshots
-
-![PalusOS hero](docs/assets/palusos-hero.png)
-
-![PalusOS Agent Lab](docs/assets/palusos-agent-lab.png)
-
-![PalusOS deployment path](docs/assets/palusos-deployment-path.png)
+![PalusOS demo preview](public/palusos-demo-dashboard.jpg)
 
 ## What this repo contains
 
@@ -27,7 +21,7 @@ This repo ships with bundled demo data so you can run the full UI immediately. T
 - deterministic strategy discovery across bundled agent/feed/model combinations;
 - modular architecture for data adapters, label candidates, ML/profile search, proof gates, and reports;
 - live read-only `/demo` route with server-side RPC/Jupiter quote support when env is configured;
-- `/dashboard` route for a public-safe PalusOS real-system dashboard view;
+- `/dashboard` route for the system-dashboard half of the connected demo;
 - demo agent evaluation data;
 - tutorial and presentation outline;
 - no secrets, private keys, `.env` files, private databases, wallet connection, signing, swaps, or live execution.
@@ -43,7 +37,7 @@ This repo ships with bundled demo data so you can run the full UI immediately. T
 
 ## Live `/demo` route
 
-The app also ships a proper `/demo` page. It presents PalusOS as a paper-trading control board: active profile, model, PnL, proof chart, positions, signal log, and route/proof details.
+The connected demo has two views: `/dashboard` explains the PalusOS module loop, and `/demo` shows the public-safe paper terminal. Together they show discovery + proof for autonomous trading agents: active profile, model, proof chart, paper positions, signal log, route/proof details, and explicit safety boundaries.
 
 - `api/live-feed.ts` reads recent Pump/PumpSwap signatures from one Solana JSON-RPC endpoint (`PALUS_RPC_URL`, `PALUS_HELIUS_RPC_URL`, `HELIUS_RPC_URL`, or `FLUX_RPC_URL`).
 - The same server endpoint can call Jupiter quotes with `PALUS_JUPITER_API_KEY` to compute paper-only round-trip quote observations.
@@ -57,7 +51,25 @@ npm install
 npm run dev
 ```
 
-Open the local Vite URL printed in the terminal. The first-run experience is the polished PalusOS website and Agent Lab UI. Visit `/demo` for the live read-only paper demo route and `/dashboard` for the PalusOS system dashboard view; without server env these routes intentionally show public-safe fallback state.
+Open the local Vite URL printed in the terminal. The first-run experience is the polished PalusOS website. Visit `/dashboard` for the module overview and `/demo` for the paper terminal; together these are the PalusOS demo. Without server env, both routes intentionally show public-safe fallback state.
+
+## Quick agent setup
+
+1. Install and run PalusOS locally:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+2. Connect your agent to a private data adapter outside this public repo. Keep API keys, wallets, private databases, and live execution code out of GitHub.
+3. Give the agent a paper/proof-mode instruction such as:
+
+   ```text
+   Use PalusOS with my private market data feed. Discover candidate labels, build strategy profiles, collect paper/quote proof, and report which profiles should be rejected, kept in paper, or considered for a gated canary. Do not sign, broadcast, or enable live trading.
+   ```
+
+4. Open `/dashboard` to inspect the module state, then `/demo` to watch the paper terminal. Treat the public demo as simulated paper evidence, not verified strategy PnL.
 
 ## Build
 
@@ -99,10 +111,10 @@ See [`docs/DEPLOYMENT_PATH.md`](docs/DEPLOYMENT_PATH.md) for the full checklist 
 
 ## Agent / OpenClaw / Claude integration
 
-PalusOS is meant to be operated by agents through tools, APIs, or scripts. The UI is the presentation and reporting layer. A minimal agent instruction is:
+PalusOS is meant to be operated by agents through tools, APIs, or scripts. The UI is the presentation and reporting layer. A minimal safe-mode agent instruction is:
 
 ```text
-Use my pumpfun data feed and PalusOS to find profitable trading profiles.
+Use my market data feed and PalusOS to discover and prove candidate trading profiles in paper/proof mode.
 ```
 
 Recommended tool surface:
