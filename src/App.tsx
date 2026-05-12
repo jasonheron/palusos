@@ -2,6 +2,7 @@ import type React from 'react';
 import { ArrowRight, Bot, BrainCircuit, ChevronDown, DatabaseZap, ExternalLink, Layers3, LineChart, LockKeyhole, Menu, ShieldCheck, Sparkles } from 'lucide-react';
 import { AgentDashboard, PipelineTimeline } from './components/AgentDashboard';
 import { AgentLab } from './components/AgentLab';
+import { DashboardPage } from './components/DashboardPage';
 import { LivePaperDemo } from './components/LivePaperDemo';
 import { marketAdapters, strategyRunners } from './modules/adapters';
 import './styles/app.css';
@@ -12,10 +13,16 @@ const copy = {
 };
 
 function App() {
-  const isDemoRoute = typeof window !== 'undefined' && window.location.pathname === '/demo';
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const isDemoRoute = path === '/demo';
+  const isDashboardRoute = path === '/dashboard';
 
   if (isDemoRoute) {
     return <DemoPage />;
+  }
+
+  if (isDashboardRoute) {
+    return <DashboardPage />;
   }
 
   return (

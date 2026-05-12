@@ -27,6 +27,7 @@ This repo ships with bundled demo data so you can run the full UI immediately. T
 - deterministic strategy discovery across bundled agent/feed/model combinations;
 - modular architecture for data adapters, label candidates, ML/profile search, proof gates, and reports;
 - live read-only `/demo` route with server-side RPC/Jupiter quote support when env is configured;
+- `/dashboard` route for a public-safe PalusOS real-system dashboard view;
 - demo agent evaluation data;
 - tutorial and presentation outline;
 - no secrets, private keys, `.env` files, private databases, wallet connection, signing, swaps, or live execution.
@@ -56,7 +57,7 @@ npm install
 npm run dev
 ```
 
-Open the local Vite URL printed in the terminal. The first-run experience is the polished PalusOS website and Agent Lab UI. Visit `/demo` for the live read-only paper demo route; without server env it intentionally shows the demo fallback.
+Open the local Vite URL printed in the terminal. The first-run experience is the polished PalusOS website and Agent Lab UI. Visit `/demo` for the live read-only paper demo route and `/dashboard` for the PalusOS system dashboard view; without server env these routes intentionally show public-safe fallback state.
 
 ## Build
 
@@ -75,6 +76,7 @@ src/modules/evaluationEngine.ts    discovery, EV calibration, gates, and verdict
 src/modules/livePaper.ts           shared live-feed normalization and paper snapshot logic
 src/components/AgentLab.tsx        discovery and proof demo UI
 src/components/LivePaperDemo.tsx   /demo paper terminal UI
+src/components/DashboardPage.tsx    /dashboard system dashboard UI
 api/live-feed.ts                   server-only RPC + Jupiter quote endpoint
 src/components/AgentDashboard.tsx  demo evaluation UI
 docs/ARCHITECTURE.md               system design
@@ -93,7 +95,27 @@ The intended path is deliberately staged:
 4. **Proof Engine → paper** — require intent-before-outcome records, quote provenance, failed quote/exit accounting, realistic EV, outlier checks, drawdown limits, and sample density.
 5. **Canary → scale** — not enabled in this repo. In a private operator build, canary must be disabled by default and gated by explicit config, hard caps, rollback triggers, and human approval.
 
-See [`docs/DEPLOYMENT_PATH.md`](docs/DEPLOYMENT_PATH.md) for the full checklist.
+See [`docs/DEPLOYMENT_PATH.md`](docs/DEPLOYMENT_PATH.md) for the full checklist and [`docs/AGENT_INTEGRATION.md`](docs/AGENT_INTEGRATION.md) for OpenClaw/Claude integration patterns.
+
+## Agent / OpenClaw / Claude integration
+
+PalusOS is meant to be operated by agents through tools, APIs, or scripts. The UI is the presentation and reporting layer. A minimal agent instruction is:
+
+```text
+Use my pumpfun data feed and PalusOS to find profitable trading profiles.
+```
+
+Recommended tool surface:
+
+```text
+palusos.discover_labels
+palusos.generate_strategy_profile
+palusos.collect_quote_proof
+palusos.evaluate_gates
+palusos.report_next_action
+```
+
+Private operators connect their own data layer and expose these actions to OpenClaw, Claude, MCP, or another agent runtime. See [`docs/AGENT_INTEGRATION.md`](docs/AGENT_INTEGRATION.md).
 
 ## Data adapter expectations
 
