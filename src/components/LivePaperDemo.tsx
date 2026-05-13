@@ -161,18 +161,10 @@ export function LivePaperDemo() {
   return (
     <section className="live-paper-section" id="live-paper-demo" aria-label="PalusOS paper terminal">
       <div className={`trading-terminal${isRunning ? '' : ' is-paused'}`}>
-        <header className="terminal-topbar">
-          <div className="terminal-nav-left" aria-label="Demo terminal navigation">
-            <a href="/" className="terminal-brand-block" aria-label="Back to PalusOS site">
-              <b>PalusOS</b>
-            </a>
-            <span className="terminal-nav-tab active">DEMO</span>
-            <span className="terminal-nav-divider" aria-hidden="true" />
-            <a href="/" className="terminal-nav-tab">HOME <ExternalLink size={12} aria-hidden="true" /></a>
-          </div>
-
+        <header className="terminal-topbar terminal-topbar--safety-only">
           <div className="terminal-safety-strip" aria-label="Demo safety status">
             <span>READ-ONLY DATA</span>
+            <a className="terminal-dashboard-link" href="/dashboard">DASHBOARD</a>
             <span>PAPER</span>
             <span>NO WALLET</span>
             <time>{new Date(clockNow).toLocaleTimeString()}</time>

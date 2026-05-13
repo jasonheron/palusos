@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import { ArrowRight, Bot, BrainCircuit, ChevronDown, ExternalLink, Layers3, LineChart, LockKeyhole, ShieldCheck, Sparkles } from 'lucide-react';
 import { PipelineTimeline } from './components/AgentDashboard';
@@ -44,7 +44,6 @@ function App() {
 function DemoPage() {
   return (
     <main className="demo-terminal-page">
-      <DemoBridgeHeader />
       <LivePaperDemo />
     </main>
   );
@@ -52,6 +51,16 @@ function DemoPage() {
 
 function Hero() {
   const [heroUiVisible, setHeroUiVisible] = useState(false);
+  const [introReplayNonce, setIntroReplayNonce] = useState(0);
+
+  const handleRevealIntro = useCallback(() => {
+    setHeroUiVisible(true);
+  }, []);
+
+  const handleReplayIntro = () => {
+    setHeroUiVisible(false);
+    setIntroReplayNonce((nonce) => nonce + 1);
+  };
 
   return (
     <section className={`hero${heroUiVisible ? ' hero--ui-visible' : ''}`} id="top">
@@ -63,7 +72,7 @@ function Hero() {
         </div>
       </nav>
 
-      <HeroVideo onReveal={() => setHeroUiVisible(true)} />
+      <HeroVideo replayNonce={introReplayNonce} onReveal={handleRevealIntro} />
 
       <div className="hero__copy">
         <div className="badge"><Sparkles size={14} /> Frontier Hackathon Build</div>
@@ -72,6 +81,7 @@ function Hero() {
         <div className="hero__actions">
           <a className="button primary" href="/demo">Open connected demo <ArrowRight size={18} /></a>
           <a className="button secondary" href="/dashboard">View system dashboard</a>
+          <button className="button secondary" type="button" onClick={handleReplayIntro}>Replay intro</button>
           <a className="button secondary" href="https://github.com/jasonheron/palusos" aria-label="PalusOS GitHub repository"><GitHubMark /> GitHub <ExternalLink size={16} /></a>
         </div>
       </div>
@@ -94,23 +104,51 @@ function Hero() {
   );
 }
 
-function HeroVideo({ onReveal }: { onReveal: () => void }) {
-  const [showFinalFrame, setShowFinalFrame] = useState(false);
+function HeroVideo({ replayNonce, onReveal }: { replayNonce: number; onReveal: () => void }) {
+  const INTRO_SEEN_KEY = 'palusos:intro-seen';
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [showFinalFrame, setShowFinalFrame] = useState(true);
   const [hasRevealed, setHasRevealed] = useState(false);
+  const [isIntroPlaying, setIsIntroPlaying] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      setShowFinalFrame(true);
-      setHasRevealed(true);
+    const hasSeenIntro = window.localStorage.getItem(INTRO_SEEN_KEY) === 'true';
+    const shouldPlayIntro = replayNonce > 0 || (!hasSeenIntro && !prefersReducedMotion);
+
+    setHasRevealed(false);
+    setShowFinalFrame(!shouldPlayIntro);
+    setIsIntroPlaying(shouldPlayIntro);
+
+    if (!shouldPlayIntro) {
       onReveal();
     }
-  }, [onReveal]);
+  }, [replayNonce, onReveal]);
+
+  useEffect(() => {
+    if (!isIntroPlaying) return;
+    videoRef.current?.play().catch(() => {
+      revealHeroUi();
+      setShowFinalFrame(true);
+      setIsIntroPlaying(false);
+    });
+  }, [isIntroPlaying]);
+
+  const markIntroSeen = () => {
+    window.localStorage.setItem(INTRO_SEEN_KEY, 'true');
+  };
 
   const revealHeroUi = () => {
     if (hasRevealed) return;
     setHasRevealed(true);
     onReveal();
+  };
+
+  const skipIntro = () => {
+    markIntroSeen();
+    revealHeroUi();
+    setShowFinalFrame(true);
+    setIsIntroPlaying(false);
   };
 
   const handleTimeUpdate = (event: React.SyntheticEvent<HTMLVideoElement>) => {
@@ -121,25 +159,33 @@ function HeroVideo({ onReveal }: { onReveal: () => void }) {
   };
 
   const handleEnded = () => {
+    markIntroSeen();
     revealHeroUi();
     setShowFinalFrame(true);
+    setIsIntroPlaying(false);
   };
 
   return (
-    <div className={`hero-video${showFinalFrame ? ' hero-video--ended' : ''}`} aria-hidden="true">
-      <img className="hero-video__final" src="/palusos-hero-final.jpg" alt="" />
+    <div className={`hero-video${showFinalFrame ? ' hero-video--ended' : ''}`}>
+      <img className="hero-video__final" src="/palusos-hero-final.jpg" alt="" aria-hidden="true" />
       {!showFinalFrame && (
-        <video
-          className="hero-video__media"
-          src="/palusos-hero-open.mp4"
-          poster="/palusos-hero-final.jpg"
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={handleEnded}
-        />
+        <>
+          <video
+            ref={videoRef}
+            key={replayNonce}
+            className="hero-video__media"
+            src="/palusos-hero-open.mp4"
+            poster="/palusos-hero-final.jpg"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={handleEnded}
+          />
+          <button className="hero-video__skip" type="button" onClick={skipIntro}>Skip intro</button>
+        </>
       )}
     </div>
   );
@@ -169,15 +215,6 @@ function ProofStrip() {
       <article><b>PROOF ENGINE</b><span>Require trusted quotes and outcomes</span></article>
       <article><b>PAPER → CANARY</b><span>Graduate only after realistic EV</span></article>
       <article><b>SCALE</b><span>Autonomous trading after proof</span></article>
-    </section>
-  );
-}
-
-function DemoBridgeHeader() {
-  return (
-    <section className="demo-page-bridge demo-page-bridge--compact" aria-label="PalusOS demo navigation">
-      <a href="/" className="brand"><span aria-hidden="true" />PalusOS</a>
-      <a className="button secondary" href="/dashboard">Open dashboard view</a>
     </section>
   );
 }

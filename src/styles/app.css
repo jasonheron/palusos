@@ -423,7 +423,8 @@ main { overflow: hidden; }
   background: var(--demo-line);
 }
 .terminal-safety-strip span,
-.terminal-safety-strip time {
+.terminal-safety-strip time,
+.terminal-dashboard-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -439,6 +440,12 @@ main { overflow: hidden; }
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
+.terminal-dashboard-link {
+  color: var(--demo-text);
+  text-decoration: none;
+  border-color: rgba(215, 209, 195, .42);
+}
+.terminal-dashboard-link:hover { background: rgba(255,255,255,.055); }
 .terminal-safety-strip time { color: var(--demo-muted); min-width: 86px; }
 
 .terminal-dashboard {
@@ -1132,4 +1139,18 @@ main { overflow: hidden; }
 
 .trading-terminal {
   grid-template-rows: 56px 24px minmax(0, 1fr);
+}
+
+.terminal-topbar--safety-only {
+  justify-content: flex-end;
+}
+
+.terminal-topbar--safety-only .terminal-safety-strip {
+  width: auto;
+}
+
+@media (max-width: 920px) {
+  .terminal-topbar--safety-only {
+    justify-content: flex-start;
+  }
 }
