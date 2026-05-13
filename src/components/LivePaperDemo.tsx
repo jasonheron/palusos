@@ -161,7 +161,9 @@ export function LivePaperDemo() {
   return (
     <section className="live-paper-section" id="live-paper-demo" aria-label="PalusOS paper terminal">
       <div className={`trading-terminal${isRunning ? '' : ' is-paused'}`}>
-        <header className="terminal-topbar terminal-topbar--safety-only">
+        <header className="terminal-topbar">
+          <a href="/" className="brand terminal-demo-brand" aria-label="Back to PalusOS site"><span aria-hidden="true" />PalusOS</a>
+
           <div className="terminal-safety-strip" aria-label="Demo safety status">
             <span>READ-ONLY DATA</span>
             <a className="terminal-dashboard-link" href="/dashboard">DASHBOARD</a>

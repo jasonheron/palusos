@@ -1141,16 +1141,16 @@ main { overflow: hidden; }
   grid-template-rows: 56px 24px minmax(0, 1fr);
 }
 
-.terminal-topbar--safety-only {
-  justify-content: flex-end;
+.terminal-demo-brand {
+  flex: 0 0 auto;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: none;
 }
 
-.terminal-topbar--safety-only .terminal-safety-strip {
-  width: auto;
-}
+.terminal-demo-brand span { display: none; }
 
 @media (max-width: 920px) {
-  .terminal-topbar--safety-only {
-    justify-content: flex-start;
-  }
+  .terminal-demo-brand { margin-bottom: 4px; }
 }
